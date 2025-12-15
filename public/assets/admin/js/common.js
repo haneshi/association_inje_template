@@ -1,0 +1,503 @@
+"use strict";
+
+const common = {
+    ajax: {
+        returnFetch: function (url, arrData) {
+            return fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRF-TOKEN": document
+                        .querySelector('meta[name="csrf-token"]')
+                        .getAttribute("content"),
+                },
+                body: JSON.stringify(arrData),
+            })
+                .then((res) => res.json())
+                .then((json) => {
+                    return json;
+                })
+                .catch(() => {
+                    console.log("error");
+                });
+        },
+        postJson: function (url, arrData, isDebug = false) {
+            let errStatus = 500;
+            apps.layouts.loadingMask("play");
+
+            return fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRF-TOKEN": document
+                        .querySelector('meta[name="csrf-token"]')
+                        .getAttribute("content"),
+                },
+                body: JSON.stringify(arrData),
+            })
+                .then((res) => {
+                    if (res.status === 200) {
+                        return res.json();
+                    } else {
+                        errStatus = res.status;
+                        if (isDebug) console.error(res);
+                    }
+                })
+                .then((json) => {
+                    if (isDebug) console.log(json);
+                    this.procAjaxSuccessData(json);
+                    if (json.return) {
+                        return json;
+                    }
+                    return {};
+                })
+                .catch(() => {
+                    this.procAjaxErrorData(errStatus);
+                });
+        },
+        postJsonNoMask: function (url, arrData, isDebug = false) {
+            let errStatus = 500;
+
+            return fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRF-TOKEN": document
+                        .querySelector('meta[name="csrf-token"]')
+                        .getAttribute("content"),
+                },
+                body: JSON.stringify(arrData),
+            })
+                .then((res) => {
+                    if (res.status === 200) {
+                        return res.json();
+                    } else {
+                        errStatus = res.status;
+                        if (isDebug) console.error(res);
+                    }
+                })
+                .then((json) => {
+                    if (isDebug) console.log(json);
+                    this.procAjaxSuccessData(json);
+                    if (json.return) {
+                        return json;
+                    }
+                    return {};
+                })
+                .catch(() => {
+                    this.procAjaxErrorData(errStatus);
+                });
+        },
+        postFormID: function (url, id, isDebug = false) {
+            const element = document.getElementById(id);
+            this.postFormElement(url, element, isDebug);
+        },
+        postFormSelector: function (url, selector, isDebug = false) {
+            const element = document.querySelector(selector);
+            this.postFormElement(url, element, isDebug);
+        },
+        postFormElement: function (url, element, isDebug = false) {
+            const formData = new FormData(element);
+            this.postFormData(url, formData, isDebug);
+        },
+        postFormData: function (url, formData, isDebug = false) {
+            let errStatus = 500;
+
+            apps.layouts.loadingMask("play");
+
+            return fetch(url, {
+                method: "POST",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRF-TOKEN": document
+                        .querySelector('meta[name="csrf-token"]')
+                        .getAttribute("content"),
+                },
+                body: formData,
+            })
+                .then((res) => {
+                    if (res.status === 200) {
+                        return res.json();
+                    } else {
+                        errStatus = res.status;
+                        if (isDebug) console.error(res);
+                    }
+                })
+                .then((json) => {
+                    if (isDebug) console.log(json);
+                    this.procAjaxSuccessData(json);
+                    if (json.return) {
+                        return json;
+                    }
+                    return {};
+                })
+                .catch(() => {
+                    this.procAjaxErrorData(errStatus);
+                });
+        },
+        procAjaxSuccessData: function (json) {
+            apps.layouts.loadingMask("stop");
+
+            if (json.log) {
+                console.log(json.log);
+            }
+
+            if (json.values) {
+                console.log(json.values);
+                if (typeof json.values === "object") {
+                    for (let key in json.values) {
+                        document.querySelector(key).value = json.values[key];
+                    }
+                }
+            }
+
+            if (json.valueId) {
+                const element = document.getElementById(json.valueId.selector);
+                element.value = json.valueId.data;
+            }
+
+            if (json.after) {
+                const element = document.getElementById(json.after.id);
+                const newNode = document.createElement(json.after.tag); // 'div
+                newNode.innerHTML = json.after.data;
+                element.parentNode.insertBefore(newNode, element.nextSibling);
+            }
+
+            if (json.before) {
+                const element = document.getElementById(json.before.id);
+                const newNode = document.createElement(json.before.tag); // 'div
+                newNode.innerHTML = json.before.data;
+                element.parentNode.insertBefore(newNode, element.beforeSibl);
+            }
+
+            if (json.append) {
+                const element = document.getElementById(json.append.id);
+                const newNode = document.createElement(json.append.tag); // 'div
+                newNode.innerHTML = json.append.data;
+                element.appendChild(newNode);
+            }
+
+            if (json.layoutsPage) {
+                const configEl = document.getElementById("frm-config");
+                const replaceEl = document.getElementById("frm-replace");
+                const sourcesEl = document.getElementById("frm-sources");
+                const contentsEl = document.getElementById("frm-contents");
+                const pluginsEl = document.getElementById("frm-plugins");
+
+                configEl.innerHTML = json.layoutsPage.config;
+                replaceEl.innerHTML = json.layoutsPage.replace;
+                sourcesEl.innerHTML = json.layoutsPage.sources;
+                contentsEl.innerHTML = json.layoutsPage.contents;
+                pluginsEl.innerHTML = json.layoutsPage.plugins;
+            }
+
+            if (json.html) {
+                if (typeof json.html === "object") {
+                    const element = document.getElementById(json.html.id);
+                    element.innerHTML = json.html.source;
+                }
+            }
+
+            if (json.text) {
+                if (typeof json.text === "object") {
+                    const element = document.getElementById(json.text.id);
+                    element.textContent = json.text.source;
+                }
+            }
+
+            if (json.show) {
+                const element = document.querySelector(json.show);
+                element.style.display = "block";
+            }
+
+            if (json.hide) {
+                const element = document.querySelector(json.hide);
+                element.style.display = "none";
+            }
+
+            if (json.addClass) {
+                const element = document.querySelector(json.addClass.selector);
+                if (typeof json.addClass.name !== "object") {
+                    element.classList.add(json.addClass.name);
+                } else {
+                    json.addClass.name.forEach((name) => {
+                        element.classList.add(name);
+                    });
+                }
+            }
+
+            if (json.removeClass) {
+                const element = document.querySelector(
+                    json.removeClass.selector
+                );
+                if (typeof json.removeClass.name !== "object") {
+                    element.classList.remove(json.removeClass.name);
+                } else {
+                    json.removeClass.name.forEach((name) => {
+                        element.classList.remove(name);
+                    });
+                }
+            }
+
+            if (json.alert) {
+                alert(json.alert);
+            }
+
+            if (json.focus) {
+                document.querySelector(json.focus).focus();
+            }
+
+            if (json.empty) {
+                if (Array.isArray(json.empty)) {
+                    json.empty.forEach(function (_selector) {
+                        document.querySelector(_selector).innerHTML = "";
+                    });
+                } else {
+                    document.querySelector(json.empty).innerHTML = "";
+                }
+            }
+
+            if (json.remove) {
+                if (!Array.isArray(json.remove)) {
+                    document.querySelector(json.remove).remove();
+                } else {
+                    json.remove.forEach(function (_selector) {
+                        document.querySelector(_selector).remove();
+                    });
+                }
+            }
+
+            if (json.replace) {
+                window.location.replace(json.replace);
+            }
+
+            if (json.reload) {
+                window.location.reload();
+            }
+
+            if (json.back) {
+                window.history.back(1);
+            }
+
+            if (json.function) {
+                switch (json.function.name) {
+                    case "loadingMask":
+                        const type = json.function.type ?? null;
+                        const delay = json.function.delay ?? null;
+
+                        apps.layouts.loadingMask(type, delay);
+                        break;
+                }
+            }
+
+            if (json.modalAlert) {
+                apps.layouts.showModalTemplate(json.modalAlert);
+            }
+
+            if (json.toastAlert) {
+                apps.layouts.showToastTemplate(json.toastAlert);
+            }
+        },
+        procAjaxErrorData: function (status) {
+            apps.layouts.loadingMask("stop");
+            switch (status) {
+                case 419: // csrf
+                    return apps.layouts.showModalTemplate({
+                        type: "warning",
+                        size: "sm",
+                        icon: true,
+                        title: "419 에러",
+                        content: `장시간 사용하지 않아 새로고침 합니다.<br> 다시 시도해 주세요!`,
+                        event: {
+                            type: "reload",
+                        },
+                    });
+                case 500: // 문법 에러
+                default:
+                    apps.layouts.showModalTemplate({
+                        type: "error",
+                        size: "sm",
+                        icon: true,
+                        title: "500 에러",
+                        content: `서버에러 입니다. 관리자에게 문의 하세요!`,
+                        event: {
+                            type: "reload",
+                        },
+                    });
+                    break;
+            }
+        },
+    },
+    link: {
+        params: {
+            changeType: (params, paramsType, value) => {
+                params = params.replace(/&amp;/g, "&");
+
+                if (params.includes(`${paramsType}=`)) {
+                    return params.replace(
+                        /type=([^&]*)/,
+                        `${paramsType}=${value}`
+                    );
+                } else {
+                    let strParams = params === "" ? "?" : params + "&";
+                    return strParams + paramsType + "=" + value;
+                }
+            },
+        },
+    },
+    copyTextarea: function (text) {
+        navigator.clipboard
+            .writeText(text)
+            .then(function () {
+                apps.layouts.showToastTemplate({
+                    type: "success",
+                    title: "내용이 복사 되었습니다.",
+                });
+            })
+            .catch(function (err) {
+                apps.layouts.showToastTemplate({
+                    title: "복사 실패",
+                });
+            });
+    },
+    addComma: (data) => {
+        if (isNaN(data)) return 0;
+        return data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    },
+    removeCommas: (data) => {
+        if (!data || data.length === 0) {
+            return 0;
+        } else {
+            return Number(data.split(",").join(""));
+        }
+    },
+    updateElements: (data, property) => {
+        const elements = document.querySelectorAll(data[property].selector);
+        for (const element of elements) {
+            element[property] = data[property].data;
+        }
+    },
+    togglePassword: (selector) => {
+        const passwordInput = document.querySelector(selector);
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+        } else {
+            passwordInput.type = "password";
+        }
+    },
+    addPhoneHyphen: (phone_num) => {
+        return phone_num.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+    },
+    autoPhoneHyphen: (target) => {
+        target.value = target.value
+            .replace(/[^0-9]/g, "")
+            .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+    },
+    autoDateHyphen: (target) => {
+        console.log(target.value);
+        target.value = target.value
+            .replace(/[^0-9]/g, "")
+            .replace(/^(\d{4})(\d{2})(\d{2})$/, `$1-$2-$3`);
+    },
+    addBusinessNumberHyphen: (num) => {
+        return num.replace(/^(\d{3})(\d{2,3})(\d{5})$/, `$1-$2-$3`);
+    },
+    autoBusinessNumberHyphen: (target) => {
+        target.value = target.value
+            .replace(/[^0-9]/g, "")
+            .replace(/^(\d{3})(\d{2,3})(\d{5})$/, `$1-$2-$3`);
+    },
+    priceToHangul: (price) => {
+        let num = parseInt((price + "").replace(/[^0-9]/g, ""), 10) + ""; // 숫자/문자/돈 을 숫자만 있는 문자열로 변환
+        if (num === "0") {
+            return "영";
+        }
+
+        const number = [
+            "영",
+            "일",
+            "이",
+            "삼",
+            "사",
+            "오",
+            "육",
+            "칠",
+            "팔",
+            "구",
+        ];
+        const unit = ["", "만", "억", "조"];
+        const smallUnit = ["천", "백", "십", ""];
+        const result = []; //변환된 값을 저장할 배열
+        let unitCnt = Math.ceil(num.length / 4); //단위 갯수. 숫자 10000은 일단위와 만단위 2개이다.
+        num = num.padStart(unitCnt * 4, "0"); //4자리 값이 되도록 0을 채운다
+        const regexp = /[\w\W]{4}/g; //4자리 단위로 숫자 분리
+        const array = num.match(regexp);
+        //낮은 자릿수에서 높은 자릿수 순으로 값을 만든다(그래야 자릿수 계산이 편하다)
+        let i = array.length - 1;
+        unitCnt = 0;
+        for (; i >= 0; i--, unitCnt++) {
+            const hanValue = _makeHan(array[i]); //한글로 변환된 숫자
+            if (hanValue == "")
+                //값이 없을땐 해당 단위의 값이 모두 0이란 뜻.
+                continue;
+            result.unshift(hanValue + unit[unitCnt]); //unshift는 항상 배열의 앞에 넣는다.
+        }
+
+        //여기로 들어오는 값은 무조건 네자리이다. 1234 -> 일천이백삼십사
+        function _makeHan(text) {
+            let str = "";
+            for (let i = 0; i < text.length; i++) {
+                const num = text[i];
+                if (num == "0")
+                    //0은 읽지 않는다
+                    continue;
+                str += number[num] + smallUnit[i];
+            }
+            return str;
+        }
+
+        return result.join("");
+    },
+    resetValueId: (id, value) => {
+        document.getElementById(id).value = value;
+    },
+    litepicker: (id) => {
+        document.addEventListener("DOMContentLoaded", function () {
+            window.Litepicker &&
+                new Litepicker({
+                    element: document.getElementById(id),
+                    lang: "ko",
+                    buttonText: {
+                        previousMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
+                        nextMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
+                    },
+                    setup: (picker) => {
+                        picker.on("show", () => {
+                            let date = picker.getDate();
+                            if (date) {
+                                date.setMonth(date.getMonth());
+                                picker.gotoDate(date);
+                            }
+                        });
+                    },
+                });
+        });
+    },
+    validate: {
+        email: function (email) {
+            var emailPattern =
+                /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+            return emailPattern.test(email);
+        },
+        required: function (input) {
+            const regex = /^[\s]*$/;
+            return !regex.test(input);
+        },
+    },
+    removeId: function (id) {
+        document.getElementById(id).remove();
+    },
+};
