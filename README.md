@@ -36,6 +36,6 @@ $ composer require barryvdh/laravel-debugbar --dev
 # 테이블러 아이콘
 $ composer require ryangjchandler/blade-tabler-icons
 
-# 개발확인 모바일에서 와이파이의 IP주소로 접근할 수 있다.
+# 개발확인 모바일에서 와이파이의 IP주소로 접근
 $ php artisan serve --host=0.0.0.0 --port=8000
 ```
