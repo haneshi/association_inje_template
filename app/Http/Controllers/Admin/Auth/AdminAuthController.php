@@ -14,4 +14,11 @@ class AdminAuthController extends AdminController
         }
         return view('admin.pages.auth.login');
     }
+
+    public function logout() {
+        $authService = new AdminAuthService();
+        $authService->logout();
+
+        RedirectRoute('admin.login');
+    }
 }

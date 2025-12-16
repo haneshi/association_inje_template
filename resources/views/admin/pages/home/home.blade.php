@@ -14,10 +14,6 @@
 
 {{-- @section('afterStyle')@endsection --}}
 
-@section('pageHeader')
-    @include('admin.pages.home.components.page-header')
-@endsection
-
 @section('mainContent')
     <div class="text-align-center">
         메인 컨텐츠

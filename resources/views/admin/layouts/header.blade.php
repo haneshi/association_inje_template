@@ -14,7 +14,7 @@
                     <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0" id="navbar">
                         <ul class="navbar-nav  justify-content-end">
                             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
-                                <a href="javascript:void(0)" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                                <a href="javascript:void(0)" class="nav-link text-white p-0" id="iconNavbarSidenav">
                                     <div class="sidenav-toggler-inner">
                                         <x-tabler-menu-2 />
                                     </div>
