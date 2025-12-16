@@ -59,7 +59,8 @@ Route::middleware('auth.check')
             ->prefix('member')
             ->group(function () {
                 Route::get('/', 'index')->name('admin.setting.member');
-                Route::get('/write', 'wirte')->name('admin.setting.member.add');
+                Route::get('/write', 'write')->name('admin.setting.member.add');
                 Route::get('/{id}', 'view')->name('admin.setting.member.view');
+                Route::post('/data', 'data')->name('admin.setting.data');
             });
     });

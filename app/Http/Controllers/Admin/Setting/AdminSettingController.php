@@ -15,4 +15,10 @@ class AdminSettingController extends AdminController
         $this->data['admins'] = $dataService->getList();
         return view('admin.pages.member.index', $this->data);
     }
+
+    public function write() {
+        $this->authorize('create', Admin::class);
+
+        return view('admin.pages.member.write');
+    }
 }
