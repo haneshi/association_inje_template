@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\Auth\AdminAuthController;
 use App\Http\Controllers\Admin\Home\AdminHomeController;
+use App\Http\Controllers\Admin\Setting\AdminSettingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -52,5 +53,13 @@ Route::middleware('auth.check')
         Route::controller(AdminHomeController::class)
             ->group(function () {
                 Route::get('/', 'index')->name('admin.home');
+            });
+        ############# Setting
+        Route::controller(AdminSettingController::class)
+            ->prefix('member')
+            ->group(function () {
+                Route::get('/', 'index')->name('admin.setting.member');
+                Route::get('/write', 'wirte')->name('admin.setting.member.add');
+                Route::get('/{id}', 'view')->name('admin.setting.member.view');
             });
     });

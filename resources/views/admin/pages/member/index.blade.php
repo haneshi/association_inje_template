@@ -14,9 +14,7 @@
 {{-- @section('afterStyle')@endsection --}}
 
 @section('mainContent')
-    <div class="text-align-center">
-        메인 컨텐츠
-    </div>
+    @include('admin.pages.member.partials.list')
 @endsection
 
 {{-- @section('beforeScript')@endsection --}}
