@@ -11,7 +11,7 @@ use App\Services\Admin\AdminService;
 */
 class AdminSettingService extends AdminService
 {
-    public function getPaginate(int $paginate = 5)
+    public function getList()
     {
         $query = Admin::orderByRaw('is_active desc, seq asc');
         if (!config('auth.isDevel')) {
@@ -23,6 +23,6 @@ class AdminSettingService extends AdminService
             $query = $query->whereNot('id', config('auth.admin')->id);
         }
         $query = $query->whereNot('auth', 'D');
-        return $query->paginate($paginate);
+        return $query->get();
     }
 }

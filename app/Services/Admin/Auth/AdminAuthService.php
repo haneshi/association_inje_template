@@ -47,7 +47,6 @@ class AdminAuthService extends AdminService
 
                 return $this->returnJsonData('modalAlert', [
                     'type' => 'warning',
-                    // 'size' => 'sm',
                     'icon' => true,
                     'title' => '로그인 에러',
                     'content' => '비밀번호가 틀렸습니다.',
@@ -66,7 +65,6 @@ class AdminAuthService extends AdminService
 
                 return $this->returnJsonData('modalAlert', [
                     'type' => 'warning',
-                    // 'size' => 'sm',
                     'icon' => true,
                     'title' => "로그인 에러",
                     'content' => "<p>[ {$row->userid} ]는 정지된 아이디 입니다.</p><p>관리자에게 문의 하세요!</p>"
@@ -83,7 +81,6 @@ class AdminAuthService extends AdminService
 
         return $this->returnJsonData('modalAlert', [
             'type' => 'warning',
-            // 'size' => 'sm',
             'icon' => true,
             'title' => "로그인 에러",
             'content' => "아이디 [ {$data['user_id']} ]는 등록된 아이디가 아닙니다.",

@@ -42,7 +42,7 @@ return [
         ],
         'admin' => [
             'driver' => 'session',
-            'provider' => 'admin',
+            'provider' => 'admins',
         ]
     ],
 
@@ -74,7 +74,7 @@ return [
         //     'table' => 'users',
         // ],
 
-        'admin' => [
+        'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
         ]
@@ -122,3 +122,4 @@ return [
     'password_timeout' => 10800,
 
 ];
+
