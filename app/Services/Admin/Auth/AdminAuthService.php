@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Cookie;
 class AdminAuthService extends AdminService
 {
 
-    public function login(Request $request)
+    public function login(Request $req)
     {
-        $data = $request->only(['user_id', 'password']);
+        $data = $req->only(['user_id', 'password']);
         $row = Admin::where('user_id', $data['user_id'])->first();
         $queryData = $this->encryptLogInArray($data);
 
@@ -30,7 +30,7 @@ class AdminAuthService extends AdminService
                         'queryData' => $this->json_encode($queryData),
                     ]);
 
-                    $request->has("remember")
+                    $req->has("remember")
                         ? Cookie::queue('admin_remember', $row->user_id, 60 * 24 * 30)
                         : Cookie::queue('admin_remember', $row->user_id, -1);
 

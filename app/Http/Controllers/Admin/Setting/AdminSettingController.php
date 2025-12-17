@@ -10,15 +10,26 @@ use App\Services\Admin\Setting\AdminSettingService;
 class AdminSettingController extends AdminController
 {
     //
-    public function index () {
+    public function index()
+    {
         $dataService = new AdminSettingService();
         $this->data['admins'] = $dataService->getList();
         return view('admin.pages.member.index', $this->data);
     }
 
-    public function write() {
+    public function write()
+    {
         $this->authorize('create', Admin::class);
-
         return view('admin.pages.member.write');
+    }
+
+    public function data(Request $req)
+    {
+        if ($req->ajax() && $req->isMethod('POST')) {
+            $dataService = new AdminSettingService();
+            return match ($req->pType) {
+                "checkUserId" => $dataService->checkUserId($req),
+            };
+        }
     }
 }

@@ -21,6 +21,8 @@ return new class extends Migration
             $table->boolean('is_active')->default(true)->comment('사용유무');
             $table->timestamps();
             $table->comment('관리자');
+
+            $table->softDeletes()->comment('삭제일시'); // deleted_at
         });
     }
 

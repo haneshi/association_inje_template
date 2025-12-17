@@ -3,12 +3,13 @@
 namespace App\Services\Admin\Setting;
 
 use App\Models\Admin;
+use Illuminate\Http\Request;
 use App\Services\Admin\AdminService;
 
 /**
  * Class AdminSettingService
  * @package App\Services
-*/
+ */
 class AdminSettingService extends AdminService
 {
     public function getList()
@@ -24,5 +25,11 @@ class AdminSettingService extends AdminService
         }
         $query = $query->whereNot('auth', 'D');
         return $query->get();
+    }
+
+    public function checkUserId(Request $req) {
+        $data = $req->except('pType');
+        $row = Admin::where('user_id', $data['value'])->withTrashed()->first();
+        return $this->returnJsonData('hasUserId', (bool)$row);
     }
 }

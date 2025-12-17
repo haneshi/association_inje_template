@@ -8,9 +8,9 @@ use Illuminate\Http\Request;
 
 class AdminAuthController extends AdminController
 {
-    public function login(Request $request) {
-        if($request->ajax() && $request->isMethod('POST')) {
-            return (new AdminAuthService())->login($request);
+    public function login(Request $req) {
+        if($req->ajax() && $req->isMethod('POST')) {
+            return (new AdminAuthService())->login($req);
         }
         return view('admin.pages.auth.login');
     }

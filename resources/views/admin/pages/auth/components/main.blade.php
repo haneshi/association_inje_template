@@ -39,7 +39,7 @@
     </div>
 </div>
 @section('afterScript')
-    <script src="{{ asset('assets/plugins/js/validation/just-validate.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/validation/just-validate.min.js') }}"></script>
     <script>
         const validation = new JustValidate('#frm', apps.plugins.JustValidate.basic())
             .onSuccess((e) => {

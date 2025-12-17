@@ -14,9 +14,9 @@ class AuthCheck
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $req, Closure $next): Response
     {
-        # return $next($request);
+        # return $next($req);
         switch (GetRouteName()) {
             case 'admin':
                 if (Auth::guard('admin')->check()) {
@@ -39,10 +39,10 @@ class AuthCheck
                         ]);
                     }
                     config([
-                        'app.path' => $request->path(),
+                        'app.path' => $req->path(),
                         'auth.admin' => Auth::guard('admin')->user()
                     ]);
-                    return $next($request);
+                    return $next($req);
                 }
                 session()->put('url.intended', url()->current());
                 RedirectRoute('admin.login');
@@ -56,9 +56,9 @@ class AuthCheck
                     }
                     config([
                         'auth.user' => Auth::guard('user')->user(),
-                        'app.path' => $request->path()
+                        'app.path' => $req->path()
                     ]);
-                    return $next($request);
+                    return $next($req);
                 }
                 RedirectRoute('login');
         }
