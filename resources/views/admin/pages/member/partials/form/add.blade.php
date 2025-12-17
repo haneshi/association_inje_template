@@ -25,6 +25,13 @@
                                 <input class="form-control" type="text" id="user_id" name="user_id"
                                     placeholder="Enter admin ID" required>
                             </div>
+                            <div class="form-group">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input ms-auto mt-1" type="checkbox"
+                                        id="flexSwitchCheckDefault" name="auth">
+                                    <label class="form-check-label ms-2" for="flexSwitchCheckDefault">최고관리자 권한</label>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">

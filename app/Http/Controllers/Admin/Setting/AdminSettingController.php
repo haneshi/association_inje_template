@@ -29,6 +29,7 @@ class AdminSettingController extends AdminController
             $dataService = new AdminSettingService();
             return match ($req->pType) {
                 "checkUserId" => $dataService->checkUserId($req),
+                "addAdmin" => $dataService->addAdmin($req),
             };
         }
     }

@@ -3088,7 +3088,6 @@ textarea.form-control-lg {
 .form-check {
   display: block;
   min-height: 1.5rem;
-  padding-left: 1.73em;
   margin-bottom: 0.125rem;
 }
 
@@ -3180,10 +3179,6 @@ textarea.form-control-lg {
 .form-check-input:disabled~.form-check-label {
   cursor: default;
   opacity: 0.5;
-}
-
-.form-switch {
-  padding-left: 3rem;
 }
 
 .form-switch .form-check-input {
