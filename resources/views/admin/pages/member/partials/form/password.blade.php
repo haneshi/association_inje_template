@@ -1,5 +1,6 @@
 <form id="frm-password" autocomplete="off" novalidate>
     <input type="hidden" name="pType" value="setPassword">
+    <input type="hidden" name="id" value="{{ $view->id }}">
     <div class="card-body">
         <div class="row g-3 mb-3">
             <div class="col-md">

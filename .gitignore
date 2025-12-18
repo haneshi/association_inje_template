@@ -21,3 +21,4 @@ yarn-error.log
 /public/data
 /public/sample
 /composer.lock
+.DS_Store

@@ -29,7 +29,8 @@ class AdminSettingService extends AdminService
         return $query->get();
     }
 
-    public function checkUserId(Request $req) {
+    public function checkUserId(Request $req)
+    {
         $data = $req->except('pType');
         $row = Admin::where('user_id', $data['value'])->withTrashed()->first();
         return $this->returnJsonData('hasUserId', (bool)$row);
@@ -83,5 +84,91 @@ class AdminSettingService extends AdminService
                 'content' => "관리자가 추가 되지 않았습니다. <br> 관리자에게 문의해 주세요!",
             ]);
         }
+    }
+
+    public function setAdmin(Request $req)
+    {
+        $data = $req->except(['pType']);
+        $row = Admin::find($data['id']);
+
+        if (!$row) {
+            return $this->returnJsonData('modal', [
+                'type' => 'error',
+                'title' => '관리자 정보 수정 에러',
+                'content' => "존재하지 않은 관리자입니다.",
+                'event' => [
+                    'type' => 'reload',
+                ]
+            ]);
+        }
+
+        $row->name = $data['name'];
+
+        if ($row->save()) {
+            return $this->returnJsonData('modalAlert', [
+                'type' => 'success',
+                'title' => "관리자 정보 수정",
+                'content' => "관리자 정보가 수정 되었습니다.",
+                'event' => [
+                    'type' => 'reload',
+                ]
+            ]);
+        }
+        return $this->returnJsonData('modalAlert', [
+            'type' => 'error',
+            'title' => '관리자 정보 수정 에러',
+            'content' => '관리자 정보가 수정되지 않았습니다.',
+            'event' => [
+                'type' => 'reload',
+            ]
+        ]);
+    }
+
+    public function setPassword(Request $req)
+    {
+        $data = $req->except(['pType']);
+        $row = Admin::find($data['id']);
+
+        if (!$row) {
+            return $this->returnJsonData('modal', [
+                'type' => 'error',
+                'title' => '관리자 비밀번호 수정 에러',
+                'content' => "존재하지 않은 관리자입니다.",
+                'event' => [
+                    'type' => 'reload',
+                ]
+            ]);
+        }
+
+        if (!Hash::check($data['password_current'], $row->password)) {
+            return $this->returnJsonData('modalAlert', [
+                'type' => 'warning',
+                'title' => "현재 비밀번호 틀림",
+                'content' => "현재 비밀번호가 틀립니다. 확인해 주세요!",
+                'event' => [
+                    'type' => 'focus',
+                    'selector' => '#password_current'
+                ],
+            ]);
+        }
+
+        $row->password = Hash::make($data['password']);
+
+        if ($row->save()) {
+            return $this->returnJsonData('modalAlert', [
+                'type' => 'success',
+                'title' => "관리자 비밀번호 수정",
+                'content' => "관리자 비밀번호가 수정 되었습니다.",
+                'event' => [
+                    'type' => 'reload',
+                ],
+            ]);
+        }
+
+        return $this->returnJsonData('modalAlert', [
+            'type' => 'error',
+            'title' => "관리자 비밀번호 수정 에러",
+            'content' => "관리자 비밀번호가 수정 되지 않았습니다."
+        ]);
     }
 }
