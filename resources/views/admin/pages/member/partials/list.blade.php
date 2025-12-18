@@ -30,7 +30,7 @@
                         </thead>
                         <tbody>
                             @forelse ($admins as $admin)
-                                <tr class="@if (!$admin->is_active) bg-danger @endif">
+                                <tr>
                                     <td>
                                         <a href="{{ route('admin.setting.member.view', $admin->id) }}">
                                             <div class="d-flex px-2 py-1">
@@ -46,7 +46,7 @@
                                     </td>
                                     <td class="align-middle text-center text-sm">
                                         <span
-                                            class="badge badge-sm bg-gradient-success">{{ $admin->is_active ? '사용중' : '미사용' }}</span>
+                                            class="badge badge-sm bg-gradient-{{ $admin->is_active ? "success" : "danger" }}">{{ $admin->is_active ? '사용중' : '미사용' }}</span>
                                     </td>
                                     <td class="align-middle text-center">
                                         <span

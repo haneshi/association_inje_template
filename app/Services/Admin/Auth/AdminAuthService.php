@@ -68,7 +68,7 @@ class AdminAuthService extends AdminService
                     'type' => 'warning',
                     'icon' => true,
                     'title' => "로그인 에러",
-                    'content' => "<p>[ {$row->userid} ]는 정지된 아이디 입니다.</p><p>관리자에게 문의 하세요!</p>"
+                    'content' => "<p>[ {$row->user_id} ]는 정지된 아이디 입니다.</p><p>관리자에게 문의 하세요!</p>"
                 ]);
             }
         }
@@ -120,6 +120,9 @@ class AdminAuthService extends AdminService
                 'type' => 'success',
                 'title' => "내 정보 수정",
                 'content' => "내 정보가 수정 되었습니다.",
+                'event' => [
+                    'type' => 'reload',
+                ],
             ]);
         }
 

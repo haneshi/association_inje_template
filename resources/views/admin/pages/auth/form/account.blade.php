@@ -1,5 +1,5 @@
 <form id="frm-edit" autocomplete="off" novalidate>
-    <input type="hidden" name="pType" value="setAdmin">
+    <input type="hidden" name="pType" value="setAccount">
     <input type="hidden" name="id" value="{{ config('auth.admin')->id }}">
     <div class="card-body">
         <div class="row g-3 mb-3">
@@ -28,7 +28,7 @@
         procEditValidator
             .onSuccess((e) => {
                 e.preventDefault();
-                common.ajax.postFormSelector('{{ route('admin.setting.data') }}', '#frm-edit');
+                common.ajax.postFormSelector('{{ route('admin.auth.data') }}', '#frm-edit');
             })
             .addField('#name', [{
                 rule: 'required',

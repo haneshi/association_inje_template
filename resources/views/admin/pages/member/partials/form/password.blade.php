@@ -21,7 +21,7 @@
                 <label for="password_confirm" class="form-control-label">변경할 비밀번호 확인<span
                         class="text-danger">*</span></label>
                 <input class="form-control" type="password" id="password_confirm" name="password_confirm"
-                    placeholder="Enter admin password" required>
+                    placeholder="Enter new password check" required>
             </div>
         </div>
     </div>

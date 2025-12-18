@@ -90,7 +90,6 @@ class AdminSettingService extends AdminService
     {
         $data = $req->except(['pType']);
         $row = Admin::find($data['id']);
-
         if (!$row) {
             return $this->returnJsonData('modal', [
                 'type' => 'error',
@@ -103,6 +102,7 @@ class AdminSettingService extends AdminService
         }
 
         $row->name = $data['name'];
+        $row->is_active = isset($data['is_active']) ? true : false;
 
         if ($row->save()) {
             return $this->returnJsonData('modalAlert', [
