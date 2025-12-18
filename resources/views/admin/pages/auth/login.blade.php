@@ -29,7 +29,7 @@
     </div>
     <main class="main-content  mt-0">
         <section>
-            @include('admin.pages.auth.components.main')
+            @include('admin.pages.auth.form.login')
         </section>
     </main>
     @include('admin.layouts.notification')

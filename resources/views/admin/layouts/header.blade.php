@@ -35,12 +35,11 @@
                         class="w-100 border-radius-lg shadow-sm">
                 </div>
                 <div>
-                    <h5 class="mb-1 text-white font-weight-bolder">
-                        {{ Auth::guard('admin')->user()->name }}
-                    </h5>
-                    <p class="mb-0 text-white text-sm">
-                        {{ Auth::guard('admin')->user()->job }}
-                    </p>
+                    <a href="{{ route('admin.auth.account') }}">
+                        <h5 class="mb-1 text-white font-weight-bolder">
+                            {{ config('auth.admin')->name }}
+                        </h5>
+                    </a>
                 </div>
             </div>
             <div class="d-flex align-items-center">

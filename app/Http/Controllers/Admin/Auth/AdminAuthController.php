@@ -8,17 +8,24 @@ use Illuminate\Http\Request;
 
 class AdminAuthController extends AdminController
 {
-    public function login(Request $req) {
-        if($req->ajax() && $req->isMethod('POST')) {
+    public function login(Request $req)
+    {
+        if ($req->ajax() && $req->isMethod('POST')) {
             return (new AdminAuthService())->login($req);
         }
         return view('admin.pages.auth.login');
     }
 
-    public function logout() {
+    public function logout()
+    {
         $authService = new AdminAuthService();
         $authService->logout();
 
         RedirectRoute('admin.login');
+    }
+
+    public function account()
+    {
+        return view('admin.pages.auth.view');
     }
 }
