@@ -5480,7 +5480,7 @@ fieldset:disabled .btn {
   margin-right: calc(-0.5 * var(--bs-card-cap-padding-x));
   margin-bottom: calc(-1 * var(--bs-card-cap-padding-y));
   margin-left: calc(-0.5 * var(--bs-card-cap-padding-x));
-  border-bottom: 0;
+  /* border-bottom: 0; */
 }
 
 .card-header-tabs .nav-link.active {
