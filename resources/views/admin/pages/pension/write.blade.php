@@ -3,7 +3,7 @@
 
 @php
     $pageData = [
-        'title' => '펜션관리 홈',
+        'title' => '펜션 추가',
     ];
 @endphp
 
@@ -14,7 +14,7 @@
 {{-- @section('afterStyle')@endsection --}}
 
 @section('mainContent')
-    {{-- @include('admin.pages.pension.partials.list') --}}
+    @include('admin.pages.pension.partials.form.write')
 @endsection
 
 {{-- @section('beforeScript')@endsection --}}
