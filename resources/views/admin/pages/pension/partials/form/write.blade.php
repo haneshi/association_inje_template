@@ -10,6 +10,8 @@
                     <p class="mb-0">{{ $pageData['title'] }}</p>
                 </div>
                 <div class="form-check form-check-inline">
+                    <label class="form-control-label">지역 선택<span class="text-danger">*</span></label>
+                    <br>
                     @foreach (config('sites.locations') as $k => $location)
                         <input type="radio" class="btn-check" id="{{ $k }}" name="location"
                             value="{{ $k }}">
@@ -88,6 +90,15 @@
                             <div id="drop-area"></div>
                         </div>
                     </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input ms-auto mt-1" type="checkbox" id="is_active"
+                                    name="is_active">
+                                <label class="form-check-label ms-2" for="is_active">사용유무</label>
+                            </div>
+                        </div>
+                    </div>
                     <hr class="horizontal dark">
                     <div class="d-flex justify-content-end gap-2">
                         {{-- <a href="{{ route('admin.manager.users') }}" class="btn btn-outline-secondary">목록으로</a> --}}
@@ -123,47 +134,43 @@
                     height: 320,
                     hideUploadButton: true, // 업로드 버튼 숨기기
                 });
-
-
-
-
             const procAddValidator = new JustValidate('#frm', apps.plugins.JustValidate.basic());
             procAddValidator.onSuccess((e) => {
-                e.preventDefault();
+                    e.preventDefault();
 
-                const form = document.getElementById('frm');
-                const formData = new FormData(form);
+                    const form = document.getElementById('frm');
+                    const formData = new FormData(form);
 
-                const files = uppy.getFiles();
-                files.forEach((file, index) => {
-                    formData.append(`images[${index}]`, file.data);
-                });
+                    const files = uppy.getFiles();
+                    files.forEach((file, index) => {
+                        formData.append(`images[${index}]`, file.data);
+                    });
 
-                const location = document.querySelector('input[name="location"]:checked').value;
-                formData.append('location', location);
+                    const location = document.querySelector('input[name="location"]:checked').value;
+                    formData.append('location', location);
 
-                common.ajax.postFormData('{{ route('admin.pension.data') }}', formData);
-            })
-            //     .addField('#name', [{
-            //         rule: 'required',
-            //         errorMessage: '펜션명을 입력해주세요.',
-            //     }, ])
-            //     .addField('#owner', [{
-            //         rule: 'required',
-            //         errorMessage: '관리자 이름을 입력해주세요!'
-            //     }, ])
-            //     .addField('#tel', [{
-            //         rule: 'required',
-            //         errorMessage: '펜션 전화번호를 입력해주세요!'
-            //     }, ])
-            //     .addField('#reservation_key', [{
-            //         rule: 'required',
-            //         errorMessage: '예약시스템 키를 입력해주세요!'
-            //     }, ])
-            //     .addField('#address_basic', [{
-            //         rule: 'required',
-            //         errorMessage: '주소를 입력해주세요!'
-            //     }, ]);
+                    common.ajax.postFormData('{{ route('admin.pension.data') }}', formData);
+                })
+                .addField('#name', [{
+                    rule: 'required',
+                    errorMessage: '펜션명을 입력해주세요.',
+                }, ])
+                .addField('#owner', [{
+                    rule: 'required',
+                    errorMessage: '관리자 이름을 입력해주세요!'
+                }, ])
+                .addField('#tel', [{
+                    rule: 'required',
+                    errorMessage: '펜션 전화번호를 입력해주세요!'
+                }, ])
+                .addField('#reservation_key', [{
+                    rule: 'required',
+                    errorMessage: '예약시스템 키를 입력해주세요!'
+                }, ])
+                .addField('#address_basic', [{
+                    rule: 'required',
+                    errorMessage: '주소를 입력해주세요!'
+                }, ]);
         });
     </script>
 @endsection

@@ -25,6 +25,8 @@ class AdminPensionService extends AdminService
     }
 
     public function addPension(Request $req) {
-        dd($req);
+        $data = $req->except(['pType']);
+        $data['is_active'] = isset($req->is_active) ? true : false;
+        dd($data);
     }
 }
