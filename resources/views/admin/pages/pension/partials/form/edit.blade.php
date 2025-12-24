@@ -18,6 +18,16 @@
                         <label for="{{ $k }}" class="btn btn-primary">{{ $location }}</label>
                     @endforeach
                 </div>
+                <div class="form-group w-50">
+                    <label for="seq" class="form-label">순서</label>
+                    <select name="seq" id="seq" class="form-select mb-3 tomselected ts-hidden-accessible">
+                        @foreach ($pensions as $item)
+                            <option value="{{ $item->seq }}" @if ($pension->seq === $item->seq) selected @endif>
+                                {{ $item->seq }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
             <div class="card-body">
                 <form id="frm" autocomplete="off" novalidate>

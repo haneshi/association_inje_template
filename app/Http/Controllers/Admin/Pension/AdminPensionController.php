@@ -29,6 +29,7 @@ class AdminPensionController extends AdminController
     {
         $this->data['paramData'] = $this->getParamData($req);
         $this->data['pension'] = Pension::getData(['id' => $id]);
+        $this->data['pensions'] = pension::where('is_active', true)->orderBy('seq')->get();
         $this->data['files'] = $this->data['pension']->files;
 
         return view('admin.pages.pension.view', $this->data);

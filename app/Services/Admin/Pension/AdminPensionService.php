@@ -33,13 +33,10 @@ class AdminPensionService extends AdminService
         try {
             $data = $req->except(['pType', 'images']);
             $data['is_active'] = $req->boolean('is_active');
-
             if ($data['is_active'] === true) {
                 $data['seq'] = Pension::where('is_active', 1)->count() + 1;
             }
-
             $pension = Pension::create($data);
-
             if ($req->hasFile('images')) {
                 $images = $req->file('images');
                 $imagesCount = count($images);

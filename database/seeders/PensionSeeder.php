@@ -10,10 +10,10 @@ class PensionSeeder extends Seeder
 {
     public function run(): void
     {
+        $seq = 1;
         $locations = array_keys(config('sites.locations'));
         $pensions = [
             [
-                'seq' => 1,
                 'name' => '바다향기펜션',
                 'owner' => '김철수',
                 'tel' => '033-123-4567',
@@ -29,7 +29,6 @@ class PensionSeeder extends Seeder
                 'is_active' => true,
             ],
             [
-                'seq' => 2,
                 'name' => '산속휴양펜션',
                 'owner' => '이영희',
                 'tel' => '033-234-5678',
@@ -61,7 +60,6 @@ class PensionSeeder extends Seeder
                 'is_active' => true,
             ],
             [
-                'seq' => 4,
                 'name' => '호수뷰펜션',
                 'owner' => '최정희',
                 'tel' => '033-456-7890',
@@ -77,7 +75,6 @@ class PensionSeeder extends Seeder
                 'is_active' => true,
             ],
             [
-                'seq' => 5,
                 'name' => '별빛정원펜션',
                 'owner' => '정우성',
                 'tel' => '033-567-8901',
@@ -93,7 +90,6 @@ class PensionSeeder extends Seeder
                 'is_active' => true,
             ],
             [
-                'seq' => 6,
                 'name' => '구름위펜션',
                 'owner' => '강하늘',
                 'tel' => '033-678-9012',
@@ -109,7 +105,6 @@ class PensionSeeder extends Seeder
                 'is_active' => true,
             ],
             [
-                'seq' => 7,
                 'name' => '단풍나무펜션',
                 'owner' => '송중기',
                 'tel' => '033-789-0123',
@@ -125,7 +120,6 @@ class PensionSeeder extends Seeder
                 'is_active' => false, // 비활성 예시
             ],
             [
-                'seq' => 8,
                 'name' => '햇살가득펜션',
                 'owner' => '유재석',
                 'tel' => '033-890-1234',
@@ -144,7 +138,7 @@ class PensionSeeder extends Seeder
 
         foreach ($pensions as $pension) {
             Pension::create([
-                'seq' => $pension['seq'],
+                'seq' => $pension['is_active'] ? $seq++ : 9999,
                 'name' => $pension['name'],
                 'owner' => $pension['owner'],
                 'tel' => $pension['tel'],
