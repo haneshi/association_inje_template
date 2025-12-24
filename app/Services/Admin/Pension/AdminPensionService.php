@@ -29,11 +29,7 @@ class AdminPensionService extends AdminService
 
     public function addPension(Request $req)
     {
-
         DB::beginTransaction();
-
-        // dd($req->file('images'));
-
         try {
             $data = $req->except(['pType', 'images']);
             $data['is_active'] = $req->boolean('is_active');

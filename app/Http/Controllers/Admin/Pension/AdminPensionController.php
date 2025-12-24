@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin\Pension;
 
+use App\Models\Pension;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Admin\AdminController;
 use App\Services\Admin\Pension\AdminPensionService;
-use Illuminate\Http\Request;
 
 class AdminPensionController extends AdminController
 {
@@ -23,6 +24,12 @@ class AdminPensionController extends AdminController
         return view('admin.pages.pension.index', $this->data);
     }
 
+    public function view(int $id)
+    {
+        $this->data['pension'] = Pension::getData(['id' => $id]);
+
+        return view('admin.pages.pension.view', $this->data);
+    }
     public function write()
     {
         return view('admin.pages.pension.write');

@@ -10,11 +10,11 @@
                     <p class="mb-0">{{ $pageData['title'] }}</p>
                 </div>
                 <div class="form-check form-check-inline">
-                    <label class="form-control-label">지역 선택<span class="text-danger">*</span></label>
+                    <label class="form-control-label">지역<span class="text-danger">*</span></label>
                     <br>
                     @foreach (config('sites.locations') as $k => $location)
                         <input type="radio" class="btn-check" id="{{ $k }}" name="location"
-                            value="{{ $k }}">
+                            value="{{ $k }}" {{ $pension->location === $k ? 'checked' : '' }}>
                         <label for="{{ $k }}" class="btn btn-primary">{{ $location }}</label>
                     @endforeach
                 </div>
@@ -152,26 +152,26 @@
 
                     common.ajax.postFormData('{{ route('admin.pension.data') }}', formData);
                 })
-                .addField('#name', [{
-                    rule: 'required',
-                    errorMessage: '펜션명을 입력해주세요.',
-                }, ])
-                .addField('#owner', [{
-                    rule: 'required',
-                    errorMessage: '관리자 이름을 입력해주세요!'
-                }, ])
-                .addField('#tel', [{
-                    rule: 'required',
-                    errorMessage: '펜션 전화번호를 입력해주세요!'
-                }, ])
-                .addField('#reservation_key', [{
-                    rule: 'required',
-                    errorMessage: '예약시스템 키를 입력해주세요!'
-                }, ])
-                .addField('#address_basic', [{
-                    rule: 'required',
-                    errorMessage: '주소를 입력해주세요!'
-                }, ]);
+                // .addField('#name', [{
+                //     rule: 'required',
+                //     errorMessage: '펜션명을 입력해주세요.',
+                // }, ])
+                // .addField('#owner', [{
+                //     rule: 'required',
+                //     errorMessage: '관리자 이름을 입력해주세요!'
+                // }, ])
+                // .addField('#tel', [{
+                //     rule: 'required',
+                //     errorMessage: '펜션 전화번호를 입력해주세요!'
+                // }, ])
+                // .addField('#reservation_key', [{
+                //     rule: 'required',
+                //     errorMessage: '예약시스템 키를 입력해주세요!'
+                // }, ])
+                // .addField('#address_basic', [{
+                //     rule: 'required',
+                //     errorMessage: '주소를 입력해주세요!'
+                // }, ]);
         });
     </script>
 @endsection
