@@ -104,7 +104,7 @@
                     </div>
                     <hr class="horizontal dark">
                     <div class="d-flex justify-content-end gap-2">
-                        {{-- <a href="{{ route('admin.manager.users') }}" class="btn btn-outline-secondary">목록으로</a> --}}
+                        <a href="{{ route('admin.pension', $paramData) }}" class="btn btn-outline-secondary">목록으로</a>
                         <button id="submitBtn" type="submit" class="btn btn bg-gradient-warning">펜션 수정</button>
                     </div>
                 </form>

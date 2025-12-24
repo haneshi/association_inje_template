@@ -13,6 +13,7 @@ class AdminPensionController extends AdminController
     {
         return [
             'st' => $req->input('st', null),
+            'page' => $req->input('page', null),
         ];
     }
     //
@@ -24,10 +25,10 @@ class AdminPensionController extends AdminController
         return view('admin.pages.pension.index', $this->data);
     }
 
-    public function view(int $id)
+    public function view(Request $req, int $id)
     {
+        $this->data['paramData'] = $this->getParamData($req);
         $this->data['pension'] = Pension::getData(['id' => $id]);
-
         $this->data['files'] = $this->data['pension']->files;
 
         return view('admin.pages.pension.view', $this->data);

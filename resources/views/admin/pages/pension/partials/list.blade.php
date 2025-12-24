@@ -40,7 +40,7 @@
                             @forelse ($dataList as $data)
                                 <tr>
                                     <td>
-                                        <a href="{{ route('admin.pension.view', $data->id) }}">
+                                        <a href="{{ route('admin.pension.view', ['id' => $data->id] + request()->query()) }}">
                                             <div class="d-flex px-2 py-1">
                                                 <div>
                                                     <img src="https://demos.creative-tim.com/soft-ui-design-system-pro/assets/img/team-2.jpg"
@@ -65,7 +65,7 @@
                                             class="text-secondary text-xs font-weight-bold">{{ $data->created_at->format('y.m.d') }}</span>
                                     </td>
                                     <td class="align-middle">
-                                        <a href="{{ route('admin.pension.view', $data->id) }}"
+                                        <a href="{{ route('admin.pension.view', ['id' => $data->id] + request()->query()) }}"
                                             class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
                                             data-original-title="Edit Pension">
                                             자세히 보기
@@ -74,7 +74,13 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td class="text-center text-w p-5" colspan="20">등록된 펜션이 없습니다.</td>
+                                    <td class="text-center text-w p-5" colspan="20">
+                                        @if ($paramData['st'] !== '')
+                                            검색하신 [ {{ $paramData['st'] }} ]
+                                        @else
+                                            등록된
+                                        @endif 펜션이 없습니다.
+                                    </td>
                                 </tr>
                             @endforelse
                         </tbody>
