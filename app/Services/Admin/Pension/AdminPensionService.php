@@ -2,12 +2,13 @@
 
 namespace App\Services\Admin\Pension;
 
-use App\Helper\ImageUploadHelper;
-use App\Models\Pension;
-use App\Services\Admin\AdminService;
 use Exception;
+use App\Models\Pension;
 use Illuminate\Http\Request;
+use App\Helper\ImageUploadHelper;
 use Illuminate\Support\Facades\DB;
+use App\Services\Admin\AdminService;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class AdminPensionService
@@ -15,6 +16,13 @@ use Illuminate\Support\Facades\DB;
  */
 class AdminPensionService extends AdminService
 {
+    public function getData(array $where = []): Model|null
+    {
+        if (empty($where))
+            return null;
+
+        return Pension::where($where)->first();
+    }
     public function getPaginate(array $arrData, int $paginate = 5)
     {
         $st = $arrData['paramData']['st'];
@@ -65,7 +73,6 @@ class AdminPensionService extends AdminService
                     'url' => route('admin.pension'),
                 ],
             ]);
-
         } catch (\Exception $e) {
             DB::rollBack();
             $pensionLog = new Pension();
@@ -80,6 +87,87 @@ class AdminPensionService extends AdminService
                 'type' => 'error',
                 'title' => "펜션 추가 에러",
                 'content' => "펜션이 추가 되지 않았습니다. <br> 관리자에게 문의해 주세요!",
+            ]);
+        }
+    }
+
+    public function setPension(Request $req)
+    {
+        $data = $req->except(['pType', 'images']);
+        $pension = $this->getData(['id' => $data['id']]);
+        $data['is_active'] = $req->boolean('is_active');
+        DB::beginTransaction();
+        if (!$pension) {
+            return $this->returnJsonData('modalAlert', [
+                'type' => 'error',
+                'title' => '펜션 수정 에러',
+                'content' => '존재하지 않은 펜션입니다.',
+                'event' => [
+                    'type' => 'replace',
+                    'url' => route('amdin.pension'),
+                ]
+            ]);
+        }
+
+        try {
+            if ($req->hasFile('images')) {
+                $images = $req->file('images');
+                $imagesCount = count($images);
+                foreach ($images as $image) {
+                    $tempImage = ImageUploadHelper::upload(
+                        $image,
+                        'pension/' . $pension->id . '/main',
+                        ['width' => 1920],
+                        $imagesCount
+                    );
+                    if ($tempImage) {
+                        if ($pension->files()->create($tempImage)) {
+                            $imagesCount++;
+                        }
+                    }
+                }
+            }
+            $origin = $pension->getOriginal();
+            if ($origin['is_active'] == 1 && $data['is_active'] == 0) {
+                Pension::active()->where('seq', '>', $pension->seq)->decrement('seq');
+                $data['seq'] = 255;
+            } elseif ($origin['is_active'] == 0 && $data['is_active'] == 1) {
+                $data['seq'] = Pension::active()->count() + 1;
+            }
+            if ($pension->update($data)) {
+                DB::commit();
+                return $this->returnJsonData('toastAlert', [
+                    'type' => 'success',
+                    'delay' => 1000,
+                    'delayMask' => true,
+                    'content' => '펜션 정보가 수정되었습니다.',
+                    'event' => [
+                        'type' => 'reload',
+                    ]
+                ]);
+            }
+            return $this->returnJsonData('modalAlert', [
+                'type' => 'error',
+                'title' => "펜션 수정 에러",
+                'content' => "펜션 정보가 수정 되지 않았습니다.",
+                'event' => [
+                    'type' => 'reload',
+                ],
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $pensionLog = new Pension();
+            $pensionLog->setHistoryLog([
+                'type' => 'error',
+                'description' => "펜션 수정 에러",
+                'queryData' => $this->json_encode($data),
+                'rowData' => JsonEncode(['error' => $e->getMessage()]),
+            ], $this->user());
+
+            return $this->returnJsonData('modalAlert', [
+                'type' => 'error',
+                'title' => "펜션 수정 에러",
+                'content' => "펜션이 수정 되지 않았습니다. <br> 관리자에게 문의해 주세요!",
             ]);
         }
     }

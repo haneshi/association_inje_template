@@ -9,7 +9,7 @@
                 <!-- 삭제 버튼 (오른쪽 위) -->
                 <button type="button" class="btn btn-danger btn-sm position-absolute"
                     style="top: 10px; right: 10px; z-index: 10;" onclick="deleteImage({{ $image->id }})">
-                    <x-tabler-trash class="icon" />
+                    <x-tabler-trash />
                 </button>
                 <!-- 숫자 (왼쪽 위) -->
                 <span class="handle badge bg-primary position-absolute cursor-pointer"

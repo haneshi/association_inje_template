@@ -44,6 +44,7 @@ class AdminPensionController extends AdminController
             $service = new AdminPensionService();
             return match($req->pType) {
                 'addPension' => $service->addPension($req),
+                'setPension' => $service->setPension($req),
             };
         }
     }

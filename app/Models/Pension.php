@@ -3,9 +3,10 @@
 namespace App\Models;
 
 use App\Traits\GlobalScopes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Pension extends Model
 {
@@ -15,8 +16,13 @@ class Pension extends Model
     protected $guarded = [];
 
 
-    public function files() : MorphMany
+    public function files(): MorphMany
     {
         return $this->morphMany(DataFile::class, 'fileable')->orderBy('seq');
+    }
+
+    public function scopeActive($query): Builder
+    {
+        return $query->where('is_active', 1);
     }
 }
