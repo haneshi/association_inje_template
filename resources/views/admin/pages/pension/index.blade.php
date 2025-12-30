@@ -15,7 +15,7 @@
 {{-- @section('afterStyle')@endsection --}}
 
 @section('mainContent')
-    @include('admin.pages.pension.partials.list')
+    @include('admin.pages.pension.partials.pensionList')
 @endsection
 
 {{-- @section('beforeScript')@endsection --}}

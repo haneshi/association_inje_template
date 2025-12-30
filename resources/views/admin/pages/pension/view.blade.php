@@ -26,6 +26,13 @@
                                 <span>기본정보</span>
                             </a>
                         </li>
+
+                        <li class="nav-item ms-auto">
+                            <a href="#tab-add-room" class="nav-link" data-bs-toggle="tab">
+                                <x-tabler-plus />
+                                <span>객실 추가</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <div class="card-body">

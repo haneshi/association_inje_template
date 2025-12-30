@@ -14,9 +14,8 @@
 {{-- @section('afterStyle')@endsection --}}
 
 @section('mainContent')
-    @include('admin.pages.pension.partials.form.write')
+    @include('admin.pages.pension.partials.form.pensionWrite')
 @endsection
 
 {{-- @section('beforeScript')@endsection --}}
 {{-- @section('afterScript') @endsection --}}
-
