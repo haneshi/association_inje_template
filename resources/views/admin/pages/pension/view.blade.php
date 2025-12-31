@@ -19,17 +19,18 @@
         <div class="flex-fill">
             <div class="card">
                 <div class="card-header pb-0">
-                    <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
+                    <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist"
+                        style="font-size: 0.8rem;">
                         <li class="nav-item">
                             <a href="#tab-pension" class="nav-link active" data-bs-toggle="tab">
-                                <x-tabler-building />
+                                <x-tabler-building style="width: 0.8rem;"/>
                                 <span>기본정보</span>
                             </a>
                         </li>
 
                         <li class="nav-item ms-auto">
                             <a href="#tab-add-room" class="nav-link" data-bs-toggle="tab">
-                                <x-tabler-plus />
+                                <x-tabler-plus style="width: 0.8rem;" />
                                 <span>객실 추가</span>
                             </a>
                         </li>
