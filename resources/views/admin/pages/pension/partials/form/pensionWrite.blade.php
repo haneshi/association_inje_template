@@ -101,7 +101,7 @@
                     </div>
                     <hr class="horizontal dark">
                     <div class="d-flex justify-content-end gap-2">
-                        {{-- <a href="{{ route('admin.manager.users') }}" class="btn btn-outline-secondary">목록으로</a> --}}
+                        <a href="{{ route('admin.pension', $paramData) }}" class="btn btn-outline-secondary">목록으로</a>
                         <button id="submitBtn" type="submit" class="btn btn bg-gradient-warning">펜션 추가</button>
                     </div>
                 </form>
@@ -132,7 +132,7 @@
                     showProgressDetails: true,
                     note: '이미지 파일만 업로드 가능 (최대 10MB, 최대 5개)',
                     height: 320,
-                    width : '100%',
+                    width: '100%',
                     hideUploadButton: true, // 업로드 버튼 숨기기
                 });
             const procAddValidator = new JustValidate('#frm', apps.plugins.JustValidate.basic());

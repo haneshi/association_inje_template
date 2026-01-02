@@ -34,9 +34,10 @@ class AdminPensionController extends AdminController
 
         return view('admin.pages.pension.view', $this->data);
     }
-    public function write()
+    public function write(Request $req)
     {
-        return view('admin.pages.pension.write');
+        $this->data['paramData'] = $this->getParamData($req);
+        return view('admin.pages.pension.write', $this->data);
     }
 
     public function data(Request $req) {

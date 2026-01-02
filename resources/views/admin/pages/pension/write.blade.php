@@ -4,6 +4,7 @@
 @php
     $pageData = [
         'title' => '펜션 추가',
+        'name' => '펜션 추가',
     ];
 @endphp
 

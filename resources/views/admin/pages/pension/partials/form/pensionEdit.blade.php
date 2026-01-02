@@ -1,7 +1,7 @@
 @section('beforeStyle')
     <link rel="stylesheet" href="{{ asset('assets/plugins/uppy/uppy.min.css') }}?v={{ env('SITES_ADMIN_ASSETS_VERSION') }}">
 @endsection
-<form id="frm" autocomplete="off" novalidate>
+<form id="frm-pension-edit" autocomplete="off" novalidate>
     <input type="hidden" name="pType" value="setPension">
     <input type="hidden" name="id" value="{{ $pension->id }}">
     <div class="form-check form-check-inline">
@@ -108,38 +108,17 @@
     </div>
 </form>
 @section('afterScript')
-    <script src="{{ asset('assets/plugins/validation/just-validate.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/js/address.js') }}?v={{ env('SITES_ADMIN_ASSETS_VERSION') }}"></script>
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=49f49d684621b554bb7e4382786b3e46&libraries=services"></script>
-    <script src="{{ asset('assets/plugins/uppy/uppy.min.js') }}"></script>
+    @parent
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const uppy = new Uppy.Uppy({
-                    autoProceed: false, // 파일 추가 시 자동 업로드 방지
-                    restrictions: {
-                        maxFileSize: 10000000, // 10MB 제한
-                        maxNumberOfFiles: 5, // 최대 5개 파일
-                        allowedFileTypes: ['image/*'], // 이미지 파일만 허용
-                    },
-                })
-                .use(Uppy.Dashboard, {
-                    target: '#drop-area',
-                    inline: true,
-                    showProgressDetails: true,
-                    note: '이미지 파일만 업로드 가능 (최대 10MB, 최대 5개)',
-                    height: 320,
-                    width: '100%',
-                    hideUploadButton: true, // 업로드 버튼 숨기기
-                });
-            const procAddValidator = new JustValidate('#frm', apps.plugins.JustValidate.basic());
+            const procAddValidator = new JustValidate('#frm-pension-edit', apps.plugins.JustValidate.basic());
             procAddValidator.onSuccess((e) => {
                     e.preventDefault();
 
-                    const form = document.getElementById('frm');
+                    const form = document.getElementById('frm-pension-edit');
                     const formData = new FormData(form);
 
-                    const files = uppy.getFiles();
+                    const files = uppy_pension_edit.getFiles();
                     files.forEach((file, index) => {
                         formData.append(`images[${index}]`, file.data);
                     });

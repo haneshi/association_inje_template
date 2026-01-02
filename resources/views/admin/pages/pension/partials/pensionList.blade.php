@@ -14,7 +14,7 @@
                         </div>
                     </form>
                 </div>
-                <a href="{{ route('admin.pension.write') }}" class="btn btn-sm btn-primary mb-0">
+                <a href="{{ route('admin.pension.write', request()->query()) }}" class="btn btn-sm btn-primary mb-0">
                     <x-tabler-plus />펜션 추가
                 </a>
             </div>
