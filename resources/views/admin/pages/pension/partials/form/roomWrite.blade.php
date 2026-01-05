@@ -45,8 +45,9 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="jsonData" class="form-control-label">구비시설<span class="text-danger">*</span></label>
-                <input class="form-control" type="text" id="jsonData" name="jsonData[]" required>
+                <label for="amenities" class="form-control-label">구비시설<span class="text-danger">*</span></label>
+                <input class="form-control" type="text" id="amenities" name="amenities[amenity]" required>
+                <small class="text-muted">Enter로 구분하여 입력하세요</small>
             </div>
         </div>
     </div>
@@ -89,6 +90,24 @@
     @parent
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // 펜션 객실추가 uppy
+            const uppy_room_write = new Uppy.Uppy({
+                    autoProceed: false, // 파일 추가 시 자동 업로드 방지
+                    restrictions: {
+                        maxFileSize: 10000000, // 10MB 제한
+                        maxNumberOfFiles: 5, // 최대 5개 파일
+                        allowedFileTypes: ['image/*'], // 이미지 파일만 허용
+                    },
+                })
+                .use(Uppy.Dashboard, {
+                    target: '#drop-area-room-write',
+                    inline: true,
+                    showProgressDetails: true,
+                    note: '이미지 파일만 업로드 가능 (최대 10MB, 최대 5개)',
+                    height: 320,
+                    width: '100%',
+                    hideUploadButton: true, // 업로드 버튼 숨기기
+                });
             const area1Input = document.getElementById('area1');
             const area2Input = document.getElementById('area2');
             area1Input.addEventListener('input', function() {
@@ -102,64 +121,68 @@
                 }
             });
 
-            const jsonData = document.getElementById('jsonData');
-            let tagify = new Tagify(jsonData);
+            const amenitiesInput = document.getElementById('amenities');
+            let tagify = new Tagify(amenitiesInput);
 
             const procAddValidator = new JustValidate('#frm-room-write', apps.plugins.JustValidate.basic());
             procAddValidator.onSuccess((e) => {
-                    e.preventDefault();
-                    const form = document.getElementById('frm-room-write');
-                    const formData = new FormData(form);
+                e.preventDefault();
+                const form = document.getElementById('frm-room-write');
+                const formData = new FormData(form);
 
-                    const files = uppy_room_write.getFiles();
-                    files.forEach((file, index) => {
-                        formData.append(`images[${index}]`, file.data);
-                    });
+                const files = uppy_room_write.getFiles();
+                files.forEach((file, index) => {
+                    formData.append(`images[${index}]`, file.data);
+                });
 
-                    const location = document.querySelector('input[name="location"]:checked').value;
-                    formData.append('location', location);
+                const location = document.querySelector('input[name="location"]:checked').value;
+                formData.append('location', location);
 
-                    common.ajax.postFormData('{{ route('admin.pension.data') }}', formData);
-                })
-                .addField('#name', [{
-                    rule: 'required',
-                    errorMessage: '객실명을 입력해주세요!',
-                }, ])
-                .addField('#person_min', [{
-                        rule: 'number',
-                        errorMessage: '숫자만 입력 가능합니다!'
-                    },
-                    {
-                        rule: 'required',
-                        errorMessage: "기준인원을 입력해주세요!"
-                    }
-                ])
-                .addField('#person_max', [{
-                        rule: 'number',
-                        errorMessage: '숫자만 입력 가능합니다!'
-                    },
-                    {
-                        rule: 'required',
-                        errorMessage: "최대인원을 입력해주세요!"
-                    }
-                ])
-                .addField('#area1', [{
-                        rule: 'number',
-                        errorMessage: '숫자만 입력 가능합니다!'
-                    },
-                    {
-                        rule: 'required',
-                        errorMessage: "면적을 입력해주세요!"
-                    }
-                ])
-                .addField('#shape', [{
-                    rule: 'required',
-                    errorMessage: '객실유형을 입력해주세요!'
-                }, ])
-                .addField('#jsonData', [{
-                    rule: 'required',
-                    errorMessage: '구비시설을 입력해주세요!'
-                }, ]);
+                const amenitiesData = tagify.value;
+                const amenities = amenitiesData.map(tag => tag.value);
+                formData.set('amenities', JSON.stringify(amenities));
+
+                common.ajax.postFormData('{{ route('admin.pension.data') }}', formData);
+            })
+            // .addField('#name', [{
+            //     rule: 'required',
+            //     errorMessage: '객실명을 입력해주세요!',
+            // }, ])
+            // .addField('#person_min', [{
+            //         rule: 'number',
+            //         errorMessage: '숫자만 입력 가능합니다!'
+            //     },
+            //     {
+            //         rule: 'required',
+            //         errorMessage: "기준인원을 입력해주세요!"
+            //     }
+            // ])
+            // .addField('#person_max', [{
+            //         rule: 'number',
+            //         errorMessage: '숫자만 입력 가능합니다!'
+            //     },
+            //     {
+            //         rule: 'required',
+            //         errorMessage: "최대인원을 입력해주세요!"
+            //     }
+            // ])
+            // .addField('#area1', [{
+            //         rule: 'number',
+            //         errorMessage: '숫자만 입력 가능합니다!'
+            //     },
+            //     {
+            //         rule: 'required',
+            //         errorMessage: "면적을 입력해주세요!"
+            //     }
+            // ])
+            // .addField('#shape', [{
+            //     rule: 'required',
+            //     errorMessage: '객실유형을 입력해주세요!'
+            // }, ])
+            // .addField('#jsonData', [{
+            //     rule: 'required',
+            //     errorMessage: '구비시설을 입력해주세요!'
+            // }, ]);
         });
     </script>
 @endsection

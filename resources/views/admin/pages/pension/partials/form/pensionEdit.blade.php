@@ -111,6 +111,24 @@
     @parent
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // 펜션 기본정보 uppy
+            const uppy_pension_edit = new Uppy.Uppy({
+                    autoProceed: false, // 파일 추가 시 자동 업로드 방지
+                    restrictions: {
+                        maxFileSize: 10000000, // 10MB 제한
+                        maxNumberOfFiles: 5, // 최대 5개 파일
+                        allowedFileTypes: ['image/*'], // 이미지 파일만 허용
+                    },
+                })
+                .use(Uppy.Dashboard, {
+                    target: '#drop-area',
+                    inline: true,
+                    showProgressDetails: true,
+                    note: '이미지 파일만 업로드 가능 (최대 10MB, 최대 5개)',
+                    height: 320,
+                    width: '100%',
+                    hideUploadButton: true, // 업로드 버튼 숨기기
+                });
             const procAddValidator = new JustValidate('#frm-pension-edit', apps.plugins.JustValidate.basic());
             procAddValidator.onSuccess((e) => {
                     e.preventDefault();

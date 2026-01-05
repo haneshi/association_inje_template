@@ -23,7 +23,7 @@ return new class extends Migration
 
             $table->string('shape')->comment('객실 유형');
 
-            $table->json('jsonData')->comment('구비시설');
+            $table->json('amenities')->comment('구비시설(jsonData 형식)'); // json 데이터 형식
 
             $table->string('etc')->comment('특이사항');
             $table->integer('person_min')->comment('기준인원');
