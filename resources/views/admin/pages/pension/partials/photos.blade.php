@@ -20,39 +20,3 @@
         </div>
     @endforeach
 </div>
-
-@section('afterScript')
-    @parent
-    <script src="{{ asset('assets/plugins/SortableJS/sortable.min.js') }}"></script>
-    <script>
-        const sortTable = document.getElementById('sortTable');
-        new Sortable(sortTable, {
-            animation: 150,
-            handle: '.handle',
-            filter: '.filtered',
-            onEnd: function(e) {
-                const seqIdxes = [];
-                const childNodes = document.querySelectorAll(`#sortTable > div`);
-                childNodes.forEach(item => {
-                    if (item.getAttribute('data-id')) {
-                        seqIdxes.push(item.getAttribute('data-id'));
-                    }
-                });
-                if (seqIdxes.length > 1) {
-                    common.ajax.postJson('{{ route('admin.pension.data') }}', {
-                        pType: 'setImagesSeq',
-                        seqIdxes
-                    });
-                }
-            }
-        });
-        const deleteImage = (id) => {
-            if (confirm('선택된 이미지를 삭제하시겠습니까?')) {
-                common.ajax.postJson('{{ route('admin.pension.data') }}', {
-                    pType: 'deleteImages',
-                    id
-                });
-            }
-        };
-    </script>
-@endsection

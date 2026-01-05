@@ -31,7 +31,7 @@
 
                         @foreach ($rooms as $room)
                             <li class="nav-item">
-                                <a href="#tab-pension{{ $room->id }}" class="nav-link" data-bs-toggle="tab">
+                                <a href="#tab-room-{{ $room->id }}" class="nav-link" data-bs-toggle="tab">
                                     <x-tabler-building style="width: 0.8rem;" />
                                     <span>{{ $room->name }}</span>
                                 </a>
@@ -51,6 +51,13 @@
                         <div class="tab-pane active show" id="tab-pension">
                             @include('admin.pages.pension.partials.form.pensionEdit')
                         </div>
+
+                        @foreach ($rooms as $room)
+                            <div class="tab-pane" id="tab-room-{{ $room->id }}">
+                                @include('admin.pages.pension.partials.form.roomEdit', $room)
+                            </div>
+                        @endforeach
+
                         <div class="tab-pane" id="tab-write-room">
                             @include('admin.pages.pension.partials.form.roomWrite')
                         </div>
@@ -69,4 +76,36 @@
     <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=49f49d684621b554bb7e4382786b3e46&libraries=services"></script>
     <script src="{{ asset('assets/plugins/uppy/uppy.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/tagify/tagify.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/SortableJS/sortable.min.js') }}"></script>
+    <script>
+        const sortTable = document.getElementById('sortTable');
+        new Sortable(sortTable, {
+            animation: 150,
+            handle: '.handle',
+            filter: '.filtered',
+            onEnd: function(e) {
+                const seqIdxes = [];
+                const childNodes = document.querySelectorAll(`#sortTable > div`);
+                childNodes.forEach(item => {
+                    if (item.getAttribute('data-id')) {
+                        seqIdxes.push(item.getAttribute('data-id'));
+                    }
+                });
+                if (seqIdxes.length > 1) {
+                    common.ajax.postJson('{{ route('admin.pension.data') }}', {
+                        pType: 'setImagesSeq',
+                        seqIdxes
+                    });
+                }
+            }
+        });
+        const deleteImage = (id) => {
+            if (confirm('선택된 이미지를 삭제하시겠습니까?')) {
+                common.ajax.postJson('{{ route('admin.pension.data') }}', {
+                    pType: 'deleteImages',
+                    id
+                });
+            }
+        };
+    </script>
 @endsection

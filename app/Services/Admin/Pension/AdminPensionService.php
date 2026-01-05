@@ -258,7 +258,7 @@ class AdminPensionService extends AdminService
                 foreach ($images as $image) {
                     $tempImage = ImageUploadHelper::upload(
                         $image,
-                        'pension/' . $pension->id . '/room',
+                        'pension/' . $pension->id . '/room/' . $room->id,
                         ['width' => 1920],
                         $imagesCount
                     );
