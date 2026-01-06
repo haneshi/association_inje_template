@@ -41,7 +41,7 @@
             <div class="form-group">
                 <label for="tel" class="form-control-label">펜션 전화번호<span class="text-danger">*</span></label>
                 <input class="form-control" type="text" id="tel" name="tel" value="{{ $pension->tel }}"
-                    required>
+                    oninput="autoHyphen(this)" required>
             </div>
         </div>
         <div class="col-md-3">
@@ -106,7 +106,13 @@
 </form>
 @section('afterScript')
     @parent
+    <script src="{{ asset('assets/plugins/cleave/cleave.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/cleave/cleave-phone.kr.js') }}" \></script>
     <script>
+        var cleave = new Cleave('#tel', {
+            phone: true,
+            phoneRegionCode: 'KR'
+        });
         document.addEventListener('DOMContentLoaded', function() {
             // 펜션 기본정보 uppy
             const uppy_pension_edit = new Uppy.Uppy({
@@ -126,6 +132,7 @@
                     width: '100%',
                     hideUploadButton: true, // 업로드 버튼 숨기기
                 });
+
             const procAddValidator = new JustValidate('#frm-pension-edit', apps.plugins.JustValidate.basic());
             procAddValidator.onSuccess((e) => {
                     e.preventDefault();

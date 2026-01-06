@@ -69,7 +69,7 @@
 @endsection
 
 {{-- @section('beforeScript')@endsection --}}
-@section('afterScript')
+@section('beforeScript')
     <script src="{{ asset('assets/plugins/validation/just-validate.min.js') }}"></script>
     <script src="{{ asset('assets/admin/js/address.js') }}?v={{ env('SITES_ADMIN_ASSETS_VERSION') }}"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>

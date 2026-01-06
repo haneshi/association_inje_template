@@ -7,5 +7,6 @@ return [
         'location3' => '지역3',
         'location4' => '지역4',
         'location5' => '지역5',
+        'location6' => '지역6',
     ],
 ];
