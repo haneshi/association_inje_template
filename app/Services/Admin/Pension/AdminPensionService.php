@@ -276,8 +276,7 @@ class AdminPensionService extends AdminService
                 'delayMask' => true,
                 'title' => '객실 등록 성공',
                 'event' => [
-                    'type' => 'replace',
-                    'url' => route('admin.pension'),
+                    'type' => 'reload',
                 ],
             ]);
         } catch (\Exception $e) {

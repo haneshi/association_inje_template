@@ -10,7 +10,9 @@
 
 @section('title', "| {$pageData['title']}")
 
-{{-- @section('beforeStyle')@endsection --}}
+@section('beforeStyle')
+    <link rel="stylesheet" href="{{ asset('assets/plugins/uppy/uppy.min.css') }}?v={{ env('SITES_ADMIN_ASSETS_VERSION') }}">
+@endsection
 
 {{-- @section('afterStyle')@endsection --}}
 

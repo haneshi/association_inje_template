@@ -1,4 +1,4 @@
-<div id="sortTable" class="row g-2 mb-3">
+<div class="row g-2 mb-3 sorTable">
     @foreach ($files as $index => $image)
         <div data-id="{{ $image->id }}" class="col-6 col-md-4">
             <div class="position-relative">
@@ -20,3 +20,35 @@
         </div>
     @endforeach
 </div>
+@section('afterScript')
+    @parent
+    <script>
+        document.querySelectorAll('.sorTable').forEach(element => {
+            new Sortable(element, {
+                animation: 150,
+                handle: '.handle',
+                onEnd: function(e) {
+                    const seqIdxes = [];
+                    element.querySelectorAll('[data-id]').forEach(item => {
+                        seqIdxes.push(item.getAttribute('data-id'));
+                    });
+
+                    if (seqIdxes.length > 1) {
+                        common.ajax.postJson('{{ route('admin.pension.data') }}', {
+                            pType: 'setImagesSeq',
+                            seqIdxes
+                        });
+                    }
+                }
+            });
+        });
+        window.deleteImage = function(id) {
+            if (confirm('선택된 이미지를 삭제하시겠습니까?')) {
+                common.ajax.postJson('{{ route('admin.pension.data') }}', {
+                    pType: 'deleteImages',
+                    id
+                });
+            }
+        };
+    </script>
+@endsection
