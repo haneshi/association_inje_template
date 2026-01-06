@@ -21,18 +21,18 @@
         <div class="flex-fill">
             <div class="card">
                 <div class="card-header pb-0">
-                    <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist" style="font-size: 0.8rem;">
+                    <ul class="nav nav-tabs card-header-tabs" id="sortTable" data-bs-toggle="tabs" role="tablist"
+                        style="font-size: 0.8rem;">
                         <li class="nav-item">
                             <a href="#tab-pension" class="nav-link active" data-bs-toggle="tab">
                                 <x-tabler-building style="width: 0.8rem;" />
                                 <span>기본정보</span>
                             </a>
                         </li>
-
                         @foreach ($rooms as $room)
-                            <li class="nav-item">
+                            <li class="nav-item" data-id="{{ $room->id }}">
                                 <a href="#tab-room-{{ $room->id }}" class="nav-link" data-bs-toggle="tab">
-                                    <x-tabler-building style="width: 0.8rem;" />
+                                    <x-tabler-arrows-move class="handle" style="width: 0.8rem;" />
                                     <span>{{ $room->name }}</span>
                                 </a>
                             </li>
@@ -77,4 +77,28 @@
     <script src="{{ asset('assets/plugins/uppy/uppy.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/tagify/tagify.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/SortableJS/sortable.min.js') }}"></script>
+
+    <script>
+        const sortTable = document.getElementById('sortTable');
+        new Sortable(sortTable, {
+            animation: 150,
+            handle: '.handle',
+            filter: '.filtered',
+            onEnd: function(e) {
+                const seqIdxes = [];
+                const childNodes = document.querySelectorAll(`#sortTable > li`);
+                childNodes.forEach(item => {
+                    if (item.getAttribute('data-id')) {
+                        seqIdxes.push(item.getAttribute('data-id'));
+                    }
+                });
+                if (seqIdxes.length > 1) {
+                    common.ajax.postJson('{{ route('admin.pension.data') }}', {
+                        pType: 'setRoomSeq',
+                        seqIdxes
+                    });
+                }
+            }
+        });
+    </script>
 @endsection

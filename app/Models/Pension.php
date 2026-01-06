@@ -29,6 +29,7 @@ class Pension extends Model
 
     public function rooms(): HasMany
     {
-        return $this->hasMany(PensionRoom::class, 'pension_id', 'id');
+        return $this->hasMany(PensionRoom::class, 'pension_id', 'id')
+            ->orderBy('seq', 'asc');
     }
 }

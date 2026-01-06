@@ -390,4 +390,27 @@ class AdminPensionService extends AdminService
             ],
         ]);
     }
+
+    public function setRoomSeq(Request $req): array
+    {
+        $data = $req->except(['pType']);
+
+        $count = 1;
+        foreach ($data['seqIdxes'] as $id) {
+            PensionRoom::where('id', $id)->update([
+                'seq' => $count
+            ]);
+            $count++;
+        }
+
+        return $this->returnJsonData('toastAlert', [
+            'type' => 'success',
+            'delay' => 1000,
+            'delayMask' => true,
+            'title' => '순서가 변경 되었습니다.',
+            'event' => [
+                'type' => 'reload',
+            ],
+        ]);
+    }
 }
