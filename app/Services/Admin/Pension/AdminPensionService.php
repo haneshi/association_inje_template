@@ -30,6 +30,11 @@ class AdminPensionService extends AdminService
     {
         return Pension::find($pansion_id);
     }
+
+    public function getRoom($room_id): Model
+    {
+        return PensionRoom::find($room_id);
+    }
     public function getPaginate(array $arrData, int $paginate = 5)
     {
         $st = $arrData['paramData']['st'];
@@ -101,7 +106,7 @@ class AdminPensionService extends AdminService
     public function setPension(Request $req)
     {
         $data = $req->except(['pType', 'images']);
-        $pension = $this->getData(['id' => $data['id']]);
+        $pension = $this->getPension($data['id']);
         $data['is_active'] = $req->boolean('is_active');
         if (!$pension) {
             return $this->returnJsonData('modalAlert', [
@@ -181,61 +186,6 @@ class AdminPensionService extends AdminService
         }
     }
 
-    public function setImagesSeq(Request $req)
-    {
-        $data = $req->except(['pType']);
-        $count = 1;
-        foreach ($data['seqIdxes'] as $id) {
-            DataFile::where('id', $id)->update([
-                'seq' => $count,
-            ]);
-            $count++;
-        }
-        return $this->returnJsonData('toastAlert', [
-            'type' => 'success',
-            'delay' => 1000,
-            'delayMask' => true,
-            'title' => '순서가 변경 되었습니다.',
-            'event' => [
-                'type' => 'reload',
-            ],
-        ]);
-    }
-
-    public function deleteImages(Request $req)
-    {
-        $data = $req->only('id');
-        $dataFile = DataFile::find($data['id']);
-        if (!$dataFile) {
-            return $this->returnJsonData('modalAlert', [
-                'type' => 'error',
-                'title' => '이미지 삭제에러',
-                'content' => '이미 삭제된 이미지 입니다.',
-                'event' => [
-                    'type' => 'reload',
-                ]
-            ]);
-        }
-
-        $origin = $dataFile->getOriginal();
-        if ($dataFile->delete()) {
-            $this->deleteStorageData($origin['file_path']);
-            return $this->returnJsonData('toastAlert', [
-                'type' => 'success',
-                'delay' => 1000,
-                'delayMask' => true,
-                'title' => '이미지 삭제 성공',
-                'event' => [
-                    'type' => 'reload',
-                ],
-            ]);
-        }
-        return $this->returnJsonData('modalAlert', [
-            'type' => 'error',
-            'title' => "이미지 삭제 에러",
-            'content' => "이미지 삭제 되지 않았습니다."
-        ]);
-    }
 
     ###################### 객실 서비스 로직
     public function addRoom(Request $req)
@@ -281,7 +231,7 @@ class AdminPensionService extends AdminService
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
-            $roomLog = new Pension();
+            $roomLog = new PensionRoom();
             $roomLog->setHistoryLog([
                 'type' => 'error',
                 'description' => "객실 추가 에러",
@@ -295,5 +245,149 @@ class AdminPensionService extends AdminService
                 'content' => "객실이 추가 되지 않았습니다. <br> 관리자에게 문의해 주세요!",
             ]);
         }
+    }
+
+    public function setRoom(Request $req)
+    { ## 수정로직 됨 UI UX 사용유무에 따른 객실 nav 위치나 순서 바꿀 수 있는지
+        $pension = $this->getPension($req->pension_id);
+        $room = $this->getRoom($req->id);
+        if (!$pension || !$room) {
+            return $this->returnJsonData('modalAlert', [
+                'type' => 'error',
+                'title' => '펜션 수정 에러',
+                'content' => '존재하지 않은 펜션 또는 객실입니다.',
+                'event' => [
+                    'type' => 'replace',
+                    'url' => route('admin.pension'),
+                ]
+            ]);
+        }
+        DB::beginTransaction();
+        try {
+            $data = $req->except(['pType', 'images', 'pension_id']);
+            $data['amenities'] = json_decode($req->input('amenities'), true);
+            $data['is_active'] = $req->boolean('is_active');
+            $origin = $pension->getOriginal();
+
+            // 사용유무 처리 로직
+            if ($origin['is_active'] == 1 && $data['is_active'] == 0) {
+                $data['seq'] = 9999;
+            } elseif ($origin['is_active'] == 0 && $data['is_active'] == 1) {
+                $data['seq'] = PensionRoom::active()->count() + 1;
+            }
+
+            if ($req->hasFile('images')) {
+                $images = $req->file('images');
+                $imagesCount = count($images);
+                foreach ($images as $image) {
+                    $tempImage = ImageUploadHelper::upload(
+                        $image,
+                        'pension/' . $pension->id . '/room/' . $room->id,
+                        ['width' => 1920],
+                        $imagesCount
+                    );
+                    if ($tempImage) {
+                        if ($room->files()->create($tempImage)) {
+                            $imagesCount++;
+                        }
+                    }
+                }
+            }
+
+            if ($room->update($data)) {
+                DB::commit();
+                return $this->returnJsonData('toastAlert', [
+                    'type' => 'success',
+                    'delay' => 1000,
+                    'delayMask' => true,
+                    'content' => '객실 정보가 수정되었습니다.',
+                    'event' => [
+                        'type' => 'reload',
+                    ]
+                ]);
+            }
+
+            return $this->returnJsonData('modalAlert', [
+                'type' => 'error',
+                'title' => "객실 수정 에러",
+                'content' => "객실 정보가 수정 되지 않았습니다.",
+                'event' => [
+                    'type' => 'reload',
+                ],
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $roomLog = new PensionRoom();
+            $roomLog->setHistoryLog([
+                'type' => 'error',
+                'description' => "객실 수정 에러",
+                'queryData' => $this->json_encode($data),
+                'rowData' => JsonEncode(['error' => $e->getMessage()]),
+            ], $this->user());
+
+            return $this->returnJsonData('modalAlert', [
+                'type' => 'error',
+                'title' => "객실 수정 에러",
+                'content' => "객실이 수정 되지 않았습니다. <br> 관리자에게 문의해 주세요!",
+            ]);
+        }
+    }
+
+    ##################### system logic
+    public function deleteImages(Request $req)
+    {
+        $data = $req->only('id');
+        $dataFile = DataFile::find($data['id']);
+        if (!$dataFile) {
+            return $this->returnJsonData('modalAlert', [
+                'type' => 'error',
+                'title' => '이미지 삭제에러',
+                'content' => '이미 삭제된 이미지 입니다.',
+                'event' => [
+                    'type' => 'reload',
+                ]
+            ]);
+        }
+
+        $origin = $dataFile->getOriginal();
+        if ($dataFile->delete()) {
+            $this->deleteStorageData($origin['file_path']);
+            return $this->returnJsonData('toastAlert', [
+                'type' => 'success',
+                'delay' => 1000,
+                'delayMask' => true,
+                'title' => '이미지 삭제 성공',
+                'event' => [
+                    'type' => 'reload',
+                ],
+            ]);
+        }
+        return $this->returnJsonData('modalAlert', [
+            'type' => 'error',
+            'title' => "이미지 삭제 에러",
+            'content' => "이미지 삭제 되지 않았습니다."
+        ]);
+    }
+
+
+    public function setImagesSeq(Request $req)
+    {
+        $data = $req->except(['pType']);
+        $count = 1;
+        foreach ($data['seqIdxes'] as $id) {
+            DataFile::where('id', $id)->update([
+                'seq' => $count,
+            ]);
+            $count++;
+        }
+        return $this->returnJsonData('toastAlert', [
+            'type' => 'success',
+            'delay' => 1000,
+            'delayMask' => true,
+            'title' => '순서가 변경 되었습니다.',
+            'event' => [
+                'type' => 'reload',
+            ],
+        ]);
     }
 }

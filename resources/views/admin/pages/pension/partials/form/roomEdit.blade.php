@@ -2,8 +2,9 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/tagify/tagify.css') }}?v={{ env('SITES_ADMIN_ASSETS_VERSION') }}">
 @endsection
 <form id="frm-room-edit{{ $room->id }}" autocomplete="off" novalidate>
-    <input type="hidden" name="pType" value="addRoom">
+    <input type="hidden" name="pType" value="setRoom">
     <input type="hidden" name="pension_id" value="{{ $pension->id }}">
+    <input type="hidden" name="id" value="{{ $room->id }}">
     <div class="row">
         <div class="col-md-3">
             <div class="form-group">

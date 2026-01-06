@@ -4724,7 +4724,7 @@ fieldset:disabled .btn {
   --bs-nav-link-padding-x: 1rem;
   --bs-nav-link-padding-y: 0.5rem;
   --bs-nav-link-font-weight: ;
-  --bs-nav-link-color: var(--bs-link-color);
+  /* --bs-nav-link-color: var(--bs-link-color); */
   --bs-nav-link-hover-color: var(--bs-link-hover-color);
   --bs-nav-link-disabled-color: #52525b;
   display: flex;
@@ -4773,7 +4773,7 @@ fieldset:disabled .btn {
   --bs-nav-tabs-border-color: #d4d4d8;
   --bs-nav-tabs-border-radius: 0.5rem;
   --bs-nav-tabs-link-hover-border-color: #e3e3e7 #e3e3e7 #d4d4d8;
-  --bs-nav-tabs-link-active-color: #3f3f46;
+  --bs-nav-tabs-link-active-color: rgb(249, 115, 22);
   --bs-nav-tabs-link-active-bg: #fff;
   --bs-nav-tabs-link-active-border-color: #d4d4d8 #d4d4d8 #fff;
   border-bottom: var(--bs-nav-tabs-border-width) solid var(--bs-nav-tabs-border-color);

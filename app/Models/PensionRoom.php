@@ -2,15 +2,18 @@
 
 namespace App\Models;
 
+use App\Traits\GlobalScopes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PensionRoom extends Model
 {
-    use HasFactory;
+    use HasFactory, GlobalScopes;
 
+    protected $table = "pension_rooms";
     protected $guarded = [];
 
     protected $casts = [
@@ -29,5 +32,10 @@ class PensionRoom extends Model
     public function files(): MorphMany
     {
         return $this->morphMany(DataFile::class, 'fileable')->orderBy('seq');
+    }
+
+    public function scopeActive($query): Builder
+    {
+        return $query->where('is_active', 1);
     }
 }
