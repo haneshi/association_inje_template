@@ -23,7 +23,7 @@
                     <table class="table align-items-center mb-0">
                         <thead>
                             <tr>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">순서
+                                <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">순서
                                 </th>
                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">관광지
                                 </th>
@@ -43,7 +43,7 @@
                                 <tr @if ($data->is_active) data-id="{{ $data->id }}" @endif>
                                     @if ($data->is_active)
                                         <td class="align-middle text-center text-sm">
-                                            <x-tabler-arrows-move style="width: 0.9rem; cursor: pointer;"
+                                            <x-tabler-arrows-move style="width: 1rem; cursor: pointer;"
                                                 class="handle" />
                                         </td>
                                     @else
