@@ -26,6 +26,11 @@ class AdminTravelController extends Controller
         return view('admin.pages.travel.index', $this->data);
     }
 
+    public function write(Request $req) {
+        $this->data['paramData'] = $this->getParamData($req);
+        return view('admin.pages.travel.write', $this->data);
+    }
+
     public function data(Request $req)
     {
         if ($req->ajax() && $req->isMethod('post')) {
