@@ -20,7 +20,8 @@ class AdminTravelController extends Controller
     public function index(Request $req) {
         $this->data['paramData'] = $this->getParamData($req);
         $service = new AdminTravelService();
-        $this->data['dataList'] = $service->getPaginate($this->data);
+        $this->data['dataList'] = $service->getList($this->data);
+        dump($this->data);
         return view('admin.pages.travel.index', $this->data);
     }
 }

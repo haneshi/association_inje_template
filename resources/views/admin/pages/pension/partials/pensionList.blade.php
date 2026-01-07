@@ -75,7 +75,7 @@
                             @empty
                                 <tr>
                                     <td class="text-center text-w p-5" colspan="20">
-                                        @if ($paramData['st'] !== '')
+                                        @if (isset($paramData['st']))
                                             검색하신 [ {{ $paramData['st'] }} ]
                                         @else
                                             등록된

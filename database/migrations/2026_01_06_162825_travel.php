@@ -25,11 +25,11 @@ return new class extends Migration
             $table->string('address_detail', 50)->nullable()->comment('도로명 상세주소');
             $table->string('address_jibun', 50)->nullable()->comment('지번주소');
 
-            $table->text('content')->comment('내용');
-
             $table->string('lat', 50)->nullable()->comment('위도');
             $table->string('lng', 50)->nullable()->comment('경도');
 
+            $table->text('content')->comment('내용');
+            
             $table->boolean('is_active')->default(true)->comment('사용유무');
             $table->timestamps();
 

@@ -70,8 +70,8 @@ Route::middleware('auth.check')
             ->prefix('travel')
             ->group(function () {
                 Route::get('/', 'index')->name('admin.travel');
-                // Route::get('/write', 'write')->name('admin.pension.write');
-                // Route::get('/{id}', 'view')->name('admin.pension.view');
-                // Route::post('/data', 'data')->name('admin.pension.data');
+                Route::get('/write', 'write')->name('admin.travel.write');
+                Route::get('/{id}', 'view')->name('admin.travel.view');
+                Route::post('/data', 'data')->name('admin.travel.data');
             });
     });
