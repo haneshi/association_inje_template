@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('seq')->default(9999)->comment('순서');
 
             $table->string('name', 100)->comment('특산품 이름');
-            $table->text('content')->comment('내용');
+            $table->text('content')->nullable()->comment('내용');
 
             $table->boolean('is_active')->default(true)->comment('사용유무');
             $table->timestamps();

@@ -119,7 +119,7 @@
                 })
                 .addField('#name', [{
                     rule: 'required',
-                    errorMessage: '펜션명을 입력해주세요.',
+                    errorMessage: '관광지 이름을 입력해주세요.',
                 }, ])
                 .addField('#name_eng', [{
                     rule: 'customRegexp',

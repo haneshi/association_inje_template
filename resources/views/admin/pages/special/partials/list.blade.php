@@ -4,7 +4,7 @@
             <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                 <h6>{{ $pageData['name'] }}</h6>
                 <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-                    <form class="col-auto auto" action="{{ route('admin.travel') }}">
+                    <form class="col-auto auto" action="{{ route('admin.special') }}">
                         <div class="input-icon">
                             <div class="input-group">
                                 <span class="input-group-text text-body"><x-tabler-search /></span>
@@ -46,7 +46,7 @@
                                     @endif
                                     <td>
                                         <a
-                                            href="{{ route('admin.travel.view', ['id' => $data->id] + request()->query()) }}">
+                                            href="{{ route('admin.special.view', ['id' => $data->id] + request()->query()) }}">
                                             <div class="d-flex px-2 py-1">
                                                 <img src="{{ $data->preview ?? asset('assets/img/bg/no-image.jpg') }}"
                                                     class="avatar avatar-lg me-3" style="object-fit: cover;">
@@ -66,9 +66,9 @@
                                             class="text-secondary text-xs font-weight-bold">{{ $data->created_at->format('y.m.d') }}</span>
                                     </td>
                                     <td class="align-middle">
-                                        <a href="{{ route('admin.travel.view', ['id' => $data->id] + request()->query()) }}"
+                                        <a href="{{ route('admin.special.view', ['id' => $data->id] + request()->query()) }}"
                                             class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
-                                            data-original-title="Edit travel">
+                                            data-original-title="Edit special">
                                             자세히 보기
                                         </a>
                                     </td>
