@@ -3,6 +3,7 @@
 namespace App\Services\Admin\Setting;
 
 use App\Models\Admin;
+use App\Models\Board;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Services\Admin\AdminService;
@@ -14,6 +15,12 @@ use Illuminate\Support\Facades\Hash;
  */
 class AdminSettingService extends AdminService
 {
+
+    /**
+     * ============================================
+     *  (Admin Management)
+     * ============================================
+     */
     public function getAdminList()
     {
         $query = Admin::orderByRaw('is_active desc, id asc');
@@ -170,5 +177,18 @@ class AdminSettingService extends AdminService
             'title' => "관리자 비밀번호 수정 에러",
             'content' => "관리자 비밀번호가 수정 되지 않았습니다."
         ]);
+    }
+
+    /**
+     * ============================================
+     *  (Board Management)
+     * ============================================
+     */
+
+    public function getBoardList()
+    {
+        $query = Board::orderByRaw('is_active desc');
+
+        return $query->get();
     }
 }

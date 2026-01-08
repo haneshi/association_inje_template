@@ -53,7 +53,7 @@
                 </a>
             </li>
 
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.special*') ? 'active' : '' }}" data-bs-toggle="collapse"
                     href="#specialCollapse" role="button" aria-expanded="false" aria-controls="specialCollapse">
                     <div
@@ -78,7 +78,7 @@
                         </li>
                     </ul>
                 </div>
-            </li>
+            </li> --}}
 
             {{-- 최고관리자 이상 접근가능 --}}
             @if (config('auth.isSuper'))
@@ -94,8 +94,8 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('admin.setting.manager*') ? 'active' : '' }}"
-                        href="{{ route('admin.setting.manager') }}">
+                    <a class="nav-link {{ request()->routeIs('admin.setting.board*') ? 'active' : '' }}"
+                        href="{{ route('admin.setting.board') }}">
                         <div
                             class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                             <x-tabler-clipboard-list />

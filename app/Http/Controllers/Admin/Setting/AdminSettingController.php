@@ -10,17 +10,23 @@ use App\Services\Admin\Setting\AdminSettingService;
 class AdminSettingController extends AdminController
 {
     //
+
+    /**
+     * ============================================
+     *  (Admin Account Management)
+     * ============================================
+     */
     public function adminIndex()
     {
         $dataService = new AdminSettingService();
         $this->data['admins'] = $dataService->getAdminList();
-        return view('admin.pages.manager.index', $this->data);
+        return view('admin.pages.settings.manager.index', $this->data);
     }
 
     public function adminWrite()
     {
         $this->authorize('create', Admin::class);
-        return view('admin.pages.manager.write');
+        return view('admin.pages.settings.manager.write');
     }
 
     public function adminView(int $id)
@@ -35,7 +41,19 @@ class AdminSettingController extends AdminController
             RedirectRoute('admin.setting.manager');
         }
 
-        return view('admin.pages.manager.view', $this->data);
+        return view('admin.pages.settings.manager.view', $this->data);
+    }
+
+    /**
+     * ============================================
+     *  (Board Management)
+     * ============================================
+     */
+
+    public function boardIndex() {
+        $service = new AdminSettingService();
+        $this->data['dataList'] = $service->getBoardList();
+        return view('admin.pages.settings.board.index', $this->data);
     }
 
     public function data(Request $req)

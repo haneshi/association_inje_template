@@ -52,10 +52,15 @@ Route::middleware('auth.check')
         Route::controller(AdminSettingController::class)
             ->prefix('setting')
             ->group(function () {
-                Route::get('/', 'adminIndex')->name('admin.setting.manager');
+                ### 관리자 세팅
+                Route::get('/manager', 'adminIndex')->name('admin.setting.manager');
                 Route::get('/adminWrite', 'adminWrite')->name('admin.setting.manager.write');
                 Route::get('/manager/{id}', 'adminView')->name('admin.setting.manager.view');
 
+                ### 게시판 세팅
+                Route::get('/board', 'boardIndex')->name('admin.setting.board');
+                Route::get('/boardWrite', 'boardWrite')->name('admin.setting.board.write');
+                Route::get('/board/{id}', 'boardView')->name('admin.setting.board.view');
 
                 Route::post('/data', 'data')->name('admin.setting.data');
             });
