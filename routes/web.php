@@ -50,11 +50,13 @@ Route::middleware('auth.check')
             });
         ############# Setting
         Route::controller(AdminSettingController::class)
-            ->prefix('member')
+            ->prefix('setting')
             ->group(function () {
-                Route::get('/', 'index')->name('admin.setting.member');
-                Route::get('/write', 'write')->name('admin.setting.member.write');
-                Route::get('/{id}', 'view')->name('admin.setting.member.view');
+                Route::get('/', 'adminIndex')->name('admin.setting.manager');
+                Route::get('/adminWrite', 'adminWrite')->name('admin.setting.manager.write');
+                Route::get('/manager/{id}', 'adminView')->name('admin.setting.manager.view');
+
+
                 Route::post('/data', 'data')->name('admin.setting.data');
             });
         ############# Pension

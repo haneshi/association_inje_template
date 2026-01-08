@@ -58,9 +58,9 @@
                     href="#specialCollapse" role="button" aria-expanded="false" aria-controls="specialCollapse">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <x-tabler-apple />
+                        <x-tabler-book />
                     </div>
-                    <span class="nav-link-text ms-1">커뮤니티 관리</span>
+                    <span class="nav-link-text ms-1">커뮤니티</span>
                     <i class="fas fa-chevron-down ms-auto" style="font-size: 0.75rem; transition: transform 0.3s;"></i>
                 </a>
 
@@ -68,17 +68,12 @@
                     <ul class="list-unstyled ms-3">
                         <li class="nav-item">
                             <a class="nav-link" href="#" style="padding-left: 1.5rem;">
-                                특산물 목록
+                                공지사항
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#" style="padding-left: 1.5rem;">
-                                특산물 등록
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" style="padding-left: 1.5rem;">
-                                카테고리 관리
+                                또 다른 게시판
                             </a>
                         </li>
                     </ul>
@@ -88,13 +83,24 @@
             {{-- 최고관리자 이상 접근가능 --}}
             @if (config('auth.isSuper'))
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('admin.setting.member*') ? 'active' : '' }}"
-                        href="{{ route('admin.setting.member') }}">
+                    <a class="nav-link {{ request()->routeIs('admin.setting.manager*') ? 'active' : '' }}"
+                        href="{{ route('admin.setting.manager') }}">
                         <div
                             class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                             <x-tabler-users />
                         </div>
                         <span class="nav-link-text ms-1">관리자 관리</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('admin.setting.manager*') ? 'active' : '' }}"
+                        href="{{ route('admin.setting.manager') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <x-tabler-clipboard-list />
+                        </div>
+                        <span class="nav-link-text ms-1">커뮤니티 관리</span>
                     </a>
                 </li>
             @endif

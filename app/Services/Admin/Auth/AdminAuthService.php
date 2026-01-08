@@ -31,9 +31,9 @@ class AdminAuthService extends AdminService
                         'queryData' => $this->json_encode($queryData),
                     ]);
 
-                    $req->has("remember")
-                        ? Cookie::queue('admin_remember', $row->user_id, 60 * 24 * 30)
-                        : Cookie::queue('admin_remember', $row->user_id, -1);
+                    $req->has("remanager")
+                        ? Cookie::queue('admin_remanager', $row->user_id, 60 * 24 * 30)
+                        : Cookie::queue('admin_remanager', $row->user_id, -1);
 
                     $intendeUrl = session()->pull('url.intended', route('admin.home'));
                     return $this->returnJsonData('replace', $intendeUrl);

@@ -4,7 +4,7 @@
             <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                 <h6>관리자 리스트</h6>
                 @can('create', App\Models\Admin::class)
-                    <a href="{{ route('admin.setting.member.write') }}" class="btn btn-sm btn-primary mb-0">
+                    <a href="{{ route('admin.setting.manager.write') }}" class="btn btn-sm btn-primary mb-0">
                         <x-tabler-plus />관리자 추가
                     </a>
                 @endcan
@@ -32,7 +32,7 @@
                             @forelse ($admins as $admin)
                                 <tr>
                                     <td>
-                                        <a href="{{ route('admin.setting.member.view', $admin->id) }}">
+                                        <a href="{{ route('admin.setting.manager.view', $admin->id) }}">
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">{{ $admin->user_id }}</h6>
@@ -53,7 +53,7 @@
                                             class="text-secondary text-xs font-weight-bold">{{ $admin->created_at->format('y.m.d') }}</span>
                                     </td>
                                     <td class="align-middle">
-                                        <a href="{{ route('admin.setting.member.view', $admin->id) }}"
+                                        <a href="{{ route('admin.setting.manager.view', $admin->id) }}"
                                             class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
                                             data-original-title="Edit user">
                                             자세히 보기

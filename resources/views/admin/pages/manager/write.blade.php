@@ -3,8 +3,7 @@
 
 @php
     $pageData = [
-        'title' => '관리자 홈',
-        'name' => '관리자 리스트',
+        'title' => '관리자 추가',
     ];
 @endphp
 
@@ -15,7 +14,7 @@
 {{-- @section('afterStyle')@endsection --}}
 
 @section('mainContent')
-    @include('admin.pages.member.partials.list')
+    @include('admin.pages.manager.partials.form.write')
 @endsection
 
 {{-- @section('beforeScript')@endsection --}}

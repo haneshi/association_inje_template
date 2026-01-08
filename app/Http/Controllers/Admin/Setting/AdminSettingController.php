@@ -10,32 +10,32 @@ use App\Services\Admin\Setting\AdminSettingService;
 class AdminSettingController extends AdminController
 {
     //
-    public function index()
+    public function adminIndex()
     {
         $dataService = new AdminSettingService();
-        $this->data['admins'] = $dataService->getList();
-        return view('admin.pages.member.index', $this->data);
+        $this->data['admins'] = $dataService->getAdminList();
+        return view('admin.pages.manager.index', $this->data);
     }
 
-    public function write()
+    public function adminWrite()
     {
         $this->authorize('create', Admin::class);
-        return view('admin.pages.member.write');
+        return view('admin.pages.manager.write');
     }
 
-    public function view(int $id)
+    public function adminView(int $id)
     {
         $this->data['view'] = Admin::getData(['id' => $id]);
 
         if (!$this->data['view']) {
-            RedirectRoute('admin.setting.member');
+            RedirectRoute('admin.setting.manager');
         }
 
         if ($this->data['view']->id === config('auth.admin')->id || $this->data['view']->auth === 'D') {
-            RedirectRoute('admin.setting.member');
+            RedirectRoute('admin.setting.manager');
         }
 
-        return view('admin.pages.member.view', $this->data);
+        return view('admin.pages.manager.view', $this->data);
     }
 
     public function data(Request $req)

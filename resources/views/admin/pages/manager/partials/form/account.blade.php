@@ -24,7 +24,7 @@
         </div>
         <hr class="horizontal dark">
         <div class="d-flex justify-content-end gap-2">
-            <a href="{{ route('admin.setting.member') }}" class="btn btn-outline-secondary">목록으로</a>
+            <a href="{{ route('admin.setting.manager') }}" class="btn btn-outline-secondary">목록으로</a>
             <button id="submitBtn" type="submit" class="btn btn bg-gradient-warning">관리자 정보 수정</button>
         </div>
     </div>

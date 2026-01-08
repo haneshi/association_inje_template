@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Hash;
  */
 class AdminSettingService extends AdminService
 {
-    public function getList()
+    public function getAdminList()
     {
         $query = Admin::orderByRaw('is_active desc, id asc');
         if (!config('auth.isDevel')) {
@@ -58,7 +58,7 @@ class AdminSettingService extends AdminService
                         'content' => "관리자가 추가 되었습니다.",
                         'event' => [
                             'type' => 'replace',
-                            'url' => route('admin.setting.member'),
+                            'url' => route('admin.setting.manager'),
                         ],
                     ]);
                 }
