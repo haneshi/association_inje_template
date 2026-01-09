@@ -53,32 +53,33 @@
                 </a>
             </li>
 
-            {{-- <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('admin.special*') ? 'active' : '' }}" data-bs-toggle="collapse"
-                    href="#specialCollapse" role="button" aria-expanded="false" aria-controls="specialCollapse">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <x-tabler-book />
-                    </div>
-                    <span class="nav-link-text ms-1">커뮤니티</span>
-                    <i class="fas fa-chevron-down ms-auto" style="font-size: 0.75rem; transition: transform 0.3s;"></i>
-                </a>
+            @if(isset($boards) && $boards->isNotEmpty())
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('admin.board*') ? 'active' : '' }}" data-bs-toggle="collapse"
+                        href="#communityCollapse" role="button" aria-expanded="false" aria-controls="communityCollapse">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <x-tabler-book />
+                        </div>
+                        <span class="nav-link-text ms-1">커뮤니티</span>
+                        <i class="fas fa-chevron-down ms-auto" style="font-size: 0.75rem; transition: transform 0.3s;"></i>
+                    </a>
 
-                <div class="collapse" id="specialCollapse">
-                    <ul class="list-unstyled ms-3">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" style="padding-left: 1.5rem;">
-                                공지사항
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" style="padding-left: 1.5rem;">
-                                또 다른 게시판
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </li> --}}
+                    <div class="collapse" id="communityCollapse">
+                        <ul class="list-unstyled ms-3">
+                            @foreach($boards as $board)
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.board.' . $board->board_name . '*') ? 'active' : '' }}"
+                                        {{-- href="{{ route('admin.board.list', ['board' => $board->board_name]) }}" --}}
+                                        style="padding-left: 1.5rem;">
+                                        {{ $board->title ?? $board->board_name }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </li>
+            @endif
 
             {{-- 최고관리자 이상 접근가능 --}}
             @if (config('auth.isSuper'))
