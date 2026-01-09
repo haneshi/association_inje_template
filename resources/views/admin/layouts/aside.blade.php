@@ -53,6 +53,7 @@
                 </a>
             </li>
 
+            {{-- claude code 작동법 추후 변경예정 --}}
             @if(isset($boards) && $boards->isNotEmpty())
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('admin.board*') ? 'active' : '' }}" data-bs-toggle="collapse"
@@ -70,9 +71,9 @@
                             @foreach($boards as $board)
                                 <li class="nav-item">
                                     <a class="nav-link {{ request()->routeIs('admin.board.' . $board->board_name . '*') ? 'active' : '' }}"
-                                        {{-- href="{{ route('admin.board.list', ['board' => $board->board_name]) }}" --}}
+                                        href="{{ route('admin.board', $board->board_name) }}"
                                         style="padding-left: 1.5rem;">
-                                        {{ $board->title ?? $board->board_name }}
+                                        {{ $board->board_name }}
                                     </a>
                                 </li>
                             @endforeach

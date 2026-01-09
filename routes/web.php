@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Auth\AdminAuthController;
+use App\Http\Controllers\Admin\Board\AdminBoardPostController;
 use App\Http\Controllers\Admin\Home\AdminHomeController;
 use App\Http\Controllers\Admin\Travel\AdminTravelController;
 use App\Http\Controllers\Admin\Pension\AdminPensionController;
@@ -91,5 +92,12 @@ Route::middleware('auth.check')
                 Route::get('/write', 'write')->name('admin.special.write');
                 Route::get('/{id}', 'view')->name('admin.special.view');
                 Route::post('/data', 'data')->name('admin.special.data');
+            });
+
+        ############# board
+        Route::controller(AdminBoardPostController::class)
+            ->prefix('board/{board_name}')
+            ->group(function () {
+                Route::get('/', 'index')->name('admin.board');
             });
     });
