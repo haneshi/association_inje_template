@@ -4,6 +4,7 @@
 @php
     $pageData = [
         'title' => '관리자 추가',
+        'name' => '관리자 추가',
     ];
 @endphp
 
@@ -14,7 +15,7 @@
 {{-- @section('afterStyle')@endsection --}}
 
 @section('mainContent')
-    @include('admin.pages.manager.partials.form.write')
+    @include('admin.pages.settings.manager.partials.form.write')
 @endsection
 
 {{-- @section('beforeScript')@endsection --}}

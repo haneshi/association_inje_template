@@ -191,4 +191,61 @@ class AdminSettingService extends AdminService
 
         return $query->get();
     }
+
+    public function addBoard(Request $req)
+    {
+        $data = $req->except(['pType']);
+        $board = Board::getData(['board_name' => $data['board_name']]);
+        if ($board) {
+            return $this->returnJsonData('modalAlert', [
+                'type' => 'error',
+                'title' => '게시판 추가 에러',
+                'content' => '이미 사용중인 게시판 아이디 입니다.',
+            ]);
+        }
+        $data['is_fixed'] = $req->boolean('is_fixed');
+        $data['is_secret'] = $req->boolean('is_secret');
+        $data['is_comment'] = $req->boolean('is_comment');
+        $data['is_period'] = $req->boolean('is_period');
+        $data['is_active'] = $req->boolean('is_active');
+        if ($data['is_active'] === true) {
+            $data['seq'] = Board::where('is_active', 1)->count() + 1;
+        }
+        try {
+            $row = Board::create($data);
+            if ($row) {
+                $row->setHistoryLog([
+                    'type' => 'create',
+                    'description' => "게시판 추가",
+                    'queryData' => $this->json_encode($data),
+                    'rowData' => $this->json_encode($row)
+                ], $this->user());
+
+                return $this->returnJsonData('toastAlert', [
+                    'type' => 'success',
+                    'delay' => 1000,
+                    'delayMask' => true,
+                    'content' => "게시판이 추가 되었습니다.",
+                    'event' => [
+                        'type' => 'replace',
+                        'url' => route('admin.setting.board'),
+                    ],
+                ]);
+            }
+        } catch (\Exception $e) {
+            $boardLog = new Board();
+            $boardLog->setHistoryLog([
+                'type' => 'error',
+                'description' => "게시판 추가 에러",
+                'queryData' => $this->json_encode($data),
+                'rowData' => JsonEncode(['error' => $e->getMessage()]),
+            ], $this->user());
+
+            return $this->returnJsonData('modalAlert', [
+                'type' => 'error',
+                'title' => "게시판 추가 에러",
+                'content' => "게시판이 추가 되지 않았습니다. <br> 관리자에게 문의해 주세요!",
+            ]);
+        }
+    }
 }

@@ -3,7 +3,7 @@
         <div class="card mb-4">
             <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                 <h6>게시판 리스트</h6>
-                <a href="{{ route('admin.setting.manager.write') }}" class="btn btn-sm btn-primary mb-0">
+                <a href="{{ route('admin.setting.board.write') }}" class="btn btn-sm btn-primary mb-0">
                     <x-tabler-plus />게시판 추가
                 </a>
             </div>
@@ -12,11 +12,12 @@
                     <table class="table align-items-center mb-0">
                         <thead>
                             <tr>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                    ID
+                                <th
+                                    class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
+                                    순서
                                 </th>
                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                    이름</th>
+                                    게시판 이름</th>
                                 <th
                                     class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                     사용유무</th>
@@ -26,40 +27,38 @@
                                 <th class="text-secondary opacity-7"></th>
                             </tr>
                         </thead>
-                        <tbody>
-                            {{-- @forelse ($admins as $admin)
-                                <tr>
+                        <tbody id="sortTable">
+                            @forelse ($dataList as $data)
+                                <tr @if ($data->is_active) data-id="{{ $data->id }}" @endif>
+                                    @if ($data->is_active)
+                                        <td class="align-middle text-center text-sm">
+                                            <x-tabler-arrows-move style="width: 1rem; cursor: pointer;"
+                                                class="handle" />
+                                        </td>
+                                    @else
+                                        <td></td>
+                                    @endif
                                     <td>
-                                        <a href="{{ route('admin.setting.manager.view', $admin->id) }}">
-                                            <div class="d-flex px-2 py-1">
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">{{ $admin->user_id }}</h6>
-                                                    <p class="text-xs text-secondary mb-0">{{ $admin->email }}</p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <p class="text-xs font-weight-bold mb-0">{{ $admin->name }}</p>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $data->board_name }}</p>
                                     </td>
                                     <td class="align-middle text-center text-sm">
                                         <span
-                                            class="badge badge-sm bg-gradient-{{ $admin->is_active ? 'success' : 'danger' }}">{{ $admin->is_active ? '사용중' : '미사용' }}</span>
+                                            class="badge badge-sm bg-gradient-{{ $data->is_active ? 'success' : 'danger' }}">{{ $data->is_active ? '사용중' : '미사용' }}</span>
                                     </td>
                                     <td class="align-middle text-center">
                                         <span
-                                            class="text-secondary text-xs font-weight-bold">{{ $admin->created_at->format('y.m.d') }}</span>
+                                            class="text-secondary text-xs font-weight-bold">{{ $data->created_at->format('y.m.d') }}</span>
                                     </td>
                                     <td class="align-middle">
-                                        <a href="{{ route('admin.setting.manager.view', $admin->id) }}"
+                                        <a href="{{ route('admin.setting.board.view', $data->id) }}"
                                             class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
                                             data-original-title="Edit user">
                                             자세히 보기
                                         </a>
                                     </td>
-                                </tr> --}}
-                            {{-- @empty
-                            @endforelse --}}
+                                </tr>
+                            @empty
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -67,3 +66,29 @@
         </div>
     </div>
 </div>
+@section('afterScript')
+    <script src="{{ asset('assets/plugins/SortableJS/sortable.min.js') }}"></script>
+    <script>
+        const sortTable = document.getElementById('sortTable');
+        new Sortable(sortTable, {
+            animation: 150,
+            handle: '.handle',
+            filter: '.filtered',
+            onEnd: function(e) {
+                const seqIdxes = [];
+                const childNodes = document.querySelectorAll(`#sortTable > tr`);
+                childNodes.forEach(item => {
+                    if (item.getAttribute('data-id')) {
+                        seqIdxes.push(item.getAttribute('data-id'));
+                    }
+                });
+                if (seqIdxes.length > 1) {
+                    common.ajax.postJson('{{ route('admin.travel.data') }}', {
+                        pType: 'setSeq',
+                        seqIdxes
+                    });
+                }
+            }
+        });
+    </script>
+@endsection

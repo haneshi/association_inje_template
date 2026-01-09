@@ -9,4 +9,13 @@ return [
         'location5' => '지역5',
         'location6' => '지역6',
     ],
+
+    'board' => [
+        'type' => [
+            'list' => '리스트형',
+            'gallery' => '갤러리형',
+            'faq' => 'FAQ',
+            'qna' => 'QNA',
+        ],
+    ],
 ];

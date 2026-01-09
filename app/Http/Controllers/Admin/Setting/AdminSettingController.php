@@ -50,10 +50,16 @@ class AdminSettingController extends AdminController
      * ============================================
      */
 
-    public function boardIndex() {
+    public function boardIndex()
+    {
         $service = new AdminSettingService();
         $this->data['dataList'] = $service->getBoardList();
         return view('admin.pages.settings.board.index', $this->data);
+    }
+
+    public function boardWrite()
+    {
+        return view('admin.pages.settings.board.write');
     }
 
     public function data(Request $req)
@@ -65,6 +71,8 @@ class AdminSettingController extends AdminController
                 "addAdmin" => $dataService->addAdmin($req),
                 "setAdmin" => $dataService->setAdmin($req),
                 "setPassword" => $dataService->setPassword($req),
+
+                'addBoard' => $dataService->addBoard($req),
             };
         }
     }
