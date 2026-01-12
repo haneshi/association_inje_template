@@ -143,8 +143,12 @@
                         formData.append(`images[${index}]`, file.data);
                     });
 
-                    const location = document.querySelector('input[name="location"]:checked').value;
-                    formData.append('location', location);
+                    const location = document.querySelector('input[name="location"]:checked');
+                    if (!location) {
+                        alert('지역을 선택해주세요!');
+                        return;
+                    }
+                    formData.append('location', location.value);
 
                     common.ajax.postFormData('{{ route('admin.pension.data') }}', formData);
                 })

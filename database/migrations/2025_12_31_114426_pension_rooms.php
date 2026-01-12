@@ -25,9 +25,15 @@ return new class extends Migration
 
             $table->json('amenities')->comment('구비시설'); // array 데이터 형식
 
-            $table->string('etc')->nullable()->comment('특이사항');
             $table->integer('person_min')->comment('기준인원');
             $table->integer('person_max')->comment('최대인원');
+
+            $table->string('info', 1000)->nullable()->comment('객실 설명');
+            $table->string('detail', 2000)->nullable()->comment('객실 상세 설명');
+            $table->string('special', 2000)->nullable()->comment('객실 추가 설명');
+
+            $table->json('priceData')->nullable()->comment('가격 데이터');
+
             $table->boolean('is_active')->default(true)->comment('사용유무');
             $table->timestamps();
 

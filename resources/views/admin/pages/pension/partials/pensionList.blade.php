@@ -23,6 +23,7 @@
                     <table class="table align-items-center mb-0">
                         <thead>
                             <tr>
+                                <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">No</th>
                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">펜션명
                                 </th>
                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
@@ -37,8 +38,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($dataList as $data)
+                            @forelse ($dataList as $index => $data)
                                 <tr>
+                                    <td>
+                                        <p class="text-center mb-0">{{ $data->is_active ? $data->seq : ''}}</p>
+                                    </td>
                                     <td>
                                         <a href="{{ route('admin.pension.view', ['id' => $data->id] + request()->query()) }}">
                                             <div class="d-flex px-2 py-1">

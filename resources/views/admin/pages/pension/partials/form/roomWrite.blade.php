@@ -13,6 +13,19 @@
             </div>
         </div>
         <div class="col-md-3"></div>
+        <div class="row">
+            <div class="mb-3">
+                <div class="d-flex align-items-center">
+                    <p class="mb-0">객실 전경</p>
+                </div>
+                <div class="mb-1 p-2 bg-gradient-warning text-white opacity-8">
+                    <small>최대 5개 이미지 업로드 가능 (최대 10MB, 이미지 파일만 허용)</small><br>
+                    <small>5개 이상일때는 우선 5개 업로드 후 추가해 주세요!</small>
+                </div>
+                <div id="drop-area-room-write">
+                </div>
+            </div>
+        </div>
         <div class="col-md-3">
             <div class="form-group">
                 <label for="person_min" class="form-control-label">기준인원<span class="text-danger">*</span></label>
@@ -25,6 +38,13 @@
                 <label for="person_max" class="form-control-label">최대인원<span class="text-danger">*</span></label>
                 <input class="form-control" type="text" id="person_max" name="person_max" placeholder="최대인원을 입력해주세요!"
                     required>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="shape" class="form-control-label">객실 유형<span class="text-danger">*</span></label>
+                <input class="form-control" type="text" id="shape" name="shape"
+                    placeholder="예시) 온돌방1, 화장실1, 테라스. . ." required>
             </div>
         </div>
         <div class="col-md-6">
@@ -42,36 +62,134 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="shape" class="form-control-label">객실 유형<span class="text-danger">*</span></label>
-                <input class="form-control" type="text" id="shape" name="shape"
-                    placeholder="예시) 온돌방1, 화장실1, 테라스. . ." required>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
                 <label for="amenities" class="form-control-label">구비시설<span class="text-danger">*</span></label>
-                <input class="form-control" type="text" placeholder="예시) TV, WI-FI, 전자렌지, 스타일러" id="amenities" name="amenities" required>
+                <input class="form-control" type="text" placeholder="예시) TV, WI-FI, 전자렌지, 스타일러" id="amenities"
+                    name="amenities" required>
                 <small class="text-muted">Enter로 구분하여 입력해주세요!!</small>
             </div>
         </div>
     </div>
-    <div class="col-md-12">
-        <div class="form-group">
-            <label for="etc" class="form-control-label">특이사항</label>
-            <input class="form-control" type="text" id="etc" name="etc">
+
+    <div class="row bg-primary-lt">
+        <div class="col-md-4 mb-3">
+            <label class="form-label" for="priceData-off-day">비수기 주중</label>
+            <div class="input-group">
+                <input type="text" class="form-control text-end priceOnly" id="priceData-off-day"
+                    name="priceData[off][day]" placeholder="0">
+                <div class="input-group-append">
+                    <span class="input-group-text bg-primary text-primary-fg">원</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label" for="priceData-off-fri">비수기 금요일</label>
+            <div class="input-group">
+                <input type="text" class="form-control text-end priceOnly" id="priceData-off-fri"
+                    name="priceData[off][fri]" placeholder="0">
+                <div class="input-group-append">
+                    <span class="input-group-text bg-primary text-primary-fg">원</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label" for="priceData-off-holiday">비수기 주말/공휴일</label>
+            <div class="input-group">
+                <input type="text" class="form-control text-end priceOnly" id="priceData-off-holiday"
+                    name="priceData[off][holiday]" placeholder="0">
+                <div class="input-group-append">
+                    <span class="input-group-text bg-primary text-primary-fg">원</span>
+                </div>
+            </div>
         </div>
     </div>
+
+    <div class="row bg-orange-lt">
+        <div class="col-md-4 mb-3">
+            <label class="form-label" for="priceData-semi-day">준성수기 주중</label>
+            <div class="input-group">
+                <input type="text" class="form-control text-end priceOnly" id="priceData-semi-day"
+                    name="priceData[semi][day]" placeholder="0">
+                <div class="input-group-append">
+                    <span class="input-group-text bg-primary text-primary-fg">원</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label" for="priceData-semi-fri">준성수기 금요일</label>
+            <div class="input-group">
+                <input type="text" class="form-control text-end priceOnly" id="priceData-semi-fri"
+                    name="priceData[semi][fri]" placeholder="0">
+                <div class="input-group-append">
+                    <span class="input-group-text bg-primary text-primary-fg">원</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label" for="priceData-semi-holiday">준성수기 주말/공휴일</label>
+            <div class="input-group">
+                <input type="text" class="form-control text-end priceOnly" id="priceData-semi-holiday"
+                    name="priceData[semi][holiday]" placeholder="0">
+                <div class="input-group-append">
+                    <span class="input-group-text bg-primary text-primary-fg">원</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row bg-red-lt">
+        <div class="col-md-4 mb-3">
+            <label class="form-label" for="priceData-peak-day">성수기 주중</label>
+            <div class="input-group">
+                <input type="text" class="form-control text-end priceOnly" id="priceData-peak-day"
+                    name="priceData[peak][day]" placeholder="0">
+                <div class="input-group-append">
+                    <span class="input-group-text bg-primary text-primary-fg">원</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label" for="priceData-peak-fri">성수기 금요일</label>
+            <div class="input-group">
+                <input type="text" class="form-control text-end priceOnly" id="priceData-peak-fri"
+                    name="priceData[peak][fri]" placeholder="0">
+                <div class="input-group-append">
+                    <span class="input-group-text bg-primary text-primary-fg">원</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label" for="priceData-peak-holiday">성수기 주말/공휴일</label>
+            <div class="input-group">
+                <input type="text" class="form-control text-end priceOnly" id="priceData-peak-holiday"
+                    name="priceData[peak][holiday]" placeholder="0">
+                <div class="input-group-append">
+                    <span class="input-group-text bg-primary text-primary-fg">원</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
-        <div class="mb-3">
-            <div class="d-flex align-items-center">
-                <p class="mb-0">객실 전경</p>
-            </div>
-            <div class="mb-1 p-2 bg-gradient-warning text-white opacity-8">
-                <small>최대 5개 이미지 업로드 가능 (최대 10MB, 이미지 파일만 허용)</small><br>
-                <small>5개 이상일때는 우선 5개 업로드 후 추가해 주세요!</small>
-            </div>
-            <div id="drop-area-room-write">
-            </div>
+        <div class="col-md-12 mb-3">
+            <label class="form-label" for="info">미리보기 설명</label>
+            <textarea id="info" name="info" class="form-control saveFocusOut" rows="7" data-idx=""
+                data-name="info"></textarea>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 mb-3">
+            <label class="form-label" for="detail">상세설명</label>
+            <textarea id="detail" name="detail" class="form-control saveFocusOut" rows="20" data-idx=""
+                data-name="detail"></textarea>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 mb-3">
+            <label class="form-label" for="special">추가설명</label>
+            <textarea id="special" name="special" class="form-control saveFocusOut" rows="10" data-idx=""
+                data-name="special"></textarea>
         </div>
     </div>
     <div class="col-md-12">
@@ -130,60 +248,60 @@
 
             const procAddValidator = new JustValidate('#frm-room-write', apps.plugins.JustValidate.basic());
             procAddValidator.onSuccess((e) => {
-                e.preventDefault();
-                const form = document.getElementById('frm-room-write');
-                const formData = new FormData(form);
+                    e.preventDefault();
+                    const form = document.getElementById('frm-room-write');
+                    const formData = new FormData(form);
 
-                const files = uppy_room_write.getFiles();
-                files.forEach((file, index) => {
-                    formData.append(`images[${index}]`, file.data);
-                });
+                    const files = uppy_room_write.getFiles();
+                    files.forEach((file, index) => {
+                        formData.append(`images[${index}]`, file.data);
+                    });
 
-                const amenitiesData = tagify.value;
-                const amenities = amenitiesData.map(tag => tag.value);
-                formData.set('amenities', JSON.stringify(amenities));
+                    const amenitiesData = tagify.value;
+                    const amenities = amenitiesData.map(tag => tag.value);
+                    formData.set('amenities', JSON.stringify(amenities));
 
-                common.ajax.postFormData('{{ route('admin.pension.data') }}', formData);
-            })
-            .addField('#name', [{
-                rule: 'required',
-                errorMessage: '객실명을 입력해주세요!',
-            }, ])
-            .addField('#person_min', [{
-                    rule: 'number',
-                    errorMessage: '숫자만 입력 가능합니다!'
-                },
-                {
+                    common.ajax.postFormData('{{ route('admin.pension.data') }}', formData);
+                })
+                .addField('#name', [{
                     rule: 'required',
-                    errorMessage: "기준인원을 입력해주세요!"
-                }
-            ])
-            .addField('#person_max', [{
-                    rule: 'number',
-                    errorMessage: '숫자만 입력 가능합니다!'
-                },
-                {
+                    errorMessage: '객실명을 입력해주세요!',
+                }, ])
+                .addField('#person_min', [{
+                        rule: 'number',
+                        errorMessage: '숫자만 입력 가능합니다!'
+                    },
+                    {
+                        rule: 'required',
+                        errorMessage: "기준인원을 입력해주세요!"
+                    }
+                ])
+                .addField('#person_max', [{
+                        rule: 'number',
+                        errorMessage: '숫자만 입력 가능합니다!'
+                    },
+                    {
+                        rule: 'required',
+                        errorMessage: "최대인원을 입력해주세요!"
+                    }
+                ])
+                .addField('#area1', [{
+                        rule: 'number',
+                        errorMessage: '숫자만 입력 가능합니다!'
+                    },
+                    {
+                        rule: 'required',
+                        errorMessage: "면적을 입력해주세요!"
+                    }
+                ])
+                .addField('#shape', [{
                     rule: 'required',
-                    errorMessage: "최대인원을 입력해주세요!"
-                }
-            ])
-            .addField('#area1', [{
-                    rule: 'number',
-                    errorMessage: '숫자만 입력 가능합니다!'
-                },
-                {
+                    errorMessage: '객실유형을 입력해주세요!'
+                }, ])
+                .addField('#amenities', [{
                     rule: 'required',
-                    errorMessage: "면적을 입력해주세요!"
-                }
-            ])
-            .addField('#shape', [{
-                rule: 'required',
-                errorMessage: '객실유형을 입력해주세요!'
-            }, ])
-            .addField('#amenities', [{
-                rule: 'required',
-                errorMessage: '구비시설을 입력해주세요!'
-            }, ]);
+                    errorMessage: '구비시설을 입력해주세요!'
+                }, ]);
         });
     </script>
 @endsection

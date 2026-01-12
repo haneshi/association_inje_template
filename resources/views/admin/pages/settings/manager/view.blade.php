@@ -36,10 +36,10 @@
             <div class="card-body">
                 <div class="tab-content">
                     <div class="tab-pane active show" id="tab-user">
-                        @include('admin.pages.manager.partials.form.account')
+                        @include('admin.pages.settings.manager.partials.form.account')
                     </div>
                     <div class="tab-pane" id="tab-password">
-                        @include('admin.pages.manager.partials.form.password')
+                        @include('admin.pages.settings.manager.partials.form.password')
                     </div>
                 </div>
             </div>
