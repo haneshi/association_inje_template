@@ -202,10 +202,9 @@ class AdminPensionService extends AdminService
                     'width' => 1024
                 ]);
                 if ($imageData) {
+                    $oldImagePath = $origin['image'];
                     $pension->image = $imageData['file_path'];
-                    if ($pension->save()) {
-                        $this->deleteStorageData($origin['image']);
-                    }
+                    $pension->save();
                 }
             }
 
@@ -219,6 +218,9 @@ class AdminPensionService extends AdminService
             $this->setPensionSeq($pension, $data);
             if ($pension->update($data)) {
                 DB::commit();
+                if ($oldImagePath && $req->hasFile('image')) {
+                    $this->deleteStorageData($oldImagePath);
+                }
                 return $this->returnJsonData('toastAlert', [
                     'type' => 'success',
                     'delay' => 1000,

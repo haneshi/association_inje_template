@@ -11,9 +11,9 @@
         @endforeach
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-3">
         <img class="img-fluid" src="{{ $pension->preview ?? '' }}" alt="">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <label class="form-label" for="image">대표이미지</label>
             <input type="file" id="image" name="image" class="form-control" placeholder="대표이미지를 입력해주세요!"
                 value="">
