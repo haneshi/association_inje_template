@@ -70,100 +70,124 @@
         </div>
     </div>
 
-    <div class="row bg-primary-lt">
-        <div class="col-md-4 mb-3">
-            <label class="form-label" for="priceData-off-day">비수기 주중</label>
-            <div class="input-group">
-                <input type="text" class="form-control text-end priceOnly" id="priceData-off-day"
-                    name="priceData[off][day]" placeholder="0">
-                <div class="input-group-append">
-                    <span class="input-group-text bg-primary text-primary-fg">원</span>
-                </div>
-            </div>
+    <div class="row">
+        <div class="col-12 mb-3">
+            <h6 class="mb-3">객실 가격 설정</h6>
         </div>
-        <div class="col-md-4 mb-3">
-            <label class="form-label" for="priceData-off-fri">비수기 금요일</label>
-            <div class="input-group">
-                <input type="text" class="form-control text-end priceOnly" id="priceData-off-fri"
-                    name="priceData[off][fri]" placeholder="0">
-                <div class="input-group-append">
-                    <span class="input-group-text bg-primary text-primary-fg">원</span>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <label class="form-label" for="priceData-off-holiday">비수기 주말/공휴일</label>
-            <div class="input-group">
-                <input type="text" class="form-control text-end priceOnly" id="priceData-off-holiday"
-                    name="priceData[off][holiday]" placeholder="0">
-                <div class="input-group-append">
-                    <span class="input-group-text bg-primary text-primary-fg">원</span>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="row bg-orange-lt">
-        <div class="col-md-4 mb-3">
-            <label class="form-label" for="priceData-semi-day">준성수기 주중</label>
-            <div class="input-group">
-                <input type="text" class="form-control text-end priceOnly" id="priceData-semi-day"
-                    name="priceData[semi][day]" placeholder="0">
-                <div class="input-group-append">
-                    <span class="input-group-text bg-primary text-primary-fg">원</span>
+        <!-- 비수기 -->
+        <div class="col-12 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-gradient-success">
+                    <h6 class="text-white mb-0">
+                        <i class="fas fa-snowflake me-2"></i>비수기
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label" for="priceData-off-day">주중</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control text-end priceOnly" id="priceData-off-day"
+                                    name="priceData[off][day]" placeholder="0">
+                                <span class="input-group-text">원</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label" for="priceData-off-fri">금요일</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control text-end priceOnly" id="priceData-off-fri"
+                                    name="priceData[off][fri]" placeholder="0">
+                                <span class="input-group-text">원</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label" for="priceData-off-holiday">주말/공휴일</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control text-end priceOnly" id="priceData-off-holiday"
+                                    name="priceData[off][holiday]" placeholder="0">
+                                <span class="input-group-text">원</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 mb-3">
-            <label class="form-label" for="priceData-semi-fri">준성수기 금요일</label>
-            <div class="input-group">
-                <input type="text" class="form-control text-end priceOnly" id="priceData-semi-fri"
-                    name="priceData[semi][fri]" placeholder="0">
-                <div class="input-group-append">
-                    <span class="input-group-text bg-primary text-primary-fg">원</span>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <label class="form-label" for="priceData-semi-holiday">준성수기 주말/공휴일</label>
-            <div class="input-group">
-                <input type="text" class="form-control text-end priceOnly" id="priceData-semi-holiday"
-                    name="priceData[semi][holiday]" placeholder="0">
-                <div class="input-group-append">
-                    <span class="input-group-text bg-primary text-primary-fg">원</span>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="row bg-red-lt">
-        <div class="col-md-4 mb-3">
-            <label class="form-label" for="priceData-peak-day">성수기 주중</label>
-            <div class="input-group">
-                <input type="text" class="form-control text-end priceOnly" id="priceData-peak-day"
-                    name="priceData[peak][day]" placeholder="0">
-                <div class="input-group-append">
-                    <span class="input-group-text bg-primary text-primary-fg">원</span>
+        <!-- 준성수기 -->
+        <div class="col-12 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-gradient-info">
+                    <h6 class="text-white mb-0">
+                        <i class="fas fa-sun me-2"></i>준성수기
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label" for="priceData-semi-day">주중</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control text-end priceOnly" id="priceData-semi-day"
+                                    name="priceData[semi][day]" placeholder="0">
+                                <span class="input-group-text">원</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label" for="priceData-semi-fri">금요일</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control text-end priceOnly" id="priceData-semi-fri"
+                                    name="priceData[semi][fri]" placeholder="0">
+                                <span class="input-group-text">원</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label" for="priceData-semi-holiday">주말/공휴일</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control text-end priceOnly" id="priceData-semi-holiday"
+                                    name="priceData[semi][holiday]" placeholder="0">
+                                <span class="input-group-text">원</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 mb-3">
-            <label class="form-label" for="priceData-peak-fri">성수기 금요일</label>
-            <div class="input-group">
-                <input type="text" class="form-control text-end priceOnly" id="priceData-peak-fri"
-                    name="priceData[peak][fri]" placeholder="0">
-                <div class="input-group-append">
-                    <span class="input-group-text bg-primary text-primary-fg">원</span>
+
+        <!-- 성수기 -->
+        <div class="col-12 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-gradient-primary">
+                    <h6 class="text-white mb-0">
+                        <i class="fas fa-fire me-2"></i>성수기
+                    </h6>
                 </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <label class="form-label" for="priceData-peak-holiday">성수기 주말/공휴일</label>
-            <div class="input-group">
-                <input type="text" class="form-control text-end priceOnly" id="priceData-peak-holiday"
-                    name="priceData[peak][holiday]" placeholder="0">
-                <div class="input-group-append">
-                    <span class="input-group-text bg-primary text-primary-fg">원</span>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label" for="priceData-peak-day">주중</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control text-end priceOnly" id="priceData-peak-day"
+                                    name="priceData[peak][day]" placeholder="0">
+                                <span class="input-group-text">원</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label" for="priceData-peak-fri">금요일</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control text-end priceOnly" id="priceData-peak-fri"
+                                    name="priceData[peak][fri]" placeholder="0">
+                                <span class="input-group-text">원</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label" for="priceData-peak-holiday">주말/공휴일</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control text-end priceOnly" id="priceData-peak-holiday"
+                                    name="priceData[peak][holiday]" placeholder="0">
+                                <span class="input-group-text">원</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -180,7 +204,7 @@
     <div class="row">
         <div class="col-md-12 mb-3">
             <label class="form-label" for="detail">상세설명</label>
-            <textarea id="detail" name="detail" class="form-control saveFocusOut" rows="20" data-idx=""
+            <textarea id="detail" name="detail" class="form-control saveFocusOut" rows="7" data-idx=""
                 data-name="detail"></textarea>
         </div>
     </div>
@@ -188,7 +212,7 @@
     <div class="row">
         <div class="col-md-12 mb-3">
             <label class="form-label" for="special">추가설명</label>
-            <textarea id="special" name="special" class="form-control saveFocusOut" rows="10" data-idx=""
+            <textarea id="special" name="special" class="form-control saveFocusOut" rows="7" data-idx=""
                 data-name="special"></textarea>
         </div>
     </div>
