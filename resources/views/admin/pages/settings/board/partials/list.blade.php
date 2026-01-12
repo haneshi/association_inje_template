@@ -83,7 +83,7 @@
                     }
                 });
                 if (seqIdxes.length > 1) {
-                    common.ajax.postJson('{{ route('admin.travel.data') }}', {
+                    common.ajax.postJson('{{ route('admin.setting.data') }}', {
                         pType: 'setSeq',
                         seqIdxes
                     });

@@ -15,8 +15,8 @@
 {{-- @section('afterStyle')@endsection --}}
 
 @section('mainContent')
-    {{-- @include('admin.pages. .partials.list') --}}
-    list index
+    @include('admin.pages.board.faq.partials.list')
+    faq index
 @endsection
 
 {{-- @section('beforeScript')@endsection --}}

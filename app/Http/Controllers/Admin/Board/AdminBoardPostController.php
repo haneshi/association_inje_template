@@ -15,6 +15,8 @@ class AdminBoardPostController extends AdminController
         $service = new AdminBoardPostService();
 
         $this->data['board'] = $service->getBoardData(['board_name' => $board_name]);
-        dd($this->data);
+        $type = $this->data['board']->type;
+        ## type 필요함 타입에 따라 뷰가 달라지게 마이그레이션 컬럼 타입 enum으로 바꿔야할듯
+        return view('admin.pages.board.'. $type .'.index', $this->data);
     }
 }

@@ -89,6 +89,8 @@ class AdminSettingController extends AdminController
 
                 'addBoard' => $dataService->addBoard($req),
                 'setBoard' => $dataService->setBoard($req),
+
+                'setSeq' => $dataService->setSeq($req),
             };
         }
     }
