@@ -83,7 +83,7 @@ class AdminPensionService extends AdminService
                     'width' => 1024
                 ]);
 
-                if (!$imageData || empty($imageData['file_path'])) {
+                if (!$imageData) {
                     throw new \Exception('대표 이미지 업로드에 실패했습니다.');
                 }
 
@@ -216,9 +216,12 @@ class AdminPensionService extends AdminService
             }
             // 순서 변경로직
             $this->setPensionSeq($pension, $data);
+
             if ($pension->update($data)) {
                 DB::commit();
-                if ($oldImagePath && $req->hasFile('image')) {
+                if ($req->hasFile('image')) {
+                    // 대표이미지가 바뀐다면 DB 저장이후 원본 사진 삭제
+                    // 데이터 유실방지
                     $this->deleteStorageData($oldImagePath);
                 }
                 return $this->returnJsonData('toastAlert', [
@@ -261,9 +264,27 @@ class AdminPensionService extends AdminService
     ###################### 객실 서비스 로직
     public function addRoom(Request $req)
     {
+        // 유효성 검사 규칙
+        $validator = Validator::make($req->all(), [
+            'image' => 'required|file|image|mimes:jpeg,png|max:10240', // 10MB (10240KB)
+        ], [
+            'image.required' => '대표 이미지를 입력해 주세요!',
+            'image.file' => '대표 파일을 업로드해야 합니다!',
+            'image.image' => '대표 이미지 파일만 업로드 가능합니다!',
+            'image.mimes' => '대표 jpeg, png 이미지만 등록이 가능합니다!',
+            'image.max' => '대표 이미지 크기는 10MB를 초과할 수 없습니다!',
+        ]);
+        // 유효성 검사 실패 시
+        if ($validator->fails()) {
+            return $this->returnJsonData('modalAlert', [
+                'type' => 'error',
+                'title' => '대표 이미지 추가 에러',
+                'content' => implode(', ', $validator->errors()->get('image')),
+            ]);
+        }
         DB::beginTransaction();
         try {
-            $data = $req->except(['pType', 'images']);
+            $data = $req->except(['pType', 'images', 'image']);
             $data['priceData'] = json_encode($req->input('priceData'));
             $data['amenities'] = json_decode($req->input('amenities'), true);
             $data['is_active'] = $req->boolean('is_active');
@@ -274,19 +295,36 @@ class AdminPensionService extends AdminService
                     ->count() + 1;
             }
             $room = PensionRoom::create($data);
-            if ($req->hasFile('images')) {
-                $images = $req->file('images');
-                $imagesCount = count($images);
-                foreach ($images as $image) {
-                    $tempImage = ImageUploadHelper::upload(
-                        $image,
-                        'pension/' . $pension->id . '/room/' . $room->id,
-                        ['width' => 1920],
-                        $imagesCount
-                    );
-                    if ($tempImage) {
-                        if ($room->files()->create($tempImage)) {
-                            $imagesCount++;
+
+            if ($room) {
+                // 객실 대표이미지
+                $imageData = ImageUploadHelper::upload(
+                    $req->file('image'),
+                    'pension/' . $pension->id . '/room/' . $room->id . '/thumbnail',
+                    ['width' => 1024]
+                );
+
+                if (!$imageData) {
+                    throw new \Exception('대표 이미지 업로드에 실패했습니다.');
+                }
+
+                $room->image = $imageData['file_path'];
+                $room->save();
+
+                if ($req->hasFile('images')) {
+                    $images = $req->file('images');
+                    $imagesCount = count($images);
+                    foreach ($images as $image) {
+                        $tempImage = ImageUploadHelper::upload(
+                            $image,
+                            'pension/' . $pension->id . '/room/' . $room->id,
+                            ['width' => 1920],
+                            $imagesCount
+                        );
+                        if ($tempImage) {
+                            if ($room->files()->create($tempImage)) {
+                                $imagesCount++;
+                            }
                         }
                     }
                 }
@@ -334,9 +372,30 @@ class AdminPensionService extends AdminService
                 ]
             ]);
         }
+
+        if ($req->hasFile('image')) {
+            // 유효성 검사 규칙
+            $validator = Validator::make($req->all(), [
+                'image' => 'nullable|file|image|mimes:jpeg,png|max:10240', // 10MB (10240KB)
+            ], [
+                'image.file' => '파일을 업로드해야 합니다!',
+                'image.image' => '이미지 파일만 업로드 가능합니다!',
+                'image.mimes' => 'jpeg, png 이미지만 등록이 가능합니다!',
+                'image.max' => '이미지 크기는 10MB를 초과할 수 없습니다!',
+            ]);
+
+            // 유효성 검사 실패 시
+            if ($validator->fails()) {
+                return $this->returnJsonData('modalAlert', [
+                    'type' => 'error',
+                    'title' => '객실 대표이미지 수정 에러',
+                    'content' => implode(', ', $validator->errors()->get('image')),
+                ]);
+            }
+        }
         DB::beginTransaction();
         try {
-            $data = $req->except(['pType', 'images', 'pension_id']);
+            $data = $req->except(['pType', 'images', 'pension_id', 'image']);
             $data['priceData'] = json_encode($req->input('priceData'));
             $data['amenities'] = json_decode($req->input('amenities'), true);
             $data['is_active'] = $req->boolean('is_active');
@@ -349,6 +408,21 @@ class AdminPensionService extends AdminService
                 $data['seq'] = PensionRoom::active()->count() + 1;
             }
 
+            // 객실 대표이미지
+            if ($req->hasFile('image')) {
+                $imageData = ImageUploadHelper::upload(
+                    $req->file('image'),
+                    'pension/' . $pension->id . '/room/' . $room->id . '/thumbnail',
+                    ['width' => 1024]
+                );
+                if ($imageData) {
+                    $oldImagePath = $origin['image'];
+                    $room->image = $imageData['file_path'];
+                    $room->save();
+                }
+            }
+
+            // 객실 이미지들
             if ($req->hasFile('images')) {
                 $images = $req->file('images');
                 $imagesCount = count($images);
@@ -369,6 +443,11 @@ class AdminPensionService extends AdminService
 
             if ($room->update($data)) {
                 DB::commit();
+                if ($req->hasFile('image')) {
+                    // 대표이미지가 바뀐다면 DB 저장이후 원본 사진 삭제
+                    // 데이터 유실방지
+                    $this->deleteStorageData($oldImagePath);
+                }
                 return $this->returnJsonData('toastAlert', [
                     'type' => 'success',
                     'delay' => 1000,

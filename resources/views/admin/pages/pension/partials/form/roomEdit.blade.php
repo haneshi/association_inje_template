@@ -6,6 +6,16 @@
     <input type="hidden" name="pension_id" value="{{ $pension->id }}">
     <input type="hidden" name="id" value="{{ $room->id }}">
     <div class="row">
+
+        <div class="col-md-3 mt-2">
+            <img class="img-fluid" src="{{ $room->preview ?? '' }}" alt="">
+            <div class="col-md-12">
+                <label class="form-label" for="image">대표이미지</label>
+                <input type="file" id="image" name="image" class="form-control" placeholder="대표이미지를 입력해주세요!"
+                    value="">
+            </div>
+        </div>
+        <div class="col-md-12 mb-4"></div>
         <div class="col-md-3">
             <div class="form-group">
                 <label for="name" class="form-control-label">객실명<span class="text-danger">*</span></label>
@@ -13,7 +23,7 @@
                     required>
             </div>
         </div>
-        <div class="col-md-3"></div>
+
         <div class="row">
             <div class="mb-3">
                 <div class="d-flex align-items-center">
@@ -109,7 +119,8 @@
                             <label class="form-label" for="priceData-off-holiday">주말/공휴일</label>
                             <div class="input-group">
                                 <input type="text" class="form-control text-end priceOnly"
-                                    id="priceData-off-holiday" name="priceData[off][holiday]" value="{{ $priceData['off']['holiday'] }}">
+                                    id="priceData-off-holiday" name="priceData[off][holiday]"
+                                    value="{{ $priceData['off']['holiday'] }}">
                                 <span class="input-group-text">원</span>
                             </div>
                         </div>
@@ -148,7 +159,8 @@
                             <label class="form-label" for="priceData-semi-holiday">주말/공휴일</label>
                             <div class="input-group">
                                 <input type="text" class="form-control text-end priceOnly"
-                                    id="priceData-semi-holiday" name="priceData[semi][holiday]" value="{{ $priceData['semi']['holiday'] }}">
+                                    id="priceData-semi-holiday" name="priceData[semi][holiday]"
+                                    value="{{ $priceData['semi']['holiday'] }}">
                                 <span class="input-group-text">원</span>
                             </div>
                         </div>
@@ -187,7 +199,8 @@
                             <label class="form-label" for="priceData-peak-holiday">주말/공휴일</label>
                             <div class="input-group">
                                 <input type="text" class="form-control text-end priceOnly"
-                                    id="priceData-peak-holiday" name="priceData[peak][holiday]" value="{{ $priceData['peak']['holiday'] }}">
+                                    id="priceData-peak-holiday" name="priceData[peak][holiday]"
+                                    value="{{ $priceData['peak']['holiday'] }}">
                                 <span class="input-group-text">원</span>
                             </div>
                         </div>

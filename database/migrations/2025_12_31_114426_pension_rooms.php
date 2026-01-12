@@ -18,6 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('pension_id')->comment('펜션고유값');
             $table->string('name')->comment('객실 이름');
 
+            $table->string('image')->nullable()->comment('대표 이미지');
+
             $table->integer('area1')->comment('객실 면적(㎡)');
             $table->integer('area2')->comment('객실 평');
 

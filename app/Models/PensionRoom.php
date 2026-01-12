@@ -38,4 +38,9 @@ class PensionRoom extends Model
     {
         return $query->where('is_active', 1);
     }
+
+    public function getPreviewAttribute()
+    {
+        return $this->image ? asset('data/' . $this->image) : asset('assets/img/bg/no-image.jpg');
+    }
 }

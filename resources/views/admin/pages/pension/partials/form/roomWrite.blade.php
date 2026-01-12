@@ -12,11 +12,17 @@
                     required>
             </div>
         </div>
-        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="name" class="form-control-label">객실 대표이미지<span class="text-danger">*</span></label>
+                <input type="file" id="image" name="image" class="form-control" placeholder="대표이미지를 입력해주세요!"
+                    value="">
+            </div>
+        </div>
         <div class="row">
             <div class="mb-3">
                 <div class="d-flex align-items-center">
-                    <p class="mb-0">객실 전경</p>
+                    <label class="form-control-label">객실 이미지</label>
                 </div>
                 <div class="mb-1 p-2 bg-gradient-warning text-white opacity-8">
                     <small>최대 5개 이미지 업로드 가능 (최대 10MB, 이미지 파일만 허용)</small><br>
@@ -104,8 +110,8 @@
                         <div class="col-md-4 mb-3">
                             <label class="form-label" for="priceData-off-holiday">주말/공휴일</label>
                             <div class="input-group">
-                                <input type="text" class="form-control text-end priceOnly" id="priceData-off-holiday"
-                                    name="priceData[off][holiday]" placeholder="0">
+                                <input type="text" class="form-control text-end priceOnly"
+                                    id="priceData-off-holiday" name="priceData[off][holiday]" placeholder="0">
                                 <span class="input-group-text">원</span>
                             </div>
                         </div>
@@ -143,8 +149,8 @@
                         <div class="col-md-4 mb-3">
                             <label class="form-label" for="priceData-semi-holiday">주말/공휴일</label>
                             <div class="input-group">
-                                <input type="text" class="form-control text-end priceOnly" id="priceData-semi-holiday"
-                                    name="priceData[semi][holiday]" placeholder="0">
+                                <input type="text" class="form-control text-end priceOnly"
+                                    id="priceData-semi-holiday" name="priceData[semi][holiday]" placeholder="0">
                                 <span class="input-group-text">원</span>
                             </div>
                         </div>
@@ -182,8 +188,8 @@
                         <div class="col-md-4 mb-3">
                             <label class="form-label" for="priceData-peak-holiday">주말/공휴일</label>
                             <div class="input-group">
-                                <input type="text" class="form-control text-end priceOnly" id="priceData-peak-holiday"
-                                    name="priceData[peak][holiday]" placeholder="0">
+                                <input type="text" class="form-control text-end priceOnly"
+                                    id="priceData-peak-holiday" name="priceData[peak][holiday]" placeholder="0">
                                 <span class="input-group-text">원</span>
                             </div>
                         </div>
