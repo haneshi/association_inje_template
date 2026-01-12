@@ -35,9 +35,6 @@ class Pension extends Model
 
     public function getPreviewAttribute()
     {
-        $file = $this->morphOne(DataFile::class, 'fileable')
-            ->orderBy('seq', 'asc')
-            ->first();
-        return $file ? asset('data/' . $file->file_path) : null;
+        return $this->image ? asset('data/' . $this->image) : asset('assets/img/bg/no-image.jpg');
     }
 }

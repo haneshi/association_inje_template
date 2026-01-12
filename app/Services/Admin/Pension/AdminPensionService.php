@@ -4,13 +4,14 @@ namespace App\Services\Admin\Pension;
 
 use Exception;
 use App\Models\Pension;
-use Illuminate\Http\Request;
-use App\Helper\ImageUploadHelper;
 use App\Models\DataFile;
 use App\Models\PensionRoom;
+use Illuminate\Http\Request;
+use App\Helper\ImageUploadHelper;
 use Illuminate\Support\Facades\DB;
 use App\Services\Admin\AdminService;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
 
 /**
  * Class AdminPensionService
@@ -49,27 +50,61 @@ class AdminPensionService extends AdminService
 
     public function addPension(Request $req)
     {
+        // 유효성 검사 규칙
+        $validator = Validator::make($req->all(), [
+            'image' => 'required|file|image|mimes:jpeg,png|max:10240', // 10MB (10240KB)
+        ], [
+            'image.required' => '대표 이미지를 입력해 주세요!',
+            'image.file' => '대표 파일을 업로드해야 합니다!',
+            'image.image' => '대표 이미지 파일만 업로드 가능합니다!',
+            'image.mimes' => '대표 jpeg, png 이미지만 등록이 가능합니다!',
+            'image.max' => '대표 이미지 크기는 10MB를 초과할 수 없습니다!',
+        ]);
+        // 유효성 검사 실패 시
+        if ($validator->fails()) {
+            return $this->returnJsonData('modalAlert', [
+                'type' => 'error',
+                'title' => '대표 이미지 추가 에러',
+                'content' => implode(', ', $validator->errors()->get('image')),
+            ]);
+        }
         DB::beginTransaction();
         try {
-            $data = $req->except(['pType', 'images']);
+            $data = $req->except(['pType', 'images', 'image']);
             $data['is_active'] = $req->boolean('is_active');
             if ($data['is_active'] === true) {
                 $data['seq'] = Pension::where('is_active', 1)->count() + 1;
             }
             $pension = Pension::create($data);
-            if ($req->hasFile('images')) {
-                $images = $req->file('images');
-                $imagesCount = count($images);
-                foreach ($images as $image) {
-                    $tempImage = ImageUploadHelper::upload(
-                        $image,
-                        'pension/' . $pension->id . '/main',
-                        ['width' => 1920],
-                        $imagesCount
-                    );
-                    if ($tempImage) {
-                        if ($pension->files()->create($tempImage)) {
-                            $imagesCount++;
+
+            if ($pension) {
+                // 펜션 대표이미지
+                $imageData = ImageUploadHelper::upload($req->file('image'), 'pension/' . $pension->id . '/thumbnail', [
+                    'width' => 1024
+                ]);
+
+                if (!$imageData || empty($imageData['file_path'])) {
+                    throw new \Exception('대표 이미지 업로드에 실패했습니다.');
+                }
+
+                $pension->image = $imageData['file_path'];
+                $pension->save();
+
+                // 펜션 전경 사진들
+                if ($req->hasFile('images')) {
+                    $images = $req->file('images');
+                    $imagesCount = count($images);
+                    foreach ($images as $image) {
+                        $tempImage = ImageUploadHelper::upload(
+                            $image,
+                            'pension/' . $pension->id . '/main',
+                            ['width' => 1920],
+                            $imagesCount
+                        );
+                        if ($tempImage) {
+                            if ($pension->files()->create($tempImage)) {
+                                $imagesCount++;
+                            }
                         }
                     }
                 }

@@ -18,6 +18,14 @@
             <div class="card-body">
                 <form id="frm" autocomplete="off" novalidate>
                     <input type="hidden" name="pType" value="addPension">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="name" class="form-control-label">펜션 대표이미지<span
+                                    class="text-danger">*</span></label>
+                            <input type="file" id="image" name="image" class="form-control"
+                                placeholder="대표이미지를 입력해주세요!" value="">
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">

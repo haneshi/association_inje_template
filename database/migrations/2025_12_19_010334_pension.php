@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('owner', 50)->comment('펜션주 이름');
             $table->string('tel', 50)->comment('펜션 전화번호');
 
+            $table->string('image')->nullable()->comment('대표 이미지');
+
             // 주소관련
             $table->string('post', 50)->nullable()->comment('펜션 우편번호');
             $table->string('address_basic', 50)->nullable()->comment('도로명주소');
