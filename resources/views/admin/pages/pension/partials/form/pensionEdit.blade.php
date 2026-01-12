@@ -10,6 +10,15 @@
             <label for="{{ $k }}" class="btn btn-primary">{{ $location }}</label>
         @endforeach
     </div>
+
+    <div class="col-md-6">
+        <img class="img-fluid" src="{{ $pension->preview ?? '' }}" alt="">
+        <div class="col-md-6">
+            <label class="form-label" for="image">대표이미지</label>
+            <input type="file" id="image" name="image" class="form-control" placeholder="대표이미지를 입력해주세요!"
+                value="">
+        </div>
+    </div>
     @if ($pension->is_active)
         <div class="col-md-2">
             <label for="seq" class="form-label">순서</label>

@@ -140,7 +140,7 @@ class AdminPensionService extends AdminService
 
     public function setPension(Request $req)
     {
-        $data = $req->except(['pType', 'images']);
+        $data = $req->except(['pType', 'images', 'image']);
         $pension = $this->getPension($data['id']);
         $data['is_active'] = $req->boolean('is_active');
         if (!$pension) {
@@ -154,6 +154,28 @@ class AdminPensionService extends AdminService
                 ]
             ]);
         }
+
+        if ($req->hasFile('image')) {
+            // 유효성 검사 규칙
+            $validator = Validator::make($req->all(), [
+                'image' => 'nullable|file|image|mimes:jpeg,png|max:10240', // 10MB (10240KB)
+            ], [
+                'image.file' => '파일을 업로드해야 합니다!',
+                'image.image' => '이미지 파일만 업로드 가능합니다!',
+                'image.mimes' => 'jpeg, png 이미지만 등록이 가능합니다!',
+                'image.max' => '이미지 크기는 10MB를 초과할 수 없습니다!',
+            ]);
+
+            // 유효성 검사 실패 시
+            if ($validator->fails()) {
+                return $this->returnJsonData('modalAlert', [
+                    'type' => 'error',
+                    'title' => '펜션 대표이미지 수정 에러',
+                    'content' => implode(', ', $validator->errors()->get('image')),
+                ]);
+            }
+        }
+
         DB::beginTransaction();
         try {
             if ($req->hasFile('images')) {
@@ -174,6 +196,18 @@ class AdminPensionService extends AdminService
                 }
             }
             $origin = $pension->getOriginal();
+
+            if ($req->hasFile('image')) {
+                $imageData = ImageUploadHelper::upload($req->file('image'), 'pension/' . $pension->id . '/thumbnail', [
+                    'width' => 1024
+                ]);
+                if ($imageData) {
+                    $pension->image = $imageData['file_path'];
+                    if ($pension->save()) {
+                        $this->deleteStorageData($origin['image']);
+                    }
+                }
+            }
 
             // 사용유무 처리 로직
             if ($origin['is_active'] == 1 && $data['is_active'] == 0) {
