@@ -53,8 +53,18 @@
                             @include('admin.pages.pension.partials.form.pensionEdit')
                         </div>
                         @foreach ($rooms as $room)
+                            @php
+                                $priceData = json_decode($room->priceData, true) ?? [
+                                    'off' => ['day' => '0', 'fri' => '0', 'holiday' => '0'],
+                                    'semi' => ['day' => '0', 'fri' => '0', 'holiday' => '0'],
+                                    'peak' => ['day' => '0', 'fri' => '0', 'holiday' => '0'],
+                                ];
+                            @endphp
                             <div class="tab-pane" id="tab-room-{{ $room->id }}">
-                                @include('admin.pages.pension.partials.form.roomEdit', $room)
+                                @include('admin.pages.pension.partials.form.roomEdit', [
+                                    'room' => $room,
+                                    'priceData' => $priceData,
+                                ])
                             </div>
                         @endforeach
 

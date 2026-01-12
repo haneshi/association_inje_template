@@ -34,7 +34,7 @@ class AdminPensionController extends AdminController
 
         $this->data['rooms'] = $this->data['pension']->rooms;
         $this->data['roomFiles'] = $this->data['pension']->rooms->flatMap->files;
-
+            
         return view('admin.pages.pension.view', $this->data);
     }
     public function write(Request $req)

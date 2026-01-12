@@ -266,6 +266,7 @@ class AdminPensionService extends AdminService
         DB::beginTransaction();
         try {
             $data = $req->except(['pType', 'images', 'pension_id']);
+            $data['priceData'] = json_encode($req->input('priceData'));
             $data['amenities'] = json_decode($req->input('amenities'), true);
             $data['is_active'] = $req->boolean('is_active');
             $origin = $room->getOriginal();
