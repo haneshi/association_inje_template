@@ -14,7 +14,7 @@
                         </div>
                     </form>
                 </div>
-                <a href="{{ route('admin.travel.write', request()->query()) }}" class="btn btn-sm btn-primary mb-0">
+                <a href="{{ route('admin.board.write',['board_name' => $board->board_name] + request()->query()) }}" class="btn btn-sm btn-primary mb-0">
                     <x-tabler-plus />게시글 추가
                 </a>
             </div>

@@ -99,5 +99,6 @@ Route::middleware('auth.check')
             ->prefix('board/{board_name}')
             ->group(function () {
                 Route::get('/', 'index')->name('admin.board');
+                Route::get('/write', 'write')->name('admin.board.write');
             });
     });

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Admin\Board;
 
-use App\Http\Controllers\Admin\AdminController;
+use App\Models\Board;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Admin\AdminController;
 use App\Services\Admin\Board\AdminBoardPostService;
 
 class AdminBoardPostController extends AdminController
@@ -28,5 +29,13 @@ class AdminBoardPostController extends AdminController
         $this->data['paramData'] = $this->getParamData($req);
         $this->data['dataList'] = $service->getPaginate($this->data['board']->id, $this->data, $this->data['board']->page_show_num);
         return view('admin.pages.board.' . $type . '.index', $this->data);
+    }
+
+    public function write(Request $req, string $board_name)
+    {
+        $this->data['paramData'] = $this->getParamData($req);
+        $this->data['board'] = Board::getData(['board_name' => $board_name]);
+        $type = $this->data['board']->type;
+        return view('admin.pages.board.' . $type . '.write', $this->data);
     }
 }

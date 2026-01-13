@@ -114,7 +114,7 @@
                     <hr class="horizontal dark">
                     <div class="d-flex justify-content-end gap-2">
                         <a href="{{ route('admin.pension', $paramData) }}" class="btn btn-outline-secondary">목록으로</a>
-                        <button id="submitBtn" type="submit" class="btn btn bg-gradient-instagram">펜션 추가</button>
+                        <button id="submitBtn" type="submit" class="btn btn bg-gradient-primary">펜션 추가</button>
                     </div>
                 </form>
             </div>
