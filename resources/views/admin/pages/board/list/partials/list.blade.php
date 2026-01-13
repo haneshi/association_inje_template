@@ -38,17 +38,15 @@
                             </tr>
                         </thead>
                         <tbody id="sortTable">
-                            @forelse ($dataList as $data)
+                            @forelse ($dataList as $index => $data)
                                 <tr>
                                     <td>
                                         <p class="text-center mb-0">
-                                            @foreach ($dataList as $index => $v)
-                                                {{ $index + 1}}
-                                            @endforeach
+                                            {{ $dataList->total() - $dataList->firstItem() - $index + 1 }}
                                         </p>
                                     </td>
                                     <td>
-                                        <a href="">{{ $data->title }}</a>
+                                        <a href="{{ route('admin.board.view', ['board_name' => $board->board_name, 'id' => $data->id] + request()->query()) }}">{{ $data->title }}</a>
                                     </td>
                                     <td class="align-middle text-center text-sm">
                                         <span

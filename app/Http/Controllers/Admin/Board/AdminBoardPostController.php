@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Board;
 use App\Models\Board;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Admin\AdminController;
+use App\Models\BoardPosts;
 use App\Services\Admin\Board\AdminBoardPostService;
 
 class AdminBoardPostController extends AdminController
@@ -37,6 +38,24 @@ class AdminBoardPostController extends AdminController
         $this->data['board'] = Board::getData(['board_name' => $board_name]);
         $type = $this->data['board']->type;
         return view('admin.pages.board.' . $type . '.write', $this->data);
+    }
+
+    public function view(Request $req, string $board_name, int $id)
+    {
+        $this->data['paramData'] = $this->getParamData($req);
+        $this->data['board'] = Board::getData(['board_name' => $board_name]);
+        if (!$this->data['board']) {
+            RedirectRoute('admin.home');
+        }
+        $type = $this->data['board']->type;
+
+        $this->data['data'] = BoardPosts::getData(['id' => $id]);
+
+        if (!$this->data['data']) {
+            RedirectUrl('amdin/board/' . $board_name);
+        }
+
+        return view('admin.pages.board.' . $type . '.view', $this->data);
     }
 
     public function data(Request $req, string $board_name)
