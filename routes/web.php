@@ -100,5 +100,7 @@ Route::middleware('auth.check')
             ->group(function () {
                 Route::get('/', 'index')->name('admin.board');
                 Route::get('/write', 'write')->name('admin.board.write');
+
+                Route::post('/data', 'data')->name('admin.board.data');
             });
     });

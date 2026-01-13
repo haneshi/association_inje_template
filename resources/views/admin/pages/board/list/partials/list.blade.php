@@ -14,7 +14,8 @@
                         </div>
                     </form>
                 </div>
-                <a href="{{ route('admin.board.write',['board_name' => $board->board_name] + request()->query()) }}" class="btn btn-sm btn-primary mb-0">
+                <a href="{{ route('admin.board.write', ['board_name' => $board->board_name] + request()->query()) }}"
+                    class="btn btn-sm btn-primary mb-0">
                     <x-tabler-plus />게시글 추가
                 </a>
             </div>
@@ -40,13 +41,14 @@
                             @forelse ($dataList as $data)
                                 <tr>
                                     <td>
-                                        <p class="text-center mb-0"></p>
+                                        <p class="text-center mb-0">
+                                            @foreach ($dataList as $index => $v)
+                                                {{ $index + 1}}
+                                            @endforeach
+                                        </p>
                                     </td>
                                     <td>
                                         <a href="">{{ $data->title }}</a>
-                                    </td>
-                                    <td>
-                                        <p class="text-xs font-weight-bold mb-0">{{ $data->address_basic }}</p>
                                     </td>
                                     <td class="align-middle text-center text-sm">
                                         <span
@@ -54,8 +56,9 @@
                                     </td>
                                     <td class="align-middle text-center">
                                         <span
-                                            class="text-secondary text-xs font-weight-bold">{{ $data->created_at->format('y.m.d') }}</span>
+                                            class="text-secondary text-xs font-weight-bold">{{ $data->created_at->format('Y-m-d:H.i.s') }}</span>
                                     </td>
+
                                 </tr>
                             @empty
                                 <tr>

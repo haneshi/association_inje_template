@@ -26,8 +26,18 @@
                                     placeholder="Enter board name" required>
                             </div>
                         </div>
+                        <div class="col-md-3">
+                            <label for="page_show_num" class="form-label">리스트 개수</label>
+                            <select id="page_show_num" name="page_show_num" class="form-select">
+                                @foreach (config('sites.board.page_num') as $val)
+                                    <option value="{{ $val }}"
+                                        @if ($val === 10) selected @endif>
+                                        {{ $val }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                    <div class="row">
+                    <div class="row mt-3">
                         <div class="col-md-3">
                             <div class="form-group">
                                 <div class="form-check form-switch">

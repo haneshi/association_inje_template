@@ -14,7 +14,7 @@
             </div>
             <div class="card-body">
                 <form id="frm" autocomplete="off" novalidate>
-                    <input type="hidden" name="pType" value="addPension">
+                    <input type="hidden" name="pType" value="addBoardPost">
 
                     @if ($board->is_fixed)
                         <div class="col-md-12">
@@ -102,6 +102,8 @@
 @section('afterScript')
     <script src="{{ asset('assets/plugins/ckeditor/js/ckeditor.js') }}"></script>
     <script src="{{ asset('assets/plugins/ckeditor/js/editor.js') }}"></script>
+    <script src="{{ asset('assets/plugins/validation/just-validate.min.js') }}"></script>
+
     @if ($board->is_period)
         <script src="{{ asset('assets/plugins/litepicker/js/litepicker.min.js') }}"></script>
         <script>
@@ -109,6 +111,33 @@
 
             common.litepicker('start_date');
             common.litepicker('end_date');
+
+            const procAddValidator = new JustValidate('#frm', apps.plugins.JustValidate.basic());
+            procAddValidator
+                .onSuccess((e) => {
+                    e.preventDefault();
+                    const form = document.getElementById('frm');
+                    const formData = new FormData(form);
+
+                    common.ajax.postFormData('{{ route('admin.board.data', $board->board_name) }}', formData);
+                })
+            @if ($board->is_period)
+                .addField('#end_date', [{
+                    validator: (value, context) => {
+                        const startDate = document.getElementById('start_date').value;
+                        const endDate = value;
+
+                        if (!startDate || !endDate) return true;
+
+                        return startDate < endDate;
+                    },
+                    errorMessage: '시작일보다 종료일이 늦어야 합니다.',
+                }])
+            @endif
+            .addField('#title', [{
+                rule: 'required',
+                errorMessage: '제목을 입력해 주세요!'
+            }]);
         </script>
     @endif
 @endsection

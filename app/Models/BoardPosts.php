@@ -9,5 +9,11 @@ class BoardPosts extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
     protected $table = 'board_posts';
+
+    public function author()
+    {
+        return $this->morphTo();
+    }
 }

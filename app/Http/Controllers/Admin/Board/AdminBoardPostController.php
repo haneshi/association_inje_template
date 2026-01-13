@@ -38,4 +38,18 @@ class AdminBoardPostController extends AdminController
         $type = $this->data['board']->type;
         return view('admin.pages.board.' . $type . '.write', $this->data);
     }
+
+    public function data(Request $req, string $board_name)
+    {
+        if ($req->ajax() && $req->isMethod('post')) {
+            $service = new AdminBoardPostService();
+            $board = Board::getData(['board_name' => $board_name]);
+            if (!$board) {
+                return $this->returnJsonData('replace', route('admin.home'));
+            }
+            return match ($req->pType) {
+                'addBoardPost' => $service->addBoardPost($req, $board),
+            };
+        }
+    }
 }
