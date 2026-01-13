@@ -15,8 +15,7 @@
 {{-- @section('afterStyle')@endsection --}}
 
 @section('mainContent')
-    {{-- @include('admin.pages. .partials.list') --}}
-    list index
+    @include('admin.pages.board.' . $board->type . '.partials.list')
 @endsection
 
 {{-- @section('beforeScript')@endsection --}}

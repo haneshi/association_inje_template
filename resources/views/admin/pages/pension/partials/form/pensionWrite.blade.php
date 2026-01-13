@@ -5,14 +5,22 @@
                 <div class="d-flex align-items-center">
                     <p class="mb-0">{{ $pageData['title'] }}</p>
                 </div>
-                <div class="form-check form-check-inline">
-                    <label class="form-control-label">지역 선택<span class="text-danger">*</span></label>
-                    <br>
-                    @foreach (config('sites.locations') as $k => $location)
-                        <input type="radio" class="btn-check" id="{{ $k }}" name="location"
-                            value="{{ $k }}">
-                        <label for="{{ $k }}" class="btn btn-primary">{{ $location }}</label>
-                    @endforeach
+                <div class="form-group">
+                    <label class="form-control-label mb-3">
+                        지역 선택<span class="text-danger ms-1">*</span>
+                    </label>
+                    <div class="btn-group-toggle d-flex flex-wrap gap-2" data-toggle="buttons">
+                        @foreach (config('sites.locations') as $k => $location)
+                            <div>
+                                <input type="radio" class="btn-check" name="location"
+                                    id="location_{{ $k }}" value="{{ $k }}" autocomplete="off">
+                                <label class="btn bg-gradient-primary mb-0" for="location_{{ $k }}"
+                                    style="border-radius: 0.5rem;">
+                                    {{ $location }}
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
             <div class="card-body">
@@ -106,7 +114,7 @@
                     <hr class="horizontal dark">
                     <div class="d-flex justify-content-end gap-2">
                         <a href="{{ route('admin.pension', $paramData) }}" class="btn btn-outline-secondary">목록으로</a>
-                        <button id="submitBtn" type="submit" class="btn btn bg-gradient-warning">펜션 추가</button>
+                        <button id="submitBtn" type="submit" class="btn btn bg-gradient-instagram">펜션 추가</button>
                     </div>
                 </form>
             </div>
@@ -120,8 +128,17 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=49f49d684621b554bb7e4382786b3e46&libraries=services"></script>
     <script src="{{ asset('assets/plugins/uppy/uppy.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/cleave/cleave.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/cleave/cleave-phone.kr.js') }}" \></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+
+            var cleave = new Cleave('#tel', {
+                phone: true,
+                phoneRegionCode: 'KR',
+                delimiter: '-',
+            });
+
             const uppy = new Uppy.Uppy({
                     autoProceed: false, // 파일 추가 시 자동 업로드 방지
                     restrictions: {

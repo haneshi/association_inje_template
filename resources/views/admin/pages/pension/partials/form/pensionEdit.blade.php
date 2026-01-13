@@ -1,14 +1,17 @@
 <form id="frm-pension-edit" autocomplete="off" novalidate>
     <input type="hidden" name="pType" value="setPension">
     <input type="hidden" name="id" value="{{ $pension->id }}">
-    <div class="form-check form-check-inline">
-        <label class="form-control-label">지역<span class="text-danger">*</span></label>
-        <br>
-        @foreach (config('sites.locations') as $k => $location)
-            <input type="radio" class="btn-check" id="{{ $k }}" name="location" value="{{ $k }}"
-                {{ $pension->location === $k ? 'checked' : '' }}>
-            <label for="{{ $k }}" class="btn btn-primary">{{ $location }}</label>
-        @endforeach
+    <div class="form-check form-check-inline mb-4">
+        <label class="form-control-label mb-3">
+            지역 선택<span class="text-danger ms-1">*</span>
+        </label>
+        <div class="btn-group-toggle d-flex flex-wrap gap-2" data-toggle="buttons">
+            @foreach (config('sites.locations') as $k => $location)
+                <input type="radio" class="btn-check" id="{{ $k }}" name="location"
+                    value="{{ $k }}" {{ $pension->location === $k ? 'checked' : '' }}>
+                <label for="{{ $k }}" class="btn bg-gradient-primary mb-0">{{ $location }}</label>
+            @endforeach
+        </div>
     </div>
 
     <div class="col-md-3">

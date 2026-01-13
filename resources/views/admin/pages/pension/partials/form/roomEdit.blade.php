@@ -10,7 +10,7 @@
         <div class="col-md-3 mt-2">
             <label class="form-label" for="image">대표이미지</label>
             <img class="img-fluid" src="{{ $room->preview ?? '' }}" alt="">
-            <div class="col-md-12">
+            <div class="col-md-12 mt-3">
                 <input type="file" id="image" name="image" class="form-control" placeholder="대표이미지를 입력해주세요!"
                     value="">
             </div>

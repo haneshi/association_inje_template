@@ -23,7 +23,8 @@ class AppServiceProvider extends ServiceProvider
     {
         // aside.blade.php에 게시판 데이터 자동 전달
         View::composer('admin.layouts.aside', function ($view) {
-            $boards = Board::orderByRaw('is_active desc, seq asc')
+            $boards = Board::where('is_active', 1)
+                ->orderBy('seq', 'asc')
                 ->get(['id', 'board_name', 'title']);
 
             $view->with('boards', $boards);
