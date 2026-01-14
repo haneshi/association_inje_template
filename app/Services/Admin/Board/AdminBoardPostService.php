@@ -22,12 +22,17 @@ class AdminBoardPostService extends AdminService
         return Board::getData($where);
     }
 
+    public function getBoardPostData(array $where = [])
+    {
+        return BoardPosts::getData($where);
+    }
+
     public function getPaginate(int $board_id, array $arrData, int $pagenate = 10)
     {
         $st = $arrData['paramData']['st'];
 
         $query = BoardPosts::where('board_id', $board_id)
-            ->orderByRaw('is_fixed desc, created_at desc');
+            ->orderByRaw('is_active desc, is_fixed desc, created_at desc');
 
         if ($st) {
             $query->fullTextSearch($st);
@@ -73,6 +78,58 @@ class AdminBoardPostService extends AdminService
                 'type' => 'error',
                 'title' => "게시글 추가 에러",
                 'content' => "게시글이 추가 되지 않았습니다. <br> 관리자에게 문의해 주세요!",
+            ]);
+        }
+    }
+
+    public function setBoardPost(Request $req, Model $board)
+    {
+        $data = $req->except(['pType']);
+        $data['is_fixed'] = $req->boolean('is_fixed');
+        $data['is_active'] = $req->boolean('is_active');
+        $data['ip'] = $req->ip();
+
+        // 게시글
+        $boardPost = $this->getBoardPostData(['id' => $data['id']]);
+        if (!$boardPost) {
+            return $this->returnJsonData('modalAlert', [
+                'title' => "게시글 수정 에러",
+                'content' => "존재하지 않는 게시글 입니다.",
+                'event' => [
+                    'type' => 'replace',
+                    'url' => route('admin.board', $board->board_name),
+                ],
+            ]);
+        }
+
+        DB::beginTransaction();
+        try {
+            if ($boardPost->update($data)) {
+                DB::commit();
+                return $this->returnJsonData('toastAlert', [
+                    'type' => 'success',
+                    'delay' => 1000,
+                    'delayMask' => true,
+                    'content' => "게시글이 수정 되었습니다..",
+                    'event' => [
+                        'type' => 'reload',
+                    ],
+                ]);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $boardLog = new Board();
+            $boardLog->setHistoryLog([
+                'type' => 'error',
+                'description' => "게시글 수정 에러",
+                'queryData' => $this->json_encode($data),
+                'rowData' => JsonEncode(['error' => $e->getMessage()]),
+            ], $this->user());
+
+            return $this->returnJsonData('modalAlert', [
+                'type' => 'error',
+                'title' => "게시글 수정 에러",
+                'content' => "게시글이 수정 되지 않았습니다. <br> 관리자에게 문의해 주세요!",
             ]);
         }
     }

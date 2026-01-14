@@ -14,14 +14,14 @@
             </div>
             <div class="card-body">
                 <form id="frm" autocomplete="off" novalidate>
-                    <input type="hidden" name="pType" value="addBoardPost">
-
+                    <input type="hidden" name="pType" value="setBoardPost">
+                    <input type="hidden" name="id" value="{{ $data->id }}">
                     @if ($board->is_fixed)
                         <div class="col-md-12">
                             <div class="form-group">
                                 <div class="form-check form-switch">
                                     <input class="form-check-input ms-auto mt-1" type="checkbox" id="is_fixed"
-                                        name="is_fixed">
+                                        name="is_fixed" @if ($data->is_fixed) checked @endif>
                                     <label class="form-check-label ms-2" for="is_active">상단고정</label>
                                 </div>
                             </div>
@@ -36,8 +36,8 @@
                                     <label for="start_date" class="form-label">시작일</label>
                                     <div class="row g-1">
                                         <div class="col">
-                                            <input type="text" class="form-control" id="start_date"
-                                                name="start_date">
+                                            <input type="text" class="form-control" id="start_date" name="start_date"
+                                                value="{{ $data->start_date }}">
                                         </div>
                                         <div class="col-auto">
                                             <button type="button" class="btn btn-muted btn-icon"
@@ -51,7 +51,8 @@
                                     <label for="end_date" class="form-label">종료일</label>
                                     <div class="row g-1">
                                         <div class="col">
-                                            <input type="text" class="form-control" id="end_date" name="end_date">
+                                            <input type="text" class="form-control" id="end_date" name="end_date"
+                                                value="{{ $data->end_date }}">
                                         </div>
                                         <div class="col-auto">
                                             <button type="button" class="btn btn-muted btn-icon"
@@ -69,14 +70,14 @@
                             <label for="title" class="form-control-label">제목<span
                                     class="text-danger">*</span></label>
                             <input class="form-control" type="text" id="title" name="title"
-                                placeholder="Enter title" required>
+                                value="{{ $data->title }}" required>
                         </div>
                     </div>
 
                     <div class="col-md-12">
                         <div class="col-md">
                             <label for="content" class="form-label">내용</label>
-                            <textarea class=".ck5-content" id="content" name="content"></textarea>
+                            <textarea class=".ck5-content" id="content" name="content">{{ $data->content }}</textarea>
                         </div>
                     </div>
                     <hr class="horizontal dark">
@@ -84,7 +85,7 @@
                         <div class="form-group">
                             <div class="form-check form-switch">
                                 <input class="form-check-input ms-auto mt-1" type="checkbox" id="is_active"
-                                    name="is_active">
+                                    name="is_active" @if ($data->is_active) checked @endif>
                                 <label class="form-check-label ms-2" for="is_active">사용유무</label>
                             </div>
                         </div>
@@ -92,7 +93,7 @@
                     <div class="d-flex justify-content-end gap-2">
                         <a href="{{ route('admin.board', ['board_name' => $board->board_name] + $paramData) }}"
                             class="btn btn-outline-secondary">목록으로</a>
-                        <button id="submitBtn" type="submit" class="btn btn bg-gradient-primary">{{ $board->board_name }} 작성</button>
+                        <button id="submitBtn" type="submit" class="btn btn bg-gradient-primary">{{$board->board_name}} 수정</button>
                     </div>
                 </form>
             </div>
@@ -104,12 +105,12 @@
     <script src="{{ asset('assets/plugins/ckeditor/js/ckeditor.js') }}"></script>
     <script src="{{ asset('assets/plugins/ckeditor/js/editor.js') }}"></script>
     <script src="{{ asset('assets/plugins/validation/just-validate.min.js') }}"></script>
-
+    <script>
+        setEditor.ckeditor.classic('#content');
+    </script>
     @if ($board->is_period)
         <script src="{{ asset('assets/plugins/litepicker/js/litepicker.min.js') }}"></script>
         <script>
-            setEditor.ckeditor.classic('#content');
-
             common.litepicker('start_date');
             common.litepicker('end_date');
 

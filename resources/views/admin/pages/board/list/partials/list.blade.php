@@ -16,7 +16,7 @@
                 </div>
                 <a href="{{ route('admin.board.write', ['board_name' => $board->board_name] + request()->query()) }}"
                     class="btn btn-sm btn-primary mb-0">
-                    <x-tabler-plus />게시글 추가
+                    <x-tabler-plus />{{$board->board_name}} 작성
                 </a>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
