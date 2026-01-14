@@ -90,9 +90,7 @@
                 validator: (value, context) => {
                     const startDate = document.getElementById('start_date').value;
                     const endDate = value;
-
                     if (!startDate || !endDate) return true;
-
                     return startDate < endDate;
                 },
                 errorMessage: '시작일보다 종료일이 늦어야 합니다.',
