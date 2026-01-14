@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Board;
 use App\Models\BoardPosts;
 use Illuminate\Http\Request;
+use App\Helper\ImageUploadHelper;
 use Illuminate\Support\Facades\DB;
 use App\Services\Admin\AdminService;
 use Illuminate\Database\Eloquent\Model;
@@ -44,7 +45,7 @@ class AdminBoardPostService extends AdminService
 
     public function addBoardPost(Request $req, Model $board)
     {
-        $data = $req->except(['pType']);
+        $data = $req->except(['pType', 'image', 'images']);
         $data['board_id'] = $board->id;
         $data['author_id'] = config('auth.admin')->id;
         $data['author_type'] = Admin::class;
@@ -52,8 +53,32 @@ class AdminBoardPostService extends AdminService
         $data['ip'] = $req->ip();
         $data['is_active'] = $req->boolean('is_active');
 
+        DB::beginTransaction();
+
         try {
-            if ($board->posts()->create($data)) {
+            // 게시글의 모델 객체
+            $post = $board->posts()->create($data);
+            if ($post) {
+                if ($req->hasFile('images')) {
+                    $images = $req->file('images');
+                    $imagesCount = count($images);
+                    // 사진 저장은 기존 현재 프로젝트 사진 저장의 로직으로 사용할 것
+                    // 게시판의 사진 저장 경로 정리가 필요함
+                    foreach ($images as $image) {
+                        $tempImage = ImageUploadHelper::upload(
+                            $image,
+                            'board/' . $board->type . '/room/' . $room->id,
+                            ['width' => 1920],
+                            $imagesCount
+                        );
+                        if ($tempImage) {
+                            if ($post->files()->create($tempImage)) {
+                                $imagesCount++;
+                            }
+                        }
+                    }
+                }
+                DB::commit();
                 return $this->returnJsonData('toastAlert', [
                     'type' => 'success',
                     'delay' => 1000,
@@ -66,6 +91,7 @@ class AdminBoardPostService extends AdminService
                 ]);
             }
         } catch (\Exception $e) {
+            DB::rollBack();
             $boardLog = new Board();
             $boardLog->setHistoryLog([
                 'type' => 'error',

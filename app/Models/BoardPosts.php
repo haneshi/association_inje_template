@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use App\Traits\GlobalScopes;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class BoardPosts extends Model
 {
-    use HasFactory, GlobalScopes;
+    use HasFactory, GlobalScopes, SoftDeletes;
 
     protected $guarded = [];
     protected $table = 'board_posts';
@@ -16,5 +18,15 @@ class BoardPosts extends Model
     public function author()
     {
         return $this->morphTo();
+    }
+
+    public function getPreviewAttribute()
+    {
+        return $this->image ? asset('data/' . $this->image) : asset('assets/img/bg/no-image.jpg');
+    }
+
+    public function files(): MorphMany
+    {
+        return $this->morphMany(BoardPostFile::class, 'fileable')->orderBy('seq');
     }
 }

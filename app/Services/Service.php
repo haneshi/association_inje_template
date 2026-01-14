@@ -134,6 +134,39 @@ class Service
         return $data;
     }
 
+    protected function uploadBoardFiles(array $files, string $folderPath, int $startSeq = 0, string $type = 'image'): array
+    {
+        $data = [];
+        foreach ($files as $file) {
+            if ($file instanceof UploadedFile) {
+                $startSeq++;
+                $fileName = $this->getFileName($file, $startSeq);
+                $path = $file->storeAs($folderPath, $fileName);
+                $mime_type = $file->getMimeType();
+
+                if ($this->isImageType($mime_type)) {
+                    $img = $this->resizeImage($path);
+                    if ($type === 'image') {
+                        $this->setImageThumb($img, $path, 600);
+                    }
+                }
+
+                if ($path) {
+                    $data[] = [
+                        'type' => $type,
+                        'seq' => $startSeq,
+                        'path' => $path,
+                        'filename' => $file->getClientOriginalName(),
+                        'mime_type' => $mime_type,
+                        'file_size' => $file->getSize(),
+                    ];
+                }
+            }
+        }
+
+        return $data;
+    }
+
     protected function deleteStorageData(mixed $path): bool
     {
         if ($path) {
