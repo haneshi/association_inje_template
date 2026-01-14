@@ -105,11 +105,13 @@
     <script src="{{ asset('assets/plugins/ckeditor/js/editor.js') }}"></script>
     <script src="{{ asset('assets/plugins/validation/just-validate.min.js') }}"></script>
 
+    <script>
+        setEditor.ckeditor.classic('#content');
+    </script>
+
     @if ($board->is_period)
         <script src="{{ asset('assets/plugins/litepicker/js/litepicker.min.js') }}"></script>
         <script>
-            setEditor.ckeditor.classic('#content');
-
             common.litepicker('start_date');
             common.litepicker('end_date');
 

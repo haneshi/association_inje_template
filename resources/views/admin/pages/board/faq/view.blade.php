@@ -15,7 +15,7 @@
 {{-- @section('afterStyle')@endsection --}}
 
 @section('mainContent')
-    @include('admin.pages.board.' . $board->type . '.partials.list')
+    @include('admin.pages.board.' . $board->type . '.partials.form.edit')
 @endsection
 
 {{-- @section('beforeScript')@endsection --}}

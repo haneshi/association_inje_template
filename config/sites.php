@@ -15,7 +15,6 @@ return [
             'list' => '리스트형',
             'gallery' => '갤러리형',
             'faq' => 'FAQ',
-            'qna' => 'QNA',
         ],
 
         'page_num' => [

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->boolean('is_fixed')->default(false)->comment('고정유무');
             $table->boolean('is_secret')->default(false)->comment('비밀글 여부');
 
-            $table->string('title')->comment('제목');
+            $table->string('title')->nullable()->comment('제목');
             $table->mediumText('content')->nullable()->comment('내용');
             $table->mediumText('content_sub')->nullable()->comment('추가 내용 ex) answer');
 

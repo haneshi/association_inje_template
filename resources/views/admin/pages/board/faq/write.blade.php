@@ -3,7 +3,7 @@
 
 @php
     $pageData = [
-        'title' => '게시판',
+        'title' => $board->board_name . ' 게시글',
         'name' => $board->board_name . ' 게시판',
     ];
 @endphp
@@ -15,7 +15,7 @@
 {{-- @section('afterStyle')@endsection --}}
 
 @section('mainContent')
-    @include('admin.pages.board.' . $board->type . '.partials.list')
+    @include('admin.pages.board.' . $board->type . '.partials.form.write')
 @endsection
 
 {{-- @section('beforeScript')@endsection --}}
