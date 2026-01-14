@@ -92,7 +92,8 @@
                     <div class="d-flex justify-content-end gap-2">
                         <a href="{{ route('admin.board', ['board_name' => $board->board_name] + $paramData) }}"
                             class="btn btn-outline-secondary">목록으로</a>
-                        <button id="submitBtn" type="submit" class="btn btn bg-gradient-primary">{{ $board->board_name }} 작성</button>
+                        <button id="submitBtn" type="submit"
+                            class="btn btn bg-gradient-primary">{{ $board->board_name }} 작성</button>
                     </div>
                 </form>
             </div>
@@ -104,43 +105,38 @@
     <script src="{{ asset('assets/plugins/ckeditor/js/ckeditor.js') }}"></script>
     <script src="{{ asset('assets/plugins/ckeditor/js/editor.js') }}"></script>
     <script src="{{ asset('assets/plugins/validation/just-validate.min.js') }}"></script>
-
+    <script src="{{ asset('assets/plugins/litepicker/js/litepicker.min.js') }}"></script>
     <script>
         setEditor.ckeditor.classic('#content');
-    </script>
-
-    @if ($board->is_period)
-        <script src="{{ asset('assets/plugins/litepicker/js/litepicker.min.js') }}"></script>
-        <script>
+        @if ($board->is_period)
             common.litepicker('start_date');
             common.litepicker('end_date');
+        @endif
+        const procAddValidator = new JustValidate('#frm', apps.plugins.JustValidate.basic());
+        procAddValidator
+            .onSuccess((e) => {
+                e.preventDefault();
+                const form = document.getElementById('frm');
+                const formData = new FormData(form);
 
-            const procAddValidator = new JustValidate('#frm', apps.plugins.JustValidate.basic());
-            procAddValidator
-                .onSuccess((e) => {
-                    e.preventDefault();
-                    const form = document.getElementById('frm');
-                    const formData = new FormData(form);
+                common.ajax.postFormData('{{ route('admin.board.data', $board->board_name) }}', formData);
+            })
+        @if ($board->is_period)
+            .addField('#end_date', [{
+                validator: (value, context) => {
+                    const startDate = document.getElementById('start_date').value;
+                    const endDate = value;
 
-                    common.ajax.postFormData('{{ route('admin.board.data', $board->board_name) }}', formData);
-                })
-            @if ($board->is_period)
-                .addField('#end_date', [{
-                    validator: (value, context) => {
-                        const startDate = document.getElementById('start_date').value;
-                        const endDate = value;
+                    if (!startDate || !endDate) return true;
 
-                        if (!startDate || !endDate) return true;
-
-                        return startDate < endDate;
-                    },
-                    errorMessage: '시작일보다 종료일이 늦어야 합니다.',
-                }])
-            @endif
-            .addField('#title', [{
-                rule: 'required',
-                errorMessage: '제목을 입력해 주세요!'
-            }]);
-        </script>
-    @endif
+                    return startDate < endDate;
+                },
+                errorMessage: '시작일보다 종료일이 늦어야 합니다.',
+            }])
+        @endif
+        .addField('#title', [{
+            rule: 'required',
+            errorMessage: '제목을 입력해 주세요!'
+        }]);
+    </script>
 @endsection
