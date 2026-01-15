@@ -94,7 +94,7 @@
                         <a href="{{ route('admin.board', ['board_name' => $board->board_name] + $paramData) }}"
                             class="btn btn-outline-secondary">목록으로</a>
                         <button id="submitBtn" type="submit"
-                            class="btn btn bg-gradient-primary">{{ $board->board_name }} 수정</button>
+                            class="btn btn bg-gradient-primary">글 수정</button>
                     </div>
                 </form>
             </div>
