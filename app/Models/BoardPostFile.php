@@ -26,4 +26,9 @@ class BoardPostFile extends Model
             get: fn() => str_starts_with($this->mime_type, 'image/')
         );
     }
+
+    public function getPreviewAttribute()
+    {
+        return $this->file_path ? asset('data/'.$this->file_path): null;
+    }
 }

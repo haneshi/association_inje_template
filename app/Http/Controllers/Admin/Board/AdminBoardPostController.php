@@ -55,6 +55,10 @@ class AdminBoardPostController extends AdminController
             RedirectUrl('amdin/board/' . $board_name);
         }
 
+        if($this->data['board']->type === 'gallery') {
+            $this->data['galleryFiles'] = $this->data['data']->files;
+        }
+
         return view('admin.pages.board.' . $type . '.view', $this->data);
     }
 

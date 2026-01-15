@@ -12,12 +12,17 @@
             </div>
             <div class="card-body">
                 <form id="frm" autocomplete="off" novalidate>
-                    <input type="hidden" name="pType" value="addBoardPost">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="name" class="form-control-label">대표이미지</label>
-                            <input type="file" id="image" name="image" class="form-control"
-                                placeholder="대표이미지를 입력해주세요!" value="">
+                    <input type="hidden" name="pType" value="setBoardPost">
+                    <input type="hidden" name="id" value="{{ $data->id }}">
+                    <div class="col-md-12 mb-3">
+                        <div class="row align-items-center">
+                            <div class="col-md-3">
+                                <label for="image" class="form-control-label">대표이미지</label>
+                                <img class="img-fluid" src="{{ $data->preview ?? '' }}" alt="대표이미지 미리보기">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="file" id="image" name="image" class="form-control">
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -25,7 +30,7 @@
                             <label for="title" class="form-control-label">게시글 제목<span
                                     class="text-danger">*</span></label>
                             <input class="form-control" type="text" id="title" name="title"
-                                placeholder="제목을 입력해주세요" required>
+                                value="{{ $data->title }}" required>
                         </div>
                     </div>
                     <div class="row">
@@ -37,20 +42,23 @@
                                 <small>최대 5개 이미지 업로드 가능 (최대 10MB, 이미지 파일만 허용)</small><br>
                                 <small>5개 이상일때는 우선 5개 업로드 후 추가해 주세요!</small>
                             </div>
+                            <div class="mb-1 p-2">
+                                @include('admin.pages.board.gallery.partials.photos', ['files' => $galleryFiles])
+                            </div>
                             <div id="drop-area"></div>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="col-md">
                             <label for="content" class="form-label">내용</label>
-                            <textarea class=".ck5-content" id="content" name="content"></textarea>
+                            <textarea class=".ck5-content" id="content" name="content">{{ $data->content }}</textarea>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <div class="form-check form-switch">
                                 <input class="form-check-input ms-auto mt-1" type="checkbox" id="is_active"
-                                    name="is_active">
+                                    name="is_active" @if ($data->is_active) checked @endif>
                                 <label class="form-check-label ms-2" for="is_active">사용유무</label>
                             </div>
                         </div>
@@ -58,7 +66,7 @@
                     <hr class="horizontal dark">
                     <div class="d-flex justify-content-end gap-2">
                         <a href="{{ route('admin.pension', $paramData) }}" class="btn btn-outline-secondary">목록으로</a>
-                        <button id="submitBtn" type="submit" class="btn btn bg-gradient-primary">펜션 추가</button>
+                        <button id="submitBtn" type="submit" class="btn btn bg-gradient-primary">게시글 수정</button>
                     </div>
                 </form>
             </div>
