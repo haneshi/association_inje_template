@@ -65,7 +65,8 @@
                     </div>
                     <hr class="horizontal dark">
                     <div class="d-flex justify-content-end gap-2">
-                        <a href="{{ route('admin.pension', $paramData) }}" class="btn btn-outline-secondary">목록으로</a>
+                        <a href="{{ route('admin.board', ['board_name' => $board->board_name] + $paramData) }}"
+                            class="btn btn-outline-secondary">목록으로</a>
                         <button id="submitBtn" type="submit" class="btn btn bg-gradient-primary">게시글 수정</button>
                     </div>
                 </form>

@@ -9,7 +9,7 @@
                             <div class="input-group">
                                 <span class="input-group-text text-body"><x-tabler-search /></span>
                                 <input type="text" id="st" name="st" value="{{ $paramData['st'] }}"
-                                    class="form-control" placeholder="게시글명">
+                                    class="form-control" placeholder="게시글 검색">
                             </div>
                         </div>
                     </form>
