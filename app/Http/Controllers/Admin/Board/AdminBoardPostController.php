@@ -73,6 +73,9 @@ class AdminBoardPostController extends AdminController
             return match ($req->pType) {
                 'addBoardPost' => $service->addBoardPost($req, $board),
                 'setBoardPost' => $service->setBoardPost($req, $board),
+
+                'setImagesSeq' => $service->setImagesSeq($req),
+                'deleteImages' => $service->deleteImages($req),
             };
         }
     }

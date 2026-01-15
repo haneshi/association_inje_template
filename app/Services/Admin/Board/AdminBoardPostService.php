@@ -7,6 +7,7 @@ use App\Models\Board;
 use App\Models\BoardPosts;
 use Illuminate\Http\Request;
 use App\Helper\ImageUploadHelper;
+use App\Models\BoardPostFile;
 use Illuminate\Support\Facades\DB;
 use App\Services\Admin\AdminService;
 use Illuminate\Database\Eloquent\Model;
@@ -237,5 +238,65 @@ class AdminBoardPostService extends AdminService
                 'content' => "게시글이 수정 되지 않았습니다. <br> 관리자에게 문의해 주세요!",
             ]);
         }
+    }
+
+    /*
+    *
+    * System logic
+    */
+    public function setImagesSeq(Request $req)
+    {
+        $data = $req->except(['pType']);
+        $count = 1;
+        foreach ($data['seqIdxes'] as $id) {
+            BoardPostFile::where('id', $id)->update([
+                'seq' => $count,
+            ]);
+            $count++;
+        }
+        return $this->returnJsonData('toastAlert', [
+            'type' => 'success',
+            'delay' => 1000,
+            'delayMask' => true,
+            'title' => '순서가 변경 되었습니다.',
+            'event' => [
+                'type' => 'reload',
+            ],
+        ]);
+    }
+
+    public function deleteImages(Request $req)
+    {
+        $data = $req->only('id');
+        $dataFile = BoardPostFile::find($data['id']);
+        if (!$dataFile) {
+            return $this->returnJsonData('modalAlert', [
+                'type' => 'error',
+                'title' => '이미지 삭제에러',
+                'content' => '이미 삭제된 이미지 입니다.',
+                'event' => [
+                    'type' => 'reload',
+                ]
+            ]);
+        }
+
+        $origin = $dataFile->getOriginal();
+        if ($dataFile->delete()) {
+            $this->deleteStorageData($origin['file_path']);
+            return $this->returnJsonData('toastAlert', [
+                'type' => 'success',
+                'delay' => 1000,
+                'delayMask' => true,
+                'title' => '이미지 삭제 성공',
+                'event' => [
+                    'type' => 'reload',
+                ],
+            ]);
+        }
+        return $this->returnJsonData('modalAlert', [
+            'type' => 'error',
+            'title' => "이미지 삭제 에러",
+            'content' => "이미지 삭제 되지 않았습니다."
+        ]);
     }
 }

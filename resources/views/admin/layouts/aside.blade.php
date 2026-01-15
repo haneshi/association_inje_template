@@ -74,7 +74,7 @@
                                     <a class="nav-link {{ request()->routeIs('admin.board.' . $board->board_name . '*') ? 'active' : '' }}"
                                         href="{{ route('admin.board', $board->board_name) }}"
                                         style="padding-left: 1.5rem;">
-                                        {{ $board->board_name }} ({{ $board->type }})
+                                        {{ $board->board_name }} ({{ $board->type }} 타입)
                                     </a>
                                 </li>
                             @endforeach
