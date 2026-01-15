@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
         View::composer('admin.layouts.aside', function ($view) {
             $boards = Board::where('is_active', 1)
                 ->orderBy('seq', 'asc')
-                ->get(['id', 'board_name', 'title']);
+                ->get(['id', 'board_name', 'type', 'title']);
 
             $view->with('boards', $boards);
         });

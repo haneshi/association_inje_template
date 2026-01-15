@@ -4,7 +4,7 @@
             <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                 <h6>{{ $pageData['name'] }}</h6>
                 <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-                    <form class="col-auto auto" action="{{ route('admin.travel') }}">
+                    <form class="col-auto auto" action="{{ route('admin.board', $board->board_name) }}">
                         <div class="input-icon">
                             <div class="input-group">
                                 <span class="input-group-text text-body"><x-tabler-search /></span>
@@ -56,7 +56,6 @@
                                         <span
                                             class="text-secondary text-xs font-weight-bold">{{ $data->created_at->format('Y-m-d:H.i.s') }}</span>
                                     </td>
-
                                 </tr>
                             @empty
                                 <tr>
