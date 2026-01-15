@@ -26,18 +26,8 @@
                                     placeholder="Enter board name" required>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <label for="page_show_num" class="form-label">리스트 개수</label>
-                            <select id="page_show_num" name="page_show_num" class="form-select">
-                                @foreach (config('sites.board.page_num') as $val)
-                                    <option value="{{ $val }}"
-                                        @if ($val === 10) selected @endif>
-                                        {{ $val }}</option>
-                                @endforeach
-                            </select>
-                        </div>
                     </div>
-                    <div class="row mt-3">
+                    <div class="row mt-1">
                         <div class="col-md-3">
                             <div class="form-group">
                                 <div class="form-check form-switch">
@@ -74,6 +64,16 @@
                                     <label class="form-check-label ms-2" for="is_period">기간 조절기능</label>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="page_show_num" class="form-label">리스트 보여질 개수</label>
+                            <select id="page_show_num" name="page_show_num" class="form-select">
+                                @foreach (config('sites.board.page_show_num') as $val)
+                                    <option value="{{ $val }}"
+                                        @if ($val === 10) selected @endif>
+                                        {{ $val }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-12">
