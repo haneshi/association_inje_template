@@ -18,6 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('board_id')->comment('게시판 고유값');
             $table->nullableMorphs('author');
 
+            $table->string('image')->nullable()->comment('대표 이미지');
+
             $table->boolean('is_fixed')->default(false)->comment('고정유무');
             $table->boolean('is_secret')->default(false)->comment('비밀글 여부');
 

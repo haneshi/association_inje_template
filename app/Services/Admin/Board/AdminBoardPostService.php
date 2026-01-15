@@ -10,6 +10,7 @@ use App\Helper\ImageUploadHelper;
 use Illuminate\Support\Facades\DB;
 use App\Services\Admin\AdminService;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
 
 /**
  * Class AdminBoardPostService
@@ -53,21 +54,46 @@ class AdminBoardPostService extends AdminService
         $data['ip'] = $req->ip();
         $data['is_active'] = $req->boolean('is_active');
 
+        // 유효성 검사 규칙
+        $validator = Validator::make($req->all(), [
+            'image' => 'image|mimes:jpeg,png|max:10240', // 10MB (10240KB)
+        ], [
+            'image.image' => '이미지 파일만 업로드 가능합니다!<br>',
+            'image.mimes' => 'jpeg, png 이미지만 등록이 가능합니다!',
+            'image.max' => '대표 이미지 크기는 10MB를 초과할 수 없습니다!',
+        ]);
+        // 유효성 검사 실패 시
+        if ($validator->fails()) {
+            return $this->returnJsonData('modalAlert', [
+                'type' => 'error',
+                'title' => '대표 이미지 추가 에러',
+                'content' => implode(', ', $validator->errors()->get('image')),
+            ]);
+        }
         DB::beginTransaction();
-
         try {
             // 게시글의 모델 객체
             $post = $board->posts()->create($data);
             if ($post) {
+                // 갤러리 대표이미지 (썸네일)
+                if ($req->file('image')) {
+                    $imageData = ImageUploadHelper::upload(
+                        $req->file('image'),
+                        'board/' . $board->type . '/' . $post->id . '/thumbnail/',
+                        ['width' => 1920]
+                    );
+                    $post->image = $imageData['file_path'];
+                    $post->save();
+                }
+
+                // 갤러리 이미지들
                 if ($req->hasFile('images')) {
                     $images = $req->file('images');
                     $imagesCount = count($images);
-                    // 사진 저장은 기존 현재 프로젝트 사진 저장의 로직으로 사용할 것
-                    // 게시판의 사진 저장 경로 정리가 필요함
                     foreach ($images as $image) {
                         $tempImage = ImageUploadHelper::upload(
                             $image,
-                            'board/' . $board->type . '/room/' . $room->id,
+                            'board/' . $board->type . '/' . $post->id . '/',
                             ['width' => 1920],
                             $imagesCount
                         );

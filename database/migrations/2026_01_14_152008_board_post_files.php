@@ -18,7 +18,7 @@ return new class extends Migration
             $table->enum('type', ['attached', 'thumbnail', 'image', 'etc'])->comment('파일 타입');
             $table->integer('seq')->default(9999)->comment('순서');
 
-            $table->string('path')->comment('파일 경로');
+            $table->string('file_path')->comment('파일 경로');
             $table->string('filename')->comment('원본 파일명');
             $table->string('mime_type')->nullable()->comment('MIME 타입');
 

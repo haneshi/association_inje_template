@@ -64,7 +64,7 @@
                                     </td>
                                     <td>
                                         <a
-                                            href="{{ route('admin.board.view', ['board_name' => $board->board_name, 'id' => $data->id] + request()->query()) }}">{{ strip_tags($data->content) }}</a>
+                                            href="{{ route('admin.board.view', ['board_name' => $board->board_name, 'id' => $data->id] + request()->query()) }}">{{ $data->title }}</a>
                                     </td>
                                     <td class="align-middle text-center text-sm">
                                         <span

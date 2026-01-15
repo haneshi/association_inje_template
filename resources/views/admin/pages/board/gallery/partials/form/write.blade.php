@@ -25,7 +25,7 @@
                         <div class="form-group">
                             <label for="title" class="form-control-label">제목<span
                                     class="text-danger">*</span></label>
-                            <input class="form-control" type="text" id="title" title="title"
+                            <input class="form-control" type="text" id="title" name="title"
                                 placeholder="제목을 입력해주세요" required>
                         </div>
                     </div>
@@ -107,7 +107,7 @@
                 })
                 .addField('#title', [{
                     rule: 'required',
-                    errorMessage: '펜션명을 입력해주세요.',
+                    errorMessage: '제목을 입력해주세요.',
                 }, ])
         });
     </script>
