@@ -40,7 +40,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        {{-- 댓글과, 비밀글 여부는 웹 프론트에 따라 달라짐 일단 주석처리 --}}
+                        {{-- <div class="col-md-3">
                             <div class="form-group">
                                 <div class="form-check form-switch">
                                     <input class="form-check-input ms-auto mt-1" type="checkbox" id="is_secret"
@@ -57,7 +58,7 @@
                                     <label class="form-check-label ms-2" for="is_comment">댓글 사용</label>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="col-md-3">
                             <div class="form-group">
                                 <div class="form-check form-switch">
