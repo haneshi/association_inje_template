@@ -16,7 +16,7 @@
                 </div>
                 <a href="{{ route('admin.board.write', ['board_name' => $board->board_name] + request()->query()) }}"
                     class="btn btn-sm btn-primary mb-0">
-                    <x-tabler-plus />{{$board->board_name}} 작성
+                    <x-tabler-plus />{{ $board->board_name }} 작성
                 </a>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
@@ -46,7 +46,8 @@
                                         </p>
                                     </td>
                                     <td>
-                                        <a href="{{ route('admin.board.view', ['board_name' => $board->board_name, 'id' => $data->id] + request()->query()) }}">{{ $data->title }}</a>
+                                        <a
+                                            href="{{ route('admin.board.view', ['board_name' => $board->board_name, 'id' => $data->id] + request()->query()) }}">{{ $data->title }}</a>
                                     </td>
                                     <td class="align-middle text-center text-sm">
                                         <span
@@ -72,6 +73,13 @@
                     </table>
                 </div>
             </div>
+            @if ($dataList->hasPages())
+                <div class="card-footer d-flex align-items-center">
+                    <div class="m-auto"><!-- mx-auto ms-auto -->
+                        {{ $dataList->onEachSide(1)->withQueryString()->links('admin.components.pagination') }}
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
 </div>
