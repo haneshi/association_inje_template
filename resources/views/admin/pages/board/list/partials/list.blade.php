@@ -76,7 +76,7 @@
             @if ($dataList->hasPages())
                 <div class="card-footer d-flex align-items-center">
                     <div class="m-auto"><!-- mx-auto ms-auto -->
-                        {{ $dataList->onEachSide(1)->withQueryString()->links('admin.components.pagination') }}
+                        {{ $dataList->withQueryString()->links('admin.components.pagination') }}
                     </div>
                 </div>
             @endif

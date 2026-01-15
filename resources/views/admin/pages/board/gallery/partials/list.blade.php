@@ -91,6 +91,13 @@
                     </table>
                 </div>
             </div>
+            @if ($dataList->hasPages())
+                <div class="card-footer d-flex align-items-center">
+                    <div class="m-auto"><!-- mx-auto ms-auto -->
+                        {{ $dataList->withQueryString()->links('admin.components.pagination') }}
+                    </div>
+                </div>
+            @endif 
         </div>
     </div>
 </div>

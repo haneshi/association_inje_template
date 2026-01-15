@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Board;
 use App\Models\BoardPosts;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class BoardSeeder extends Seeder
 {
@@ -21,6 +22,7 @@ class BoardSeeder extends Seeder
             'is_period' => false,
             'page_show_num' => 10,
             'is_active' => true,
+            'post_count' => 20000,
         ],
         [
             'seq' => 2,
@@ -33,6 +35,7 @@ class BoardSeeder extends Seeder
             'is_period' => false,
             'page_show_num' => 12,
             'is_active' => true,
+            'post_count' => 15000,
         ],
         [
             'seq' => 3,
@@ -45,112 +48,136 @@ class BoardSeeder extends Seeder
             'is_period' => false,
             'page_show_num' => 10,
             'is_active' => true,
+            'post_count' => 15000,
         ],
     ];
 
-    protected $posts = [
-        'notice' => [
-            [
-                'title' => '2026년 신년 인사말',
-                'content' => '<p>안녕하세요. 새해 복 많이 받으세요.</p><p>2026년에도 변함없는 성원 부탁드립니다.</p>',
-                'is_fixed' => true,
-                'is_active' => true,
-            ],
-            [
-                'title' => '홈페이지 리뉴얼 안내',
-                'content' => '<p>홈페이지가 새롭게 리뉴얼 되었습니다.</p><p>더 나은 서비스로 보답하겠습니다.</p>',
-                'is_fixed' => false,
-                'is_active' => true,
-            ],
-            [
-                'title' => '개인정보처리방침 개정 안내',
-                'content' => '<p>개인정보처리방침이 2026년 1월 1일자로 개정되었습니다.</p><p>자세한 내용은 본문을 확인해 주세요.</p>',
-                'is_fixed' => false,
-                'is_active' => true,
-            ],
-            [
-                'title' => '시스템 점검 안내',
-                'content' => '<p>시스템 점검이 예정되어 있습니다.</p><p>점검 시간: 2026년 1월 20일 02:00 ~ 06:00</p><p>이용에 참고 부탁드립니다.</p>',
-                'is_fixed' => false,
-                'is_active' => true,
-            ],
-            [
-                'title' => '회원 서비스 이용 안내',
-                'content' => '<p>회원 서비스 이용 방법에 대해 안내드립니다.</p><p>1. 회원가입 후 로그인</p><p>2. 마이페이지에서 정보 확인</p><p>3. 다양한 서비스 이용</p>',
-                'is_fixed' => false,
-                'is_active' => true,
-            ],
-        ],
-        'gallery' => [
-            [
-                'title' => '2026년 신년회 행사 사진',
-                'content' => '<p>2026년 신년회 행사가 성공적으로 마무리되었습니다.</p>',
-                'is_fixed' => false,
-                'is_active' => true,
-            ],
-            [
-                'title' => '봄맞이 행사 현장',
-                'content' => '<p>봄을 맞이하여 진행된 행사 현장입니다.</p>',
-                'is_fixed' => false,
-                'is_active' => true,
-            ],
-            [
-                'title' => '워크샵 현장 스케치',
-                'content' => '<p>지난 워크샵 현장을 담았습니다.</p>',
-                'is_fixed' => false,
-                'is_active' => true,
-            ],
-        ],
-        'qna' => [
-            [
-                'title' => '회원가입은 어떻게 하나요?',
-                'content' => '<p>회원가입 방법에 대해 안내드립니다.</p>',
-                'content_sub' => '<p>상단 메뉴의 회원가입 버튼을 클릭하시면 회원가입 페이지로 이동합니다. 필수 정보를 입력하시고 가입 완료 버튼을 누르시면 됩니다.</p>',
-                'is_fixed' => false,
-                'is_active' => true,
-            ],
-            [
-                'title' => '비밀번호를 잊어버렸어요.',
-                'content' => '<p>비밀번호 분실 시 대처 방법입니다.</p>',
-                'content_sub' => '<p>로그인 페이지에서 "비밀번호 찾기"를 클릭하세요. 가입 시 등록한 이메일로 임시 비밀번호가 발송됩니다.</p>',
-                'is_fixed' => false,
-                'is_active' => true,
-            ],
-            [
-                'title' => '문의는 어디로 하면 되나요?',
-                'content' => '<p>문의 방법 안내입니다.</p>',
-                'content_sub' => '<p>홈페이지 하단의 연락처로 전화 문의 또는 이메일 문의가 가능합니다. 운영시간: 평일 09:00 ~ 18:00</p>',
-                'is_fixed' => false,
-                'is_active' => true,
-            ],
-            [
-                'title' => '회원 탈퇴는 어떻게 하나요?',
-                'content' => '<p>회원 탈퇴 절차 안내입니다.</p>',
-                'content_sub' => '<p>마이페이지 > 회원정보 > 회원탈퇴 메뉴에서 탈퇴가 가능합니다. 탈퇴 시 모든 정보가 삭제되며 복구가 불가능합니다.</p>',
-                'is_fixed' => false,
-                'is_active' => true,
-            ],
-        ],
+    protected $noticeTitles = [
+        '시스템 점검 안내',
+        '서비스 이용 안내',
+        '개인정보처리방침 개정 안내',
+        '홈페이지 리뉴얼 안내',
+        '회원 서비스 변경 안내',
+        '연휴 운영 안내',
+        '신규 서비스 오픈 안내',
+        '이벤트 당첨자 발표',
+        '정기 점검 완료 안내',
+        '보안 업데이트 안내',
+        '이용약관 변경 안내',
+        '고객센터 운영시간 변경',
+        '신년 인사말',
+        '추석 연휴 안내',
+        '설 연휴 안내',
+        '서버 이전 안내',
+        '앱 업데이트 안내',
+        '회원등급 혜택 안내',
+        '포인트 정책 변경 안내',
+        '제휴 서비스 안내',
+    ];
+
+    protected $galleryTitles = [
+        '신년회 행사 현장',
+        '봄맞이 행사 사진',
+        '워크샵 현장 스케치',
+        '창립기념일 행사',
+        '송년회 현장',
+        '세미나 현장 사진',
+        '전시회 방문 사진',
+        '체육대회 현장',
+        '봉사활동 현장',
+        '연수 프로그램 사진',
+        '시상식 현장',
+        '간담회 현장',
+        '오픈식 행사 사진',
+        '기념행사 현장',
+        '특별 이벤트 사진',
+    ];
+
+    protected $qnaTitles = [
+        '회원가입은 어떻게 하나요?',
+        '비밀번호를 잊어버렸어요',
+        '회원 탈퇴는 어떻게 하나요?',
+        '개인정보 변경은 어디서 하나요?',
+        '문의는 어디로 하면 되나요?',
+        '서비스 이용시간이 어떻게 되나요?',
+        '결제 방법이 궁금합니다',
+        '환불 절차가 어떻게 되나요?',
+        '포인트는 어떻게 사용하나요?',
+        '회원 등급 기준이 궁금합니다',
+        '앱 설치는 어떻게 하나요?',
+        '알림 설정은 어디서 하나요?',
+        '이용권 구매 방법이 궁금합니다',
+        '제휴 할인은 어떻게 받나요?',
+        '예약 취소는 어떻게 하나요?',
+    ];
+
+    protected $contentTemplates = [
+        '<p>안녕하세요. 관련 내용을 안내드립니다.</p><p>자세한 사항은 아래 내용을 확인해 주세요.</p><p>문의사항이 있으시면 고객센터로 연락 바랍니다.</p>',
+        '<p>해당 서비스에 대해 안내드립니다.</p><p>이용에 참고 부탁드립니다.</p><p>감사합니다.</p>',
+        '<p>공지사항을 알려드립니다.</p><p>변경된 내용을 꼭 확인해 주세요.</p><p>더 나은 서비스로 보답하겠습니다.</p>',
+        '<p>중요 안내사항입니다.</p><p>해당 내용은 모든 회원에게 적용됩니다.</p><p>궁금하신 점은 문의 바랍니다.</p>',
+        '<p>서비스 이용 관련 안내입니다.</p><p>원활한 이용을 위해 확인 부탁드립니다.</p><p>항상 최선을 다하겠습니다.</p>',
+    ];
+
+    protected $answerTemplates = [
+        '<p>해당 문의에 대한 답변입니다.</p><p>마이페이지에서 관련 설정을 확인하실 수 있습니다.</p><p>추가 문의사항이 있으시면 고객센터로 연락 바랍니다.</p>',
+        '<p>문의해 주셔서 감사합니다.</p><p>해당 기능은 로그인 후 이용 가능합니다.</p><p>자세한 이용방법은 도움말을 참고해 주세요.</p>',
+        '<p>안내드립니다.</p><p>홈페이지 또는 앱에서 동일하게 이용 가능합니다.</p><p>이용에 불편이 있으시면 말씀해 주세요.</p>',
     ];
 
     public function run(): void
     {
         $admin = Admin::first();
+        $now = now();
 
         foreach ($this->boards as $boardData) {
+            $postCount = $boardData['post_count'];
+            unset($boardData['post_count']);
+
             $board = Board::create($boardData);
-
             $boardName = $boardData['board_name'];
-            if (isset($this->posts[$boardName])) {
-                foreach ($this->posts[$boardName] as $postData) {
-                    $postData['board_id'] = $board->id;
-                    $postData['author_id'] = $admin?->id;
-                    $postData['author_type'] = $admin ? Admin::class : null;
-                    $postData['ip'] = '127.0.0.1';
-                    $postData['hit'] = rand(0, 100);
 
-                    BoardPosts::create($postData);
+            $titles = match ($boardName) {
+                'notice' => $this->noticeTitles,
+                'gallery' => $this->galleryTitles,
+                'qna' => $this->qnaTitles,
+                default => $this->noticeTitles,
+            };
+
+            $posts = [];
+            $chunkSize = 1000;
+
+            for ($i = 0; $i < $postCount; $i++) {
+                $titleIndex = $i % count($titles);
+                $contentIndex = $i % count($this->contentTemplates);
+                $createdAt = $now->copy()->subDays(rand(0, 365))->subHours(rand(0, 23))->subMinutes(rand(0, 59));
+
+                $post = [
+                    'board_id' => $board->id,
+                    'author_id' => $admin?->id,
+                    'author_type' => $admin ? Admin::class : null,
+                    'title' => $titles[$titleIndex] . ' #' . ($i + 1),
+                    'content' => $this->contentTemplates[$contentIndex],
+                    'content_sub' => $boardName === 'qna' ? $this->answerTemplates[$i % count($this->answerTemplates)] : null,
+                    'is_fixed' => $i < 3 && $boardName === 'notice',
+                    'is_secret' => false,
+                    'is_active' => true,
+                    'ip' => '127.0.0.1',
+                    'hit' => rand(0, 500),
+                    'created_at' => $createdAt,
+                    'updated_at' => $createdAt,
+                ];
+
+                $posts[] = $post;
+
+                if (count($posts) >= $chunkSize) {
+                    DB::table('board_posts')->insert($posts);
+                    $posts = [];
                 }
+            }
+
+            if (!empty($posts)) {
+                DB::table('board_posts')->insert($posts);
             }
         }
     }
