@@ -13,10 +13,10 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label for="type" class="form-label">게시판 타입</label>
-                            <select id="type" name="type" class="form-select" disabled>
-                                @foreach (config('sites.board.type') as $key => $val)
-                                    <option value="{{ $key }}"
-                                        @if ($key === $board->type) selected @endif>
+                            <select id="page_show_num" name="page_show_num" class="form-select">
+                                @foreach (config('sites.board.page_show_num') as $val)
+                                    <option value="{{ $val }}"
+                                        @if ($val === 10) selected @endif>
                                         {{ $val }}</option>
                                 @endforeach
                             </select>
@@ -67,6 +67,19 @@
                                     <label class="form-check-label ms-2" for="is_period">기간 조절기능</label>
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="page_show_num" class="form-label">리스트 보여질 개수</label>
+                            <select name="page_show_num" id="page_show_num"
+                                class="form-select mb-3 tomselected ts-hidden-accessible">
+                                @foreach (config('sites.board.page_show_num') as $value)
+                                    <option value="{{ $value }}"
+                                        @if ($board->page_show_num === $value) selected @endif>
+                                        {{ $value }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-12">

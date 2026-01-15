@@ -17,7 +17,7 @@ return [
             'faq' => 'FAQ',
         ],
 
-        'page_num' => [
+        'page_show_num' => [
             3,
             4,
             5,
