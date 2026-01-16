@@ -6,6 +6,7 @@ use App\Models\Pension;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Admin\AdminController;
 use App\Services\Admin\Pension\AdminPensionService;
+use Illuminate\Support\Facades\Redirect;
 
 class AdminPensionController extends AdminController
 {
@@ -29,12 +30,15 @@ class AdminPensionController extends AdminController
     {
         $this->data['paramData'] = $this->getParamData($req);
         $this->data['pension'] = Pension::getData(['id' => $id]);
+        if(!$this->data['pension']) {
+            RedirectUrl('admin/pension');
+        }
         $this->data['pensions'] = pension::where('is_active', true)->orderBy('seq')->get();
         $this->data['pensionFiles'] = $this->data['pension']->files;
 
         $this->data['rooms'] = $this->data['pension']->rooms;
         $this->data['roomFiles'] = $this->data['pension']->rooms->flatMap->files;
-            
+
         return view('admin.pages.pension.view', $this->data);
     }
     public function write(Request $req)
