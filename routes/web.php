@@ -8,7 +8,7 @@ use App\Http\Controllers\Admin\Travel\AdminTravelController;
 use App\Http\Controllers\Admin\Pension\AdminPensionController;
 use App\Http\Controllers\Admin\Setting\AdminSettingController;
 use App\Http\Controllers\Admin\Special\AdminSpecialController;
-use App\Http\Controllers\Web\Sample\WebSampleMapController;
+use App\Http\Controllers\Sample\SampleMapController;
 
 /*
 |--------------------------------------------------------------------------
@@ -108,7 +108,7 @@ Route::middleware('auth.check')
 
 
 ################ 샘플 라우팅 (기능 테스트)
-Route::controller(WebSampleMapController::class)
+Route::controller(SampleMapController::class)
     ->prefix('sample/map')
     ->group(function () {
         Route::get('/', 'mapIndex')->name('sample.map');
