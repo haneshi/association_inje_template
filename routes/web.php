@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\Travel\AdminTravelController;
 use App\Http\Controllers\Admin\Pension\AdminPensionController;
 use App\Http\Controllers\Admin\Setting\AdminSettingController;
 use App\Http\Controllers\Admin\Special\AdminSpecialController;
+use App\Http\Controllers\Web\Sample\WebSampleMapController;
 
 /*
 |--------------------------------------------------------------------------
@@ -103,4 +104,12 @@ Route::middleware('auth.check')
                 Route::get('/{id}', 'view')->name('admin.board.view');
                 Route::post('/data', 'data')->name('admin.board.data');
             });
+    });
+
+
+################ 샘플 라우팅 (기능 테스트)
+Route::controller(WebSampleMapController::class)
+    ->prefix('sample/map')
+    ->group(function () {
+        Route::get('/', 'mapIndex')->name('sample.map');
     });
