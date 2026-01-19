@@ -35,6 +35,12 @@ class AdminSpecialController extends Controller
     {
         $this->data['paramData'] = $this->getParamData($req);
         $this->data['special'] = Special::getData(['id' => $id]);
+        if(!$this->data['special']) {
+            RedirectBack([
+                'flash_error' => config('message.flash_error.id'),
+                'flash_error_toast' => true,
+            ]);
+        }
         return view('admin.pages.special.view', $this->data);
     }
 

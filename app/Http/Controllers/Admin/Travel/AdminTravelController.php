@@ -36,6 +36,12 @@ class AdminTravelController extends AdminController
     {
         $this->data['paramData'] = $this->getParamData($req);
         $this->data['travel'] = Travel::getData(['id' => $id]);
+        if(!$this->data['travel']) {
+            RedirectBack([
+                'flash_error' => config('message.flash_error.id'),
+                'flash_error_toast' => true,
+            ]);
+        }
         return view('admin.pages.travel.view', $this->data);
     }
 

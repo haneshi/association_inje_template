@@ -52,7 +52,10 @@ class AdminBoardPostController extends AdminController
         $this->data['data'] = BoardPosts::getData(['id' => $id]);
 
         if (!$this->data['data']) {
-            RedirectUrl('amdin/board/' . $board_name);
+            RedirectBack([
+                'flash_error' => config('message.flash_error.id'),
+                'flash_error_toast' => true,
+            ]);
         }
 
         if($this->data['board']->type === 'gallery') {

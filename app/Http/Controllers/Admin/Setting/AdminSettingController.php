@@ -74,6 +74,12 @@ class AdminSettingController extends AdminController
     {
         $this->data['paramData'] = $this->getParamData($req);
         $this->data['board'] = Board::getData(['id' => $id]);
+        if (!$this->data['board']) {
+            RedirectBack([
+                'flash_error' => config('message.flash_error.id'),
+                'flash_error_toast' => true,
+            ]);
+        }
         return view('admin.pages.settings.board.view', $this->data);
     }
 
