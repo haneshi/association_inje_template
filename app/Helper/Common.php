@@ -3,26 +3,28 @@
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 // ========================= System ==========================
-if(!function_exists('GetRouteName')) {
-    function GetRouteName() {
-        return match(request()->segment(1)) {
+if (!function_exists('GetRouteName')) {
+    function GetRouteName()
+    {
+        return match (request()->segment(1)) {
             'admin' => 'admin',
             default => 'web',
         };
     }
 }
 
-if(!function_exists('RedirectUrl')) {
-    function RedirectUrl(mixed $url = null, array $withMessage = []) {
-        if(empty($withMessage)) {
-            if($url) {
+if (!function_exists('RedirectUrl')) {
+    function RedirectUrl(mixed $url = null, array $withMessage = [])
+    {
+        if (empty($withMessage)) {
+            if ($url) {
                 throw new HttpResponseException(redirect($url));
             }
 
             throw new HttpResponseException(redirect()->back());
         }
 
-        if($url) {
+        if ($url) {
             throw new HttpResponseException(redirect($url)->with($withMessage));
         }
         throw new HttpResponseException(redirect()->back()->with($withMessage));
@@ -57,7 +59,8 @@ if (!function_exists('RedirectRoute')) {
 }
 
 if (!function_exists('GetFolderFileName')) {
-    function GetFolderFileName(string $path) {
+    function GetFolderFileName(string $path)
+    {
         $pathInfo = pathinfo($path);
         return [
             'directory' => $pathInfo['dirname'],
@@ -66,10 +69,22 @@ if (!function_exists('GetFolderFileName')) {
     }
 }
 
-if(!function_exists('GetThumbnailPath')) {
-    function GetThumbnailPath(string $path, string $folderName = 'thumb') {
+if (!function_exists('GetThumbnailPath')) {
+    function GetThumbnailPath(string $path, string $folderName = 'thumb')
+    {
         $pathInfo = GetFolderFileName($path);
-        return $pathInfo['directory'] . '/' . $folderName .'/'.$pathInfo['filename'];
+        return $pathInfo['directory'] . '/' . $folderName . '/' . $pathInfo['filename'];
+    }
+}
+
+if (!function_exists('RedirectBack')) {
+    function RedirectBack(array $withMessage = [])
+    {
+        if (empty($withMessage)) {
+            throw new HttpResponseException(redirect()->back());
+        }
+
+        throw new HttpResponseException(redirect()->back()->with($withMessage));
     }
 }
 
@@ -80,5 +95,3 @@ if (!function_exists('JsonEncode')) {
         return json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     }
 }
-
-

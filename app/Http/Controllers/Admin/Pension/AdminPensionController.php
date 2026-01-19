@@ -31,7 +31,10 @@ class AdminPensionController extends AdminController
         $this->data['paramData'] = $this->getParamData($req);
         $this->data['pension'] = Pension::getData(['id' => $id]);
         if(!$this->data['pension']) {
-            RedirectUrl('admin/pension');
+            RedirectBack([
+                'flash_error' => config('message.flash_error.id'),
+                'flash_error_toast' => true,
+            ]);
         }
         $this->data['pensions'] = pension::where('is_active', true)->orderBy('seq')->get();
         $this->data['pensionFiles'] = $this->data['pension']->files;
